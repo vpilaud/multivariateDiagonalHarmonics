@@ -1,0 +1,576 @@
+\documentclass[12pt]{amsart}
+
+%\usepackage[notcite,notref]{showkeys}
+\usepackage{tikz}
+%\usepackage{bbm,bm}
+%\usepackage{rotating}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage[all]{xy}
+%\usepackage{todonotes}
+
+\sloppy
+\flushbottom
+
+\usepackage{color}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\green}[1]{\textcolor{green!75!black}{#1}}
+
+\def\Pda{\Psi_{21}(\alpha)}
+
+\usepackage[bookmarks=false,colorlinks,linkcolor=blue,citecolor=green]{hyperref}
+
+
+%%%%%%%%%%%%%%
+\usepackage{xargs}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny,linecolor=red,backgroundcolor=red!25,bordercolor=red]{todonotes}
+\setlength{\marginparwidth}{2cm}
+\newcommandx{\nantel}[2][1=]{\todo[linecolor=brown,backgroundcolor=red!25,bordercolor=blue,#1]{#2 ---Nantel}}
+\newcommandx{\jc}[2][1=]{\todo[linecolor=purple,backgroundcolor=blue!25,bordercolor=red,#1]{#2 ---JC}}
+\newcommandx{\john}[2][1=]{\todo[linecolor=purple,backgroundcolor=green!25,bordercolor=red,#1]{#2 ---John}}
+
+
+%%---- page geometry & headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\addtolength{\textheight}{48pt}
+\addtolength{\voffset}{-24pt}
+\addtolength{\textwidth}{86pt}
+\addtolength{\hoffset}{-42pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{headings} % empty}
+
+\date{\today}
+
+%-------------------------------------------------------------------
+% ENVIRONMENTS
+%-------------------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}{\red{Conjecture}}
+\newtheorem{property}{\red{Property}}
+
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example} 
+\newtheorem{remark}[theorem]{Remark} 
+\newtheorem{definition}[theorem]{Definition} 
+
+\theoremstyle{remark}
+\newtheorem*{associativity}{Associativity}
+%\newtheorem*{unitality}{Unitality}
+%\newtheorem*{naturality}{Naturality}
+\newtheorem*{compatibility}{Compatibility}
+%\newtheorem*{connectedness}{Connectedness}
+%\newtheorem*{multiplicativity}{Multiplicativity}
+%\newtheorem*{warning}{Warning}
+
+ 
+ 
+% TO SEE SPECIAL COMMENT "uncomment" the line bellow
+% make sure that "\excludecomment{moredetails}" is the "commented" 
+% TO HIDE SPECIAL COMMENT do the opposite as above
+\specialcomment{moredetails}{\begingroup\color{red}}{\endgroup}
+%\excludecomment{moredetails}
+
+
+% SET: I,J,K,L
+% Set composition:  A,B,C,D
+% Parts O,P,Q,R,T,E,F
+
+%-------------------------------------------------------------------
+% MACROS
+%-------------------------------------------------------------------
+\newcommand{\draftnote}[1]{\marginpar{\raggedright\textsf{\hspace{0pt}\red{#1}}}}
+
+\newcommand{\Vinc}{\begin{turn}{90}$\subseteq$\end{turn}} 
+\newcommand{\Veq}{\begin{turn}{90}$=$\end{turn}}
+
+\def\id{\mathrm{id}}
+\def\Id{{\bf 1}}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\End}{End}
+
+\def\llb{{[\![}}
+\def\rrb{{]\!]}}
+
+
+\newcommand{\abs}[1]{\lvert#1\rvert} %for absolute value
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}} %for round matrix
+
+\newcommand{\larc}[1]{\hspace{-.4ex}\overset{#1}{\frown}\hspace{-.4ex}}
+\newcommand{\slarc}[1]{\overset{#1}{\frown}}
+
+\newcommand{\gel}{>_{\ell}}
+\newcommand{\lel}{<_{\ell}}
+
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\euler}{\mathbf{e}}
+
+\let\onto=\twoheadrightarrow
+\let\into=\hookrightarrow
+\let\map=\xrightarrow
+\newcommand{\xyinc}{\ar@{^{(}->}}
+\newcommand{\mapsby}[1]{ \overset{#1}{\longmapsto}}
+
+\newcommand{\type}[2]{\mathsf T_{#1}(#2)}
+
+\def\field{\Bbbk}
+\newcommand{\Sr}{\mathrm{S}} %symmetric group
+
+\newcommand{\rH}{\mathrm{H}}
+\newcommand{\rL}{{\mathbf l}}
+\newcommand{\rG}{{\mathbf g}}
+\newcommand{\rD}{\mathrm{D}}
+
+\newcommand{\bL}{\mathbf L}
+\newcommand{\bE}{\mathbf E}
+\newcommand{\bH}{\mathbf H}
+\newcommand{\bh}{\mathbf h}
+\newcommand{\bk}{\mathbf k}
+\newcommand{\bK}{\mathbf K}
+\newcommand{\bPi}{\mathbf \Pi}
+\newcommand{\bG}{\mathbf{G}} 
+\newcommand{\bp}{\mathbf p}
+\newcommand{\bq}{\mathbf q}
+\newcommand{\bmm}{\mathbf m}%\bm exists
+\newcommand{\bd}{\mathbf d}
+
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Kc}{\mathcal{K}}
+\newcommand{\Kcb}{\overline{\Kc}}
+
+\newcommand{\Nb}{\mathbb{N}}
+\newcommand{\Qb}{\mathbb{Q}}
+\newcommand{\Cb}{\mathbb{C}}
+\newcommand{\Zb}{\mathbb{Z}}
+\newcommand{\Fb}{\mathbb{F}}
+\newcommand{\Fq}{\Fb_q}
+
+
+\newcommand{\Qvar}{{\bm q}}
+\newcommand{\Zvar}{{\bm z}}
+
+
+\newcommand{\Nf}{\mathfrak{n}}
+\newcommand{\bNf}{\overline{\Nf}}
+\newcommand{\Mf}{\mathfrak{m}}
+\newcommand{\bMf}{\overline{\Mf}}
+
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Un}{\mathrm{U}}
+\newcommand{\Mat}{\mathrm{M}}
+\newcommand{\Tri}{\mathrm{T}}
+
+\newcommand{\FC}{\bm{\mathrm{f}}}
+\newcommand{\CF}{\bm{\mathrm{cf}}}
+\newcommand{\SC}{\bm{\mathrm{scf}}}
+
+\newcommand{\bdot}{\bm\cdot}
+
+\newcommand{\qand}{\quad\text{and}\quad}
+\newcommand{\qor}{\quad\text{or}\quad}
+\newcommand{\qqand}{\qquad\text{and}\qquad}
+\newcommand{\qqor}{\qquad\text{or}\qquad}
+
+%\newcommand{\jc}[1]{\todo[color=orange!30]{#1 \\ \hfill --- J-C.}}
+%\newcommand{}[1]{\todo[color=red!30]{#1 \\ \hfill --- N.}}
+\setlength{\marginparwidth}{2cm}
+
+\newcommand{\PF}{\mathcal{PF}}
+\newcommand\area{\mathop{\mathrm{area}}}
+\newcommand{\dinv}{\mathop{\mathrm{dinv}}}
+\newcommand{\ides}{\mathop{\mathrm{ides}}}
+\newcommand{\des}{\mathop{\mathrm{des}}}
+\newcommand{\desc}{\mathop{\mathrm{desc}}}
+\newcommand{\ank}{\mathop{\mathrm{ank}}}
+\newcommand{\ret}{\mathop{\mathrm{ret}}}
+\newcommand{\comp}{\mathop{\mathrm{comp}}}
+\newcommand{\ps}{\mathop{\mathrm ps^1}}
+
+% math commands
+\newcommand{\set}[2]{\left\{ #1 \;\middle|\; #2 \right\}} % set notation
+\newcommand{\bigset}[2]{\big\{ #1 \;\big|\; #2 \big\}} % big set notation
+\newcommand{\Bigset}[2]{\Big\{ #1 \;\Big|\; #2 \Big\}} % Big set notation
+\newcommand{\setangle}[2]{\left\langle #1 \;\middle|\; #2 \right\rangle} % set notation
+\newcommand{\ssm}{\smallsetminus} % small set minus
+\newcommand{\dotprod}[2]{\left\langle \, #1 \; \middle| \; #2 \, \right\rangle} % dot product
+\newcommand{\symdif}{\,\triangle\,} % symmetric difference
+\newcommand{\eqdef}{\mbox{\,\raisebox{0.2ex}{\scriptsize\ensuremath{\mathrm:}}\ensuremath{=}\,}} % :=
+\newcommand{\defeq}{\mbox{~\ensuremath{=}\raisebox{0.2ex}{\scriptsize\ensuremath{\mathrm:}} }} % =:
+\newcommand{\simplex}{\triangle} % simplex
+\renewcommand{\implies}{\Rightarrow} % imply sign
+\newcommand{\transpose}[1]{{#1}^t} % transpose matrix
+
+%%%%%%%%%%%%%%
+%%  TITLE AND AUTHORS
+%%%%%%%%%%%%%%
+\author{Fran\c{c}ois Bergeron}
+
+\author{Nantel Bergeron}\address[Bergeron]
+{Department of Mathematics and Statistics\\ York  University\\ To\-ron\-to, Ontario M3J 1P3\\ CANADA}
+\email{bergeron@mathstat.yorku.ca}
+\urladdr{http://www.math.yorku.ca/bergeron}
+\thanks{With partial support of Bergeron's York University Research Chair and NSERC}
+
+\author{Cesar Caballos}
+\author{Vincent Pilaud}
+
+\title[Note and Conjectures on Multivariate Diagonal Harmonics]{Note and Conjectures on \\ Multivariate Diagonal Harmonics}
+
+\begin{document}
+
+\begin{abstract}
+We try to summarize the advancement made in our work session in Paris, in February 2019.
+\end{abstract}
+
+\maketitle
+
+\section{Paris, Feb 22, 2019}
+
+\subsection{The square case~$n = m$}
+We are studying the Frobenius image of the character of multivariate diagonal harmonics. Fran\c{c}ois shows that it is possible to find a formula
+{\begin{equation}\label{eq:En}
+{\mathcal E}_n(\Qvar;\Zvar) = \sum_{\lambda \vdash n \atop \nu \vdash \ell<{n\choose 2}} c_{\nu,\lambda} s_\nu(\Qvar) \otimes s_\lambda(\Zvar),
+\end{equation}}
+where the $c_{\mu,\lambda}$ are positive integers and the specialization $\Qvar \mapsto q_1 + q_2 + \dots + q_r$ gives the $r$-graded Frobenius image of the character of the multivariate diagonal harmonics with $r$ set of variables of cardinality $n$ with the diagonal action of~$S_n$.
+This formula is computed explicitly by computer for~$n \in \{1,2,3,4,5,6\}$.
+
+Guided by our heuristic that such formula such is constructed from the Tamari lattice using Hopf chain, we came to the conclusion that it is possible to write~${\mathcal E}_n(\Qvar;\Zvar)$ in different ways.
+Let $\mu\subseteq\delta_n$ be a partition included in the staircase represent Dyck path in the Tamari lattice.
+Possibly adding zero parts, we require that~$\ell(\mu) = n$ to encode~$n$.
+
+\begin{conjecture}\label{conj:master}
+Let $t$ be a variable, our multishuffle conjecture is
+\begin{equation}\label{eq:multishuff}
+\blue{
+{\mathcal E}_n(\Qvar+t;\Zvar) = \sum_{\mu\subseteq\delta_n} \sigma_{\mu}(\Qvar) \otimes {\mathbb L}_{\mu}(t;\Zvar).
+}
+\end{equation}
+Using Hopf chains, and the expression computed by Fran\c{c}ois for $n\le 6$ we arrive at the conclusion that $\sigma_{\mu}(\Qvar)$ is not Schur positive but it should be monomial positive.
+In fact, for any $\mu\subseteq\delta_n$, we conjecture that it should be possible to find a subset $G_\mu$ of good chain among the Hopf chain with top element $\mu$, and a multistatistic composition ${\mathrm{mcol}}({\bf c})\models n$ for any ${\bf c}\in G_\mu$ such that
+\begin{equation}\label{eq:chainstat}
+\blue{
+\sigma_\mu(\Qvar) = \sum_{{\bf c} \in G_\mu} M_{{\mathrm{mcol}}({\bf c})}(\Qvar),
+}
+\end{equation}
+where $M_\alpha$ are the monomial quasisymmetric functions.
+\end{conjecture}
+
+Using some reasonable additional heuristic, we deduce the following properties of the $\sigma_\mu(\Qvar)$.
+For a symmetric function $f=\sum c_\nu s_\nu$, let $\ell(f) = \max \set{\ell(\nu)}{c_\nu \ne 0}$ and $\deg(f) = \max\set{|\nu|}{c_\nu \ne 0}$.
+The area of a $\mu\subseteq\delta_n$ is $\area(\mu) = {n \choose 2}-|\mu|$.
+
+\begin{property}\label{P:len_deg}
+\blue{
+$\ell(\sigma_\mu) = n-|\set{k}{k \in \mu}|$} and \blue{$\deg(\sigma_\mu)\le \area(\mu)$.
+}
+\end{property}
+
+Here, $|\set{k}{k\in\mu}|$ is the number of distinct parts in $\mu$ including $0$'s.
+This property follows from the definition of the module of multivariate diagonal harmonics.
+We also derive from the module that
+
+\begin{property} \label{P:alt}
+\blue{$\sigma_{\delta_n}=1$} and \blue{$\sigma_{0^n} = \dotprod{{\mathcal E}_n(\Qvar;\Zvar)}{s_{1^k} (\Zvar)} = {\mathcal A}_n(\Qvar)$} the $\GL$-character of the space of alternating multidiagonal harmonics.
+\end{property}
+
+We decided {\bf not to use} the property $\sigma_\mu = \sigma_{\mu'}$, since we cannot really justify it. 
+
+\medskip
+The next property is inspired from the behaviour of (Hopf) chains in the Tamari lattice. For $\mu\subseteq\delta_n$, suppose that $\mu_i=n-i$, that is the Dyck path return to the diagonal, then we can write $\mu=\alpha \odot \beta= [(n-i)^{n-i}+\beta]\cdot\alpha$, that is we decompose the dyck path of $\mu$ as the concatenation of the path of $\alpha$ followed by the path of $\beta$.
+
+\begin{property}\label{P:multi}
+If $\mu=\alpha \odot \beta$, then \blue{$\sigma_\mu=\sigma_\alpha\sigma_\beta$}.
+\end{property}
+
+We can take the scalar product of ${\mathcal E}_n(\Qvar;\Zvar)$ with different symmetric functions, this gives us identities among the $\sigma_\mu$.
+It is enough to take the scalar product with Schur function (as it is a basis and we get all possible information.
+For this we use the ${\mathcal E}_n(\Qvar;\Zvar)$ computed with the program $n\le 6$ in the left-hand side and use Equation~\eqref{eq:multishuff}. 
+
+\begin{property}\label{P:coeff}
+For any $\lambda \vdash n$,
+\[
+\blue{
+\dotprod{{\mathcal E}_n(\Qvar+t;\Zvar)}{s_\lambda(\Zvar)} = \sum_{\mu\subseteq \delta_n} \dotprod{{\mathbb L}_\mu(t;\Zvar)}{s_\lambda(\Zvar)} \, \sigma_\mu(\Qvar).
+}
+\]
+\end{property}
+
+Notice that this gives us a property for each $\lambda\vdash n$. Our old property~{\bf 9} can be derived using~$s_{1^n}$. We have 
+\begin{equation}\label{eq:alt}
+\blue{
+\sigma_{0^n}(\Qvar+t) =  \dotprod{{\mathcal E}_n(\Qvar+t;\Zvar)}{s_{1^n} (\Zvar)} = \sum_{\mu\subseteq \delta_n} t^{\dinv(\mu)} \sigma_\mu(\Qvar).
+}
+\end{equation}
+This follows from the fact that $\dotprod{{\mathbb L}_\mu(t;\Zvar)}{s_\lambda(\Zvar)} = t^{\dinv(\mu)}$, since there is a unique parking function $\pi$ of shape $(\mu+1^n)/\mu$ that will give us $\comp(\pi)=1^n$ and this is the coefficient of $F_{1^n}=s_{1^n}$ which  appear only there. The $\dinv(\pi)$ of that special parking function is what we define to be $\dinv(\mu)$.
+
+\subsection{On $\Delta$ conjecture and Tamari localization}
+
+Now we will consider a local version of the $\Delta$-conjecture. Haglund stated that
+\begin{equation}\label{eq:hag}
+(\Delta'_{e_k} e_n)(q,t;\Zvar) = \sum_{\mu\subseteq\delta_n} \Big(\sum_{J\subseteq [n-1] \atop |J|=k, \, \desc(\mu)\subseteq J} q^{\sum_{i\in J} a(\mu,i)}\Big) {\mathbb L}_\mu(t;\Zvar)
+\end{equation}
+where $a(\mu,i)=n-i-\mu_i$ is the contribution to the area in row $i$, and~$\desc(\mu) \eqdef \set{i \in [n-1]}{\mu_i > \mu_{i+1}}$.
+On the other hand, Fran\c{c}ois conjectured that~$e_{n-1-k}^{\perp_1}{\mathcal E}_n(\Qvar;\Zvar)$ should be a generalization of the $\Delta$ conjecture [\green{We have more on this later as discovered by Vincent}]. More precisely
+\begin{equation}\label{eq:hag}
+\Delta'_{e_k} e_n = (e_{n-1-k}^{\perp_1}{\mathcal E}_n)(q+t;\Zvar)
+\end{equation}
+
+If we expand the right-hand side using Equation~\eqref{eq:multishuff}, and use \eqref{eq:hag} for the left-hand side we get
+\begin{equation}\label{eq:local}
+\sum_{\mu\subseteq\delta_n} \Big(\sum_{J\subseteq [n-1] \atop |J|=k, \, \desc(\mu)\subseteq J} q^{\sum_{i\in J} a(\mu,i)}\Big) {\mathbb L}_\mu(t;\Zvar)
+= \sum_{\mu\subseteq\delta_n} (e_{n-1-k}^{\perp}\sigma_{\mu})(q){\mathbb L}_{\mu}(t;\Zvar)
+\end{equation}
+\green{WARNING} The ${\mathbb L}_{\mu}(t;\Zvar)$ are not linearly independent but we will assume that their coefficient are equal.
+Nantel justify this as the equations must be shadows of noncommutative version of LLT polynomials defined in the Catalan Hopf algebra related to Tamari lattice.
+We will do the same later with non-commutative symmetric functions related to the (dual) boolean lattice.
+
+Taking the coefficient of ${\mathbb L}_{\mu}(t;\Zvar)$ on both side of Equation~\eqref{eq:local} give what we call the Tamari localization of the $\Delta$-conjecture:
+
+\begin{property}\label{P:localDelta}
+For $\mu\subseteq\delta_n$
+\[
+\blue{(e_{n-1-k}^{\perp}\sigma_{\mu})(q) = \sum_{J\subseteq [n-1] \atop |J|=k, \, \desc(\mu)\subseteq J} q^{\sum_{i\in J} a(\mu,i)} 
+}
+\]
+\end{property}
+
+\subsection{Projection of Tamari on the (dual) boolean lattice}
+
+For the next properties, we derive a very surprising identity from Equation~\eqref{eq:multishuff}. 
+Before we need to set a few more notations.
+Given $\mu \subseteq \delta_n$ we  get its descent set~$\desc(\mu) \subseteq [n-1]$.
+It is well known that for a fix $A\subseteq [n-1]$, the set $\set{\mu}{\desc(\mu) = A} = [\mu_A^0, \mu_A]$ is an interval in the Tamari lattice:
+\begin{itemize}
+\item $\mu_A^0$ denotes the bottom of the interval, it is the bounce path defined by $A$,
+\item $\mu_A$ denotes the top of the interval, it is the steep path defined by $A$.
+\end{itemize}
+The map $\desc$ is in fact a lattice projection from the Tamari lattice to the boolean lattice.
+We sometime use composition to describe $A\subseteq[n-1]$, this has the advantage that~$n$ is understood from the composition whereas~$A$ alone does not know~$n$.
+We will denote by~$c(\mu)$ the composition subset~$\desc(\mu)\subseteq [n-1]$.
+
+Let $r_{\alpha}(\Zvar)$ be the ribbon-schur symmetric function defined by the composition $\alpha\models n$. 
+For example, if $n = 6$ and $A = \{2,4,5\}$, then $\alpha = 2211$ is the composition associated to $A$.
+The ribbon-Schur $r_\alpha = s_{3332/221}$ is a skew Shur function, the shape is a connected ribbon shape with $\alpha_i$ cell in row $i$.
+
+When we let $t=0$, the polynomial LLT behave very nicely.
+
+\begin{proposition}
+\begin{equation}\label{eq:LLT0}
+\blue{
+{\mathbb L}_\mu(0;\Zvar) = 
+\begin{cases} 0 & \text{\rm if $\mu<\mu_{\desc(\mu)}$,} \\ r_{c(\mu)}(\Zvar) & \text{\rm otherwise}.\end{cases}
+}
+\end{equation}
+where~$\Pi_\mu$ is the set of parking function of shape~$(\mu+1^n)/u$ (standard tableau).
+\end{proposition}      
+
+\begin{proof}
+Recall that the definition of LLT is
+\[
+{\mathbb L}_\mu(t;\Zvar) = \sum_{\pi\in \Pi_\mu} t^{\dinv(\pi)} F_{\comp(\pi)}(\Zvar)
+\]
+where $\dinv(\pi)$ is XXXX(hahaha), $\comp(\pi)$ is the composition associated with the descent set of the inverse of the diagonal reading the the entry of $\pi$ \red{[WARNING: do not confuse this with $c(\mu)$]} and $F$ are the Gessel fundamental quasisymmetric functions.
+Now, if we compute $\dinv(\pi)$ we realize that $\dinv(\pi)>0$ always if $\mu<\mu_{\desc(\mu)}$.
+That is a consequence to the fact that if we have two columns that are not consecutive than there must be at least one inversion in $\dinv(\pi)$. 
+
+Now if we have $\mu_A$ for some $A$, then the columns of $(\mu+1^n)/u$ are consecutive. 
+The parking functions of shape $(\mu+1^n)/u$ that have no dinv are exactly the filling of $(\mu+1^n)/u$ that fit the associated ribbon shape.
+That shows the second part of the proposition.
+\end{proof}
+
+We can now evaluate both sides of Equation~\eqref{eq:multishuff} with $t=0$ and obtain a very surprising identity:
+
+\begin{conjecture}\label{conj:cube}
+We have an equation of ${\mathcal E}$ on the (dual) boolean lattice, namely: 
+\begin{equation}\label{eq:cube}
+\blue{
+{\mathcal E}_n(\Qvar;\Zvar) = \sum_{A\subseteq [n-1] } \sigma_{\mu_A}(\Qvar)\otimes r_{c(\mu_A)}(\Zvar).
+}
+\end{equation}
+\end{conjecture}
+
+This is a totally new expression and will have many deep consequence. This should be the shadow on the (dual) boolean lattice of the expression on the Tamari lattice. 
+This conjecture is a consequence of Conjecture~\ref{conj:master}. We  now put $t=1$ in Equation~\eqref{eq:multishuff}  and $\Qvar+1$ in \eqref{eq:cube}.
+We have to remark that LLT symmetric function at $t=1$ is a product of elementary symmetric function, but we want to expand it as a positive sum of ribbon 
+Schur function (\green{WARNING: this is not unique, we do it in a non-commutative way}). Let $B = \desc(\nu)$. We have
+\[
+{\mathbb L}_\nu(1;\Zvar)= e_{\alpha}=\sum_{A\subset B} r_{c(A)}(\Zvar).
+\]
+The second equality is a direct consequence of jeux de taquin. Let $\alpha=c(A)$, let $t=1$ in Equation~\eqref{eq:multishuff} and take the coefficient of $r_\alpha$
+(\green{WARNING: the $r_\beta$ are not linearly independent but we imagine that this in written in non-commutative symmetric functions.}). We compare this to the coefficient of $r_\alpha$ in Equation~\eqref{eq:cube} with $\Qvar+1$. We get
+\[
+\sigma_{\mu_A}(\Qvar+1) = \sum_{\nu: A\subseteq \desc(\nu)} \sigma_\nu(\Qvar)= \sum_{\nu\le \mu_A} \sigma_\nu(\Qvar).
+\]
+A (dual) boolean lattice localization (coefficient of $r_{c(A)}$) at $\Qvar+1$   gives our old Property~{\bf 9$'$}:
+
+\begin{property}\label{P:steepQ1}
+For any $A\subseteq [n-1]$, let $\mu_A$ be the steep shape corresponding to $A$:
+\[
+\blue{\sigma_{\mu_A}(\Qvar+1) = \sum_{\nu\le \mu_A} \sigma_\nu(\Qvar)
+}
+\]
+\end{property}
+
+\subsection{Revisiting $\Delta$ conjecture with the (dual) boolean lattice equation}
+
+Another use of \eqref{eq:cube} is via the following identity that Fran\c{c}ois proved:
+\[
+e_k^\perp \sigma_{0^n}(\Qvar) = \dotprod{{\mathcal E}_n(\Qvar;\Zvar)}{s_{(k | n-k-1)}(\Zvar)},
+\]
+using Frobenius notation $(k | n-k-1)$ for the hook shape partition $(k+1)1^{n-k-1}$.
+We remark that
+\[
+\dotprod{r_{c(A)}}{s_{(k | n-k-1)}} = \delta_{|A|=k},
+\]
+hence taking the scalar product $\dotprod{{\mathcal E}_n(\Qvar;\Zvar)}{s_{(k | n-k-1)}(\Zvar)}$ using \eqref{eq:cube} gives
+
+\begin{property}\label{P:DeltaAlt}
+For $k\le n-1$
+\[
+\blue{e_k^\perp \sigma_{0^n}(\Qvar)  = \sum_{A:\  |A|=k} \sigma_{\mu_A}
+}
+\]
+\end{property}
+
+This is a reflection of what should be a complete general $\Delta$-conjecture.
+From Fran\c{c}ois expression above and the Equation~\eqref{eq:hag}, we say that $e_{k}^{\perp_1}{\mathcal E}_n(\Qvar;\Zvar)$ should be expressible as a generalization of the $\Delta$-conjecture.
+Before we do so, let us use 
+now the Equation~\eqref{eq:cube} in Equation~\eqref{eq:hag}:
+\begin{equation}\label{eq:deltacube}
+\Delta'_{e_k} e_n = (e_{n-1-k}^{\perp_1}{\mathcal E}_n)(q,t;\Zvar)
+= \sum_{A\subseteq [n-1]} ( e_{n-1-k}^\perp \sigma_{\mu_A} ) (q,t) \, r_{c(\mu_A)}
+\end{equation}
+
+\begin{property}\label{P:DeltaCube}
+For $k\le n-1$
+\[
+\blue{
+\sum_{A\subseteq [n-1]} \Big( e_{n-1-k}^\perp \sigma_{\mu_A} \Big) (q,t) \, r_{c(\mu_A)}(\Zvar)  = 
+\sum_{\mu\subseteq\delta_n} \Big(\sum_{J\subseteq [n-1] \atop |J|=k, \,  \desc(\mu)\subseteq J} q^{\sum_{i\in J} a(\mu,i)}\Big) {\mathbb L}_\mu(t;\Zvar)
+}
+\]
+\end{property}
+
+The Property~\ref{P:localDelta} is in spirit a Tamari localization of $t=0$ in the above expression. We can also set $t=1$ and do a (dual) boolean lattice localization at $A\subseteq[n-1]$:
+\begin{equation}\label{eq:cube_Delta_qt}
+\blue{
+\Big( e_{n-1-k}^\perp \sigma_{\mu_A} \Big) (q,1) = 
+\sum_{\nu\le \mu_A} \Big(\sum_{J\subseteq [n-1] \atop |J|=k, \, \desc(\nu)\subseteq J} q^{\sum_{i\in J} a(\mu,i)}\Big)
+}
+\end{equation}
+
+\subsection{Anklet and generalized $\Delta$-conjecture}
+
+The anklet~$\ank({\bf c})$ of a Hopf chain~${\bf c} = (c_1, \dots, c_r)$ is the maximal number of paths that can be inserted between the first two paths~$c_1$ and~$c_2$ of the chain~${\bf c}$ so that it remains a Hopf chain.
+Note that the anklet looks like the area of the second path~$c_2$, but it is not since the rest of the chain matters.
+
+The anklet statistic can be decomposed according to the level of the flips.
+Namely, given a Hopf chain~${\bf c} = (c_1, \dots, c_r)$, consider a Hopf chain~${\bf C}$ containing~$c$ together with $\ank({\bf c})$ additional paths in between the first two paths~$c_1$ and~$c_2$ of~${\bf c}$.
+Let $\ank_p({\bf c})$ be the number of flips at the horizontal level~$p$ that were made in the part of~${\bf C}$ between the first two paths of~${\bf c}$.
+This decomposes the anklet into $\ank({\bf c}) = \ank_1({\bf c}) + ... + \ank_n({\bf c})$.
+(\green{WARNING: it is not clear that this decomposition is independent of the choice of the superchain~${\bf C}$.})
+It yields the following generalized $\Delta$-conjecture:
+\[
+\blue{
+(e_{n-1-k}^\perp {\mathcal E}_n)(q, t, 1^{r-2};\Zvar) = \sum_{{\bf c} \text{ good chain} \atop \text{of length } r} \sum_{J \subseteq [n-1] \atop |J| = k, \, \desc({\bf c}) \subseteq J} q^{\sum_{p \in J} \ank_p({\bf c})} \otimes {\mathbb L}_{c_r}(t;\Zvar),
+}
+\]
+where~$\desc({\bf c}) = \set{i}{\ank_i({\bf c}) < \ank_{i-1}({\bf c})}$.
+Note that this can also be computed using strict chains as follows:
+\[
+(e_k^\perp {\mathcal E}_n)(q, t, 1^{r-2};\Zvar) = \sum_\ell \sum_{{\bf c} \text{ strict good} \atop \text{chain of length } \ell} \sum_{J \subseteq [n-1] \atop |J| = k, \, \desc({\bf c}) \subseteq J} \!\!\!\! \bigg( \one_{k = 0} \binom{r-2}{\ell-1} + q^{\sum_{p \in J} \ank_p({\bf c})} \binom{r-2}{\ell-2} \!\! \bigg) \otimes {\mathbb L}_{c_r}(t;\Zvar).
+\]
+This was checked by computer for~$k < n \le 4$. For $n = 5$, we do not have the right notion of good chains.
+
+\subsection{Some new combinatorial identities}
+
+When we evaluate Equation~\eqref{eq:cube} at $\Qvar\mapsto q$ or $\Qvar\mapsto q+t$ we get some new combinatorial identities that one should be able to prove independently of our conjecture.
+For $\Qvar\mapsto q$, the symmetric function ${\mathcal E}_n(q;\Zvar)$ is the graded action of $S_n$ on the cohomology of the Flag manifold, or the graded action of $S_n$ on the quotient of polynomials in one set of variables by the ideals of symmetric function.
+This is given by the Hall-Littlewood symmetric function indexed by $1^n$.
+Now evaluate Equation~\eqref{eq:cube} at $\Qvar\mapsto q$, you get
+\begin{equation}\label{eq:onevar}
+\blue{
+\frac{h_n\big[ {\Zvar}/{(1-q)}\big]}{h_n\Big[ {1}/{(1-q)}\Big]} = \sum_{A\subseteq[n-1]} q^{\area(\mu_A)} r_{c(\mu_A)}(\Zvar).
+}
+\end{equation}
+Is this expression known? Nantel has done this expression before (unpublished?) and think Lascoux has done it also a long time ago. 
+This follow from  the shuffle theorem in $q,t$, putting $t=0$. Or equivalently, put $k=n-1$ and $t=0$ in Formula~\eqref{eq:hag}.
+
+Now at $\Qvar\mapsto q+t$ this is {\bf really} new. Evaluating Equation~\eqref{eq:cube} at $\Qvar\mapsto q$ gives us
+\begin{equation}\label{eq:onevar}
+\blue{
+\nabla e_n= \sum_{A\subseteq[n-1]} \sigma_{\mu_A}(q,t) r_{c(\mu_A)}.
+}
+\end{equation}
+But even more combinatorially, if we use Equation~\eqref{eq:chainstat} evaluated at $q+t$ we get at most the two chains:
+\begin{equation}\label{eq:onevar}
+\sigma_{\mu_A}(q,t) = \sum_{\nu\le \mu_a} q^{\ank(\delta_n,\nu,\mu_A)} t^{\beta(\delta_n,\nu,\mu_a)}.
+\end{equation}
+The statistic $\ank(\delta_n,\nu,\mu_A)$ is the anklet statistic. It is almost the area of $\nu$? At least when we set $t=1$ and $k=n-1$ in Property~\ref{P:DeltaCube} we get
+\[
+\sigma_{\mu_A}(q,1)=\sum_{\nu\le\mu_A} q^{\area(\nu)},
+\]
+and this agrees with Property~\ref{P:steepQ1}. Hence we conjecture
+\begin{conjecture}\label{conj:area}
+Given $A\subseteq[n-1]$ and $\nu\le \mu_A$
+\[
+\ank(\delta_n,\nu,\mu_A)=\area(\nu).
+\]
+\end{conjecture}
+
+\begin{proof}[Idea of proof]
+There is a unique maximal Hopf chain $(\delta_n,c_1,\ldots,c_{\ell-1},\nu)$ such that $\ell=\area(\nu)$.
+We know that chain well.
+We just need to show that $(\delta_n,c_1,\ldots,c_{\ell-1},\nu,\mu_A)$ is Hopf!?
+\end{proof}
+
+Regardless of Conjecture~\ref{conj:area} being true or false, we should work hard to understand the values of $\ank$ and $\beta$ for this case and show 
+\begin{equation}\label{eq:onevar}
+\blue{
+\nabla e_n= \sum_{A\subseteq[n-1]} \Big[\sum_{\nu\le \mu_a} q^{\ank(\delta_n,\nu,\mu_A)} t^{\beta(\delta_n,\nu,\mu_a)}\Big] r_{c(\mu_A)}.
+}
+\end{equation}
+It would give us so much insight on the statistic we are seeking and $\nabla e_n$ is well studied. We should look at $\sigma_{\mu_A}(1,t)$...
+put
+\[
+\sum_{A\subseteq[n-1]} \sigma_{\mu_A}(1,t) r_{c(\mu_A)}(\Zvar) = \sum_{\mu} {\mathbb L}_\mu(t;\Zvar) = (\nabla e_n)(1,t;\Zvar).
+\]
+The expression on the right is well known (but Nantel forgot).
+
+\subsection{Some open questions and dreaming bigger}
+
+\begin{enumerate}
+\item Can we do localization for other lattices in between Tamari and the (dual) boolean lattice? [Nantel expec this to work if there is an associated Hopf algebra]. We can push the idea in the other direction, Is there an analogue of Formula~\eqref{eq:multishuff} over permutations? We can then localize over the Bruhat order? That would give us even more refined properties
+\item Our exploration suggests that we should be able to construct the $\sigma_\mu$ via operators applied to $\bf 1$. These operators could be ``dual" to the Carlson-Mellit operator?
+\item We feel there should be a collar version of dinv
+\item We have to understand better what happens when the variable move from one side of the tensor to the other side in the expression ${\mathcal E}_n(\Qvar;\Zvar)$. Fran\c{c}ois' experiments suggest (explicit expressions for $n\leq 4$, and partial for $n=5$) that there is in fact a nice expansion of the form
+\begin{equation}
+    \mathcal{E}_n(\bm{q}+\bm{t};\bm{z}) = \sum_{\mu\subseteq \delta_n} \sigma_\mu(\bm{q}) \mathbb{L}_\mu(\bm{t};\bm{z}),
+  \end{equation}
+  with $\bm{t}$ a general set of variables. To get these it is interesting to exploit the specialization that corresponds to  Conjecture~\ref{conj:master} (all left terms of length $1$ in $\mathbb{L}_\mu(\bm{t};\bm{z})$ correspond to classical LLT: $\mathbb{L}_\mu(t;\bm{z})$), as well as the fact that 
+  the formula has to be $(\bm{q},\bm{t})$-symmetric, so that one has 
+     $$\sum_{\mu\subseteq \delta_n} \sigma_\mu(\bm{q}) \mathbb{L}_\mu(\bm{t};\bm{z})=\sum_{\mu\subseteq \delta_n} \sigma_\mu(\bm{t}) \mathbb{L}_\mu(\bm{q};\bm{z}).$$
+     Calculation suggest that there are nice stabilities (to be described later) in the ``coefficients''.
+\end{enumerate}
+
+%-------------------------------------------------------------------
+% Begin BIBLIOGRAPHY
+%-------------------------------------------------------------------
+
+%\small
+%\bibliographystyle{abbrv}  
+%%\bibliographystyle{amsalpha}  
+%%\bibliographystyle{plain}  
+%%\bibliographystyle{amsplain}  
+%\bibliography{}
+
+\end{document}
