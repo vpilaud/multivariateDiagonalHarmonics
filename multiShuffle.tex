@@ -402,7 +402,21 @@ We have an equation of ${\mathcal E}$ on the (dual) boolean lattice, namely:
 \end{equation}
 \end{conjecture}
 
-This is a totally new expression and will have many deep consequence. This should be the shadow on the (dual) boolean lattice of the expression on the Tamari lattice. 
+This is a totally new expression and will have many deep consequence. Francois conjecture something a bit crazy about the coefficient
+above, but this would be fantastic. In particular it would clarify what we want as a generalization of the zeta map and its role with our statistics.
+
+
+\begin{conjecture}\label{conj:coproduct}
+There exists a map $\zeta_A$, a generalization of  the zeta map when (exactly the zeta map when to $A=\emptyset$), such that
+\begin{equation}\label{eq:cube} 
+\blue{
+\Delta  \sigma_{\mu_A} = \sum_{\nu\le \mu_A} \sigma_\nu \otimes \sigma_{\zeta_A(\mu)}
+}
+\end{equation}
+\end{conjecture}
+
+
+The conjectures above should be the shadow on the (dual) boolean lattice of the expression on the Tamari lattice, via a Galois correspondence.
 This conjecture is a consequence of Conjecture~\ref{conj:master}. We  now put $t=1$ in Equation~\eqref{eq:multishuff}  and $\Qvar+1$ in \eqref{eq:cube}.
 We have to remark that LLT symmetric function at $t=1$ is a product of elementary symmetric function, but we want to expand it as a positive sum of ribbon 
 Schur function (\green{WARNING: this is not unique, we do it in a non-commutative way}). Let $B = \desc(\nu)$. We have
@@ -517,7 +531,7 @@ Now at $\Qvar\mapsto q+t$ this is {\bf really} new. Evaluating Equation~\eqref{e
 \end{equation}
 But even more combinatorially, if we use Equation~\eqref{eq:chainstat} evaluated at $q+t$ we get at most the two chains:
 \begin{equation}\label{eq:onevar}
-\sigma_{\mu_A}(q,t) = \sum_{\nu\le \mu_a} q^{\ank(\delta_n,\nu,\mu_A)} t^{\beta(\delta_n,\nu,\mu_a)}.
+\sigma_{\mu_A}(q,t) = \sum_{\nu\le \mu_A} q^{\ank(\delta_n,\nu,\mu_A)} t^{\beta(\delta_n,\nu,\mu_A)}.
 \end{equation}
 The statistic $\ank(\delta_n,\nu,\mu_A)$ is the anklet statistic. It is almost the area of $\nu$? At least when we set $t=1$ and $k=n-1$ in Property~\ref{P:DeltaCube} we get
 \[
@@ -535,12 +549,18 @@ Given $A\subseteq[n-1]$ and $\nu\le \mu_A$
 There is a unique maximal Hopf chain $(\delta_n,c_1,\ldots,c_{\ell-1},\nu)$ such that $\ell=\area(\nu)$.
 We know that chain well.
 We just need to show that $(\delta_n,c_1,\ldots,c_{\ell-1},\nu,\mu_A)$ is Hopf!?
+
+\green{SECOND ARGUMENT}: If we use Conjecture~\ref{conj:coproduct} something nice happen. 
+\[
+\sigma_{\mu_A}(q+t) = \sum_{\nu\le \mu_A} \sigma_\nu(q) \sigma_{\zeta_A(\nu)}(t) = \sum_{\nu\le \mu_A} q^{\area(\nu)} t^{\area(\zeta_A(\nu))}.
+\]
+This not only show Conjecture~\ref{conj:area}, \green{but also say that $\beta(\delta_n,\nu,\mu_A)=\area(\zeta_A(\nu))$}
 \end{proof}
 
 Regardless of Conjecture~\ref{conj:area} being true or false, we should work hard to understand the values of $\ank$ and $\beta$ for this case and show 
 \begin{equation}\label{eq:onevar}
 \blue{
-\nabla e_n= \sum_{A\subseteq[n-1]} \Big[\sum_{\nu\le \mu_a} q^{\ank(\delta_n,\nu,\mu_A)} t^{\beta(\delta_n,\nu,\mu_a)}\Big] r_{c(\mu_A)}.
+\nabla e_n= \sum_{A\subseteq[n-1]} \Big[\sum_{\nu\le \mu_A} q^{\ank(\delta_n,\nu,\mu_A)} t^{\beta(\delta_n,\nu,\mu_A)}\Big] r_{c(\mu_A)}.
 }
 \end{equation}
 It would give us so much insight on the statistic we are seeking and $\nabla e_n$ is well studied. We should look at $\sigma_{\mu_A}(1,t)$...
