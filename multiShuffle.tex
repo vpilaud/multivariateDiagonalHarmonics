@@ -114,8 +114,8 @@ citecolor=cyan,urlcolor=blue,linktocpage=true,pagebackref]{hyperref}
 \newcommand{\gel}{>_{\ell}}
 \newcommand{\lel}{<_{\ell}}
 
-\newcommand{\one}{\mathbf{1}}
-\newcommand{\euler}{\mathbf{e}}
+\newcommand{\one}{\bm {1}}
+\newcommand{\euler}{\bm {e}}
 
 \let\onto=\twoheadrightarrow
 \let\into=\hookrightarrow
@@ -129,22 +129,22 @@ citecolor=cyan,urlcolor=blue,linktocpage=true,pagebackref]{hyperref}
 \newcommand{\Sr}{\mathrm{S}} %symmetric group
 
 \newcommand{\rH}{\mathrm{H}}
-\newcommand{\rL}{{\mathbf l}}
-\newcommand{\rG}{{\mathbf g}}
+\newcommand{\rL}{{\bm  l}}
+\newcommand{\rG}{{\bm  g}}
 \newcommand{\rD}{\mathrm{D}}
 
-\newcommand{\bL}{\mathbf L}
-\newcommand{\bE}{\mathbf E}
-\newcommand{\bH}{\mathbf H}
-\newcommand{\bh}{\mathbf h}
-\newcommand{\bk}{\mathbf k}
-\newcommand{\bK}{\mathbf K}
-\newcommand{\bPi}{\mathbf \Pi}
-\newcommand{\bG}{\mathbf{G}} 
-\newcommand{\bp}{\mathbf p}
-\newcommand{\bq}{\mathbf q}
-\newcommand{\bmm}{\mathbf m}%\bm exists
-\newcommand{\bd}{\mathbf d}
+\newcommand{\bL}{\bm  L}
+\newcommand{\bE}{\bm  E}
+\newcommand{\bH}{\bm  H}
+\newcommand{\bh}{\bm  h}
+\newcommand{\bk}{\bm  k}
+\newcommand{\bK}{\bm  K}
+\newcommand{\bPi}{\bm  \Pi}
+\newcommand{\bG}{\bm {G}} 
+\newcommand{\bp}{\bm  p}
+\newcommand{\bq}{\bm  q}
+\newcommand{\bmm}{\bm  m}%\bm exists
+\newcommand{\bd}{\bm  d}
 
 \newcommand{\Fc}{\mathcal{F}}
 \newcommand{\Tc}{\mathcal{T}}
@@ -417,6 +417,27 @@ There exists a map $\zeta_A$, a generalization of  the zeta map when (exactly th
 
 
 The conjectures above should be the shadow on the (dual) boolean lattice of the expression on the Tamari lattice, via a Galois correspondence.
+As a special case, for all $n\leq 4$, wit our current values of $\sigma_\mu$ we have:
+     $${\Delta \sigma_0 = \sum_{\nu}  \sigma_\nu \otimes \sigma_{\zeta(\nu)}},$$
+where $\zeta$ stands for the usual "Zeta map”. For $n=5$ it also almost works with our current values, since
+$$\Delta \sigma_0 - \sum_{\nu}  \sigma_\nu \otimes \sigma_{\zeta(\nu)} = (s_4-s_3)\otimes s_{22}.$$
+Better still, if we had a similar expression for all $\mu$:
+\begin{equation}\label{eq:coproduct_all}
+   \Delta \sigma_\mu = \sum_{\nu\preceq \mu}  \sigma_\nu \otimes \sigma_{\psi(\nu)},
+ \end{equation}
+for some function $\psi=\psi_\mu$, then we would have a natural candidate for “the" multivariate LLT polynomial $\mathbb{L}_\mu=\mathbb{L}_\mu(\bm {t};\bm {z})$. Indeed, 
+\begin{align*}
+     \mathcal{E}_n(\bm {q}+\bm {t}+t;\bm {z}) &= \sum_\mu \sigma_\mu(\bm {q}+\bm{t}) \otimes \mathbb{L}_\mu(t;\bm{z}),\\
+              &= \sum_\mu \sum_{\nu\preceq \mu}  \sigma_\nu(\bm {q}) \otimes \sigma_{\psi_\mu(\nu)}(\bm {t}) \otimes \mathbb{L}_\mu(t;\bm{z}),\\
+              &= \sum_\nu \sigma_\nu(\bm {q}) \otimes \sum_{\mu\succeq \nu}  \sigma_{\psi_\mu(\nu)}(\bm {t}) \otimes \mathbb{L}_\mu(t;\bm{z}),
+  \end{align*}
+so that we could then set
+   $$ \mathbb{L}_\mu(\bm {t};z) = \sum_{\nu\succeq \mu} \sigma_{\psi_\mu(\nu)}(\bm {t}-t)\otimes \bm {L}_\nu(t;\bm {z}),$$
+  to get a multivariate extension of LLT-polynomial for all $\mu$. By another method (previous to the coproduct approach), François and Vincent had already successfully calculated such extensions of LLT-polynomials for all $\mu$ with $n\leq 4$, and part of $n=5$. 
+
+
+
+(FRANÇOIS SAYS: I AM LOST HERE. The next sentence does not seem to relate to a link between~Conjecture~\ref{conj:master} and Conjecture~\ref{conj:coproduct}. I think that it goes with~Conjecture~\ref{conj:cube} and that Nantel forgot to move it to the right place when he added the above coproduct-zeta conjecture.)
 This conjecture is a consequence of Conjecture~\ref{conj:master}. We  now put $t=1$ in Equation~\eqref{eq:multishuff}  and $\Qvar+1$ in \eqref{eq:cube}.
 We have to remark that LLT symmetric function at $t=1$ is a product of elementary symmetric function, but we want to expand it as a positive sum of ribbon 
 Schur function (\green{WARNING: this is not unique, we do it in a non-commutative way}). Let $B = \desc(\nu)$. We have
