@@ -699,12 +699,12 @@ def refinedCountValidChains_q(m,n,k):
         res[key] += 1
     return res
 
-# Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the first two paths.
+# Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the first two paths (including the staircase one).
 # This is the anklette statistic and it works (see below).
 def refinedCountValidChainsPolyn_q_first(m,n,k):
     return add([coeff * q^distances[0] * e(partition) for ((partition, distances), coeff) in  refinedCountValidChains_q(m,n,k).items()])
 
-# Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the last two paths.
+# Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the last two paths (not necessarily including the hook one).
 # This is the collar statistic and it works (see below).
 def refinedCountValidChainsPolyn_q_last(m,n,k):
     return add([coeff * q^distances[-1] * e(partition) for ((partition, distances), coeff) in  refinedCountValidChains_q(m,n,k).items()])
@@ -1032,11 +1032,33 @@ def refinedCountValidChainsPolyn_r_1_q(m,n):
     
 sage: for n in range(2,6):
 ....:     Pn = refinedCountValidChainsPolyn_r_q_1_first(n,n)
-....:     Qn = refinedCountValidChainsPolyn_r_q_1_first(n,n)
-....:     Rn = refinedCountValidChainsPolyn_r_q_1_first(n,n)
-....:     print n, Pn - Qn, Qn - Rn
-TODO
+....:     Qn = refinedCountValidChainsPolyn_r_q_1_last(n,n)
+....:     Rn = add([e(Eval1(Phi[(n,n)], r-1+q, {r})).coefficient(p) for p in Partitions(n)])
+....:     print n, Pn - Qn, Pn - Rn, Qn - Rn
+....:
+2 0 0 0
+3 0 0 0
+4 0 0 0
+5
+-1/24*r^4*q^5 + 1/24*r^4*q^4 + 1/4*r^3*q^5 - 1/4*r^3*q^4 - 11/24*r^2*q^5 + 11/24*r^2*q^4 + 1/4*r*q^5 - 1/4*r*q^4
+1/362880*r^9 + 1/40320*r^8*q + 1/5040*r^7*q^2 + 1/720*r^6*q^3 + 1/120*r^5*q^4 - 1/10080*r^7*q - 1/720*r^6*q^2 - 1/80*r^5*q^3 - 1/24*r^4*q^4 - 1/12096*r^7 - 1/2880*r^6*q + 1/720*r^5*q^2 + 5/144*r^4*q^3 + 1/24*r^3*q^4 + 1/720*r^5*q + 1/144*r^4*q^2 - 1/48*r^3*q^3 + 1/24*r^2*q^4 + 13/17280*r^5 + 7/5760*r^4*q - 1/90*r^3*q^2 - 13/360*r^2*q^3 - 1/20*r*q^4 - 7/1440*r^3*q - 1/180*r^2*q^2 + 1/30*r*q^3 - 41/18144*r^3 - 1/1120*r^2*q + 1/105*r*q^2 + 1/280*r*q + 1/630*r
+1/362880*r^9 + 1/40320*r^8*q + 1/5040*r^7*q^2 + 1/720*r^6*q^3 + 1/120*r^5*q^4 + 1/24*r^4*q^5 - 1/10080*r^7*q - 1/720*r^6*q^2 - 1/80*r^5*q^3 - 1/12*r^4*q^4 - 1/4*r^3*q^5 - 1/12096*r^7 - 1/2880*r^6*q + 1/720*r^5*q^2 + 5/144*r^4*q^3 + 7/24*r^3*q^4 + 11/24*r^2*q^5 + 1/720*r^5*q + 1/144*r^4*q^2 - 1/48*r^3*q^3 - 5/12*r^2*q^4 - 1/4*r*q^5 + 13/17280*r^5 + 7/5760*r^4*q - 1/90*r^3*q^2 - 13/360*r^2*q^3 + 1/5*r*q^4 - 7/1440*r^3*q - 1/180*r^2*q^2 + 1/30*r*q^3 - 41/18144*r^3 - 1/1120*r^2*q + 1/105*r*q^2 + 1/280*r*q + 1/630*r
 
+"""
+
+# Return the polynomial expression with distance between the first two paths and between the last two paths.
+def refinedCountValidChainsPolyn_r_q_t_first_last(m,n):
+    return add([coeff * q^distances[0] * t^distances[-1] for ((partition, length, distances, dinv), coeff) in refinedCountValidChains_r_q_t(m,n).items()])
+
+""" check whether collar and anklet are equidistributed (yes) and whether the distribution is symmetric (no)
+
+sage: for n in range(2,6):
+....:     Pn = refinedCountValidChainsPolyn_r_q_t_first_last(n,n)
+....:     Qn = Pn.subs({q:t, t:q})
+....:     print n, Pn - Qn, Pn.subs({q:1}) - Pn.subs({t:1, q:t})
+2 0 0
+3 0 0
+4 q^3*t^2 - q^2*t^3 - q^3*t + q*t^3 + q^2*t - q*t^2 0
 """
 
 # Returns the polynomial expression distance between the first two paths with and dinv
@@ -1054,31 +1076,27 @@ sage: for n in range(2,6):
 ....:     Qn = Pn.subs({q:t, t:q})
 ....:     print n, Pn - Qn
 ....:
-TOCO
-
 0
 0
 0
-1/5040*r^7*q^2 + 1/720*r^6*q^3 + 1/120*r^5*q^4 + 1/24*r^4*q^5 + 1/720*r^6*q^2*t + 1/120*r^5*q^3*t + 1/24*r^4*q^4*t - 1/5040*r^7*t^2 - 1/720*r^6*q*t^2 - 1/720*r^6*t^3 - 1/120*r^5*q*t^3 - 1/120*r^5*t^4 - 1/24*r^4*q*t^4 - 1/24*r^4*t^5 - 1/5040*r^7*q - 1/360*r^6*q^2 - 1/48*r^5*q^3 - 1/8*r^4*q^4 - 1/4*r^3*q^5 + 1/5040*r^7*t - 1/80*r^5*q^2*t - 1/12*r^4*q^3*t - 1/4*r^3*q^4*t + 1/360*r^6*t^2 + 1/80*r^5*q*t^2 + 1/48*r^5*t^3 + 1/12*r^4*q*t^3 + 1/8*r^4*t^4 + 1/4*r^3*q*t^4 + 1/4*r^3*t^5 + 1/720*r^6*q + 1/72*r^5*q^2 + 17/144*r^4*q^3 + 13/24*r^3*q^4 + 11/24*r^2*q^5 - 1/720*r^6*t + 5/144*r^4*q^2*t + 7/24*r^3*q^3*t + 11/24*r^2*q^4*t - 1/72*r^5*t^2 - 5/144*r^4*q*t^2 - 17/144*r^4*t^3 - 7/24*r^3*q*t^3 - 13/24*r^3*t^4 - 11/24*r^2*q*t^4 - 11/24*r^2*t^5 - 1/720*r^5*q - 1/36*r^4*q^2 - 5/16*r^3*q^3 - 7/8*r^2*q^4 - 1/4*r*q^5 + 1/720*r^5*t - 1/48*r^3*q^2*t - 5/12*r^2*q^3*t - 1/4*r*q^4*t + 1/36*r^4*t^2 + 1/48*r^3*q*t^2 + 5/16*r^3*t^3 + 5/12*r^2*q*t^3 + 7/8*r^2*t^4 + 1/4*r*q*t^4 + 1/4*r*t^5 - 1/144*r^4*q + 7/720*r^3*q^2 + 137/360*r^2*q^3 + 9/20*r*q^4 + 1/144*r^4*t - 13/360*r^2*q^2*t + 1/5*r*q^3*t - 7/720*r^3*t^2 + 13/360*r^2*q*t^2 - 137/360*r^2*t^3 - 1/5*r*q*t^3 - 9/20*r*t^4 + 1/90*r^3*q + 11/360*r^2*q^2 - 1/6*r*q^3 - 1/90*r^3*t + 1/30*r*q^2*t - 11/360*r^2*t^2 - 1/30*r*q*t^2 + 1/6*r*t^3 + 1/180*r^2*q - 1/42*r*q^2 - 1/180*r^2*t + 1/42*r*t^2 - 1/105*r*q + 1/105*r*t
+5 1/5040*r^7*q^2 + 1/720*r^6*q^3 + 1/120*r^5*q^4 + 1/720*r^6*q^2*t + 1/120*r^5*q^3*t + 1/24*r^4*q^4*t - 1/5040*r^7*t^2 - 1/720*r^6*q*t^2 - 1/720*r^6*t^3 - 1/120*r^5*q*t^3 - 1/120*r^5*t^4 - 1/24*r^4*q*t^4 - 1/5040*r^7*q - 1/360*r^6*q^2 - 1/48*r^5*q^3 - 1/12*r^4*q^4 + 1/5040*r^7*t - 1/80*r^5*q^2*t - 1/12*r^4*q^3*t - 1/4*r^3*q^4*t + 1/360*r^6*t^2 + 1/80*r^5*q*t^2 + 1/48*r^5*t^3 + 1/12*r^4*q*t^3 + 1/12*r^4*t^4 + 1/4*r^3*q*t^4 + 1/720*r^6*q + 1/72*r^5*q^2 + 17/144*r^4*q^3 + 7/24*r^3*q^4 - 1/720*r^6*t + 5/144*r^4*q^2*t + 7/24*r^3*q^3*t + 11/24*r^2*q^4*t - 1/72*r^5*t^2 - 5/144*r^4*q*t^2 - 17/144*r^4*t^3 - 7/24*r^3*q*t^3 - 7/24*r^3*t^4 - 11/24*r^2*q*t^4 - 1/720*r^5*q - 1/36*r^4*q^2 - 5/16*r^3*q^3 - 5/12*r^2*q^4 + 1/720*r^5*t - 1/48*r^3*q^2*t - 5/12*r^2*q^3*t - 1/4*r*q^4*t + 1/36*r^4*t^2 + 1/48*r^3*q*t^2 + 5/16*r^3*t^3 + 5/12*r^2*q*t^3 + 5/12*r^2*t^4 + 1/4*r*q*t^4 - 1/144*r^4*q + 7/720*r^3*q^2 + 137/360*r^2*q^3 + 1/5*r*q^4 + 1/144*r^4*t - 13/360*r^2*q^2*t + 1/5*r*q^3*t - 7/720*r^3*t^2 + 13/360*r^2*q*t^2 - 137/360*r^2*t^3 - 1/5*r*q*t^3 - 1/5*r*t^4 + 1/90*r^3*q + 11/360*r^2*q^2 - 1/6*r*q^3 - 1/90*r^3*t + 1/30*r*q^2*t - 11/360*r^2*t^2 - 1/30*r*q*t^2 + 1/6*r*t^3 + 1/180*r^2*q - 1/42*r*q^2 - 1/180*r^2*t + 1/42*r*t^2 - 1/105*r*q + 1/105*r*t
 
 sage: for n in range(2,6):
 ....:     Pn = refinedCountValidChainsPolyn_r_q_t_first_flat(n,n)
 ....:     Qn = refinedCountValidChainsPolyn_r_q_t_last_flat(n,n)
 ....:     Rn = add([e(Eval1(Phi[(n,n)], r-2+q+t, {r})).coefficient(p) for p in Partitions(n)])
-....:     print n
-....:     print Pn - Qn
-....:     print Pn - Rn
-....:     print Qn - Rn
-....:     print
+....:     print n, Pn - Qn, Pn - Rn, Qn - Rn
 ....:
-TODO
-
-0
-0
-0
+2 0 0 0
+3 0 0 0
+4 0 0 0
+5
+-1/24*r^4*q^5 + 1/24*r^4*q^4 + 1/4*r^3*q^5 - 1/4*r^3*q^4 - 11/24*r^2*q^5 + 11/24*r^2*q^4 + 1/4*r*q^5 - 1/4*r*q^4
+1/362880*r^9 + 1/40320*r^8*q + 1/5040*r^7*q^2 + 1/720*r^6*q^3 + 1/120*r^5*q^4 + 1/40320*r^8*t + 1/5040*r^7*q*t + 1/720*r^6*q^2*t + 1/120*r^5*q^3*t + 1/24*r^4*q^4*t - 1/40320*r^8 - 1/3360*r^7*q - 1/360*r^6*q^2 - 1/48*r^5*q^3 - 1/12*r^4*q^4 - 1/10080*r^7*t - 1/720*r^6*q*t - 1/80*r^5*q^2*t - 1/12*r^4*q^3*t - 1/4*r^3*q^4*t + 1/60480*r^7 + 1/960*r^6*q + 1/72*r^5*q^2 + 17/144*r^4*q^3 + 7/24*r^3*q^4 - 1/2880*r^6*t + 1/720*r^5*q*t + 5/144*r^4*q^2*t + 7/24*r^3*q^3*t + 11/24*r^2*q^4*t + 1/2880*r^6 - 1/36*r^4*q^2 - 5/16*r^3*q^3 - 5/12*r^2*q^4 + 1/720*r^5*t + 1/144*r^4*q*t - 1/48*r^3*q^2*t - 5/12*r^2*q^3*t - 1/4*r*q^4*t - 11/17280*r^5 - 11/1920*r^4*q + 7/720*r^3*q^2 + 137/360*r^2*q^3 + 1/5*r*q^4 + 7/5760*r^4*t - 1/90*r^3*q*t - 13/360*r^2*q^2*t + 1/5*r*q^3*t - 7/5760*r^4 + 1/160*r^3*q + 11/360*r^2*q^2 - 1/6*r*q^3 - 7/1440*r^3*t - 1/180*r^2*q*t + 1/30*r*q^2*t + 59/22680*r^3 + 47/10080*r^2*q - 1/42*r*q^2 - 1/1120*r^2*t + 1/105*r*q*t + 1/1120*r^2 - 1/168*r*q + 1/280*r*t - 1/504*r
 1/362880*r^9 + 1/40320*r^8*q + 1/5040*r^7*q^2 + 1/720*r^6*q^3 + 1/120*r^5*q^4 + 1/24*r^4*q^5 + 1/40320*r^8*t + 1/5040*r^7*q*t + 1/720*r^6*q^2*t + 1/120*r^5*q^3*t + 1/24*r^4*q^4*t - 1/40320*r^8 - 1/3360*r^7*q - 1/360*r^6*q^2 - 1/48*r^5*q^3 - 1/8*r^4*q^4 - 1/4*r^3*q^5 - 1/10080*r^7*t - 1/720*r^6*q*t - 1/80*r^5*q^2*t - 1/12*r^4*q^3*t - 1/4*r^3*q^4*t + 1/60480*r^7 + 1/960*r^6*q + 1/72*r^5*q^2 + 17/144*r^4*q^3 + 13/24*r^3*q^4 + 11/24*r^2*q^5 - 1/2880*r^6*t + 1/720*r^5*q*t + 5/144*r^4*q^2*t + 7/24*r^3*q^3*t + 11/24*r^2*q^4*t + 1/2880*r^6 - 1/36*r^4*q^2 - 5/16*r^3*q^3 - 7/8*r^2*q^4 - 1/4*r*q^5 + 1/720*r^5*t + 1/144*r^4*q*t - 1/48*r^3*q^2*t - 5/12*r^2*q^3*t - 1/4*r*q^4*t - 11/17280*r^5 - 11/1920*r^4*q + 7/720*r^3*q^2 + 137/360*r^2*q^3 + 9/20*r*q^4 + 7/5760*r^4*t - 1/90*r^3*q*t - 13/360*r^2*q^2*t + 1/5*r*q^3*t - 7/5760*r^4 + 1/160*r^3*q + 11/360*r^2*q^2 - 1/6*r*q^3 - 7/1440*r^3*t - 1/180*r^2*q*t + 1/30*r*q^2*t + 59/22680*r^3 + 47/10080*r^2*q - 1/42*r*q^2 - 1/1120*r^2*t + 1/105*r*q*t + 1/1120*r^2 - 1/168*r*q + 1/280*r*t - 1/504*r
 
 """
+
 
 """ ======================= q and LLT ======================= """
 
