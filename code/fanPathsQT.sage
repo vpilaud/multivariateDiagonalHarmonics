@@ -403,6 +403,81 @@ def StanleyPoset(m, n):
     rel = [[p,q] for p in elem for q in elem if isBelow(p,q)]
     return Poset([elem, rel])
 
+""" ========================= Enumeration of k-chains of paths in the Tamari lattice, and valid chains ========================= """
+
+# Check that a chain is valid for the nu-Tamari order of each of its element.
+# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
+def isValidChain(chain):
+    for i in range(len(chain)-2):
+        for j in range(i+1, len(chain)-1):
+            if not compareNuTamari(chain[i], chain[j], chain[j+1]):
+                return false
+    return true
+
+# WEAK CHAINS
+
+@cached_function
+# Return all (m,n)-Tamari weak chains of length k.
+def TamariWeakChains(m,n,k):
+    return weakChains(TamariLattice(m,n), k, element_constructor=tuple)
+
+@cached_function
+# Return all (m,n)-Tamari weak chains of length k which are valid.
+# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
+# We also require that the bottommost path appear as the first path.
+def validTamariWeakChains(m,n,k):
+    bp = bottomPath(m,n)
+    validChains = []
+    for chain in TamariWeakChains(m,n,k-1):
+        extChain = (bp,) + chain
+        if isValidChain(extChain):
+            validChains.append(extChain)
+    return validChains
+
+# STRICT CHAINS
+
+@cached_function
+# Return all (m,n)-Tamari strict chains which are valid and between the given bottom path bp and top path tp.
+# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
+# By default, we require that the bottom path appear as the first path, and that the top path appears at the last path.
+# This default settings can be changed with the optional arguments includeBottommost and includeTopmost.
+def validTamariStrictChainsBetweenPaths(m, n, bp, tp, includeBottom=true, includeTop=true):
+    tl = TamariLattice(m,n)
+    subTamariLattice = tl.subposet(tl.interval(bp, tp)[int(includeBottom):len(tl)-int(includeTop)])
+    validStrictChains = []
+    for chain in subTamariLattice.chains(element_constructor=tuple):
+        chain = (bp,)*(int(includeBottom)) + chain + (tp,)*(int(includeTop))
+        if isValidChain((bottomPath(m, n),)+chain):
+            validStrictChains.append(chain)
+    return validStrictChains
+
+@cached_function
+# Return all (m,n)-Tamari strict chains which are valid and start with the given path bp.
+# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
+def validTamariStrictChainsFromPath(m, n, bp, **kwargs):
+    return validTamariStrictChainsBetweenPaths(m, n, bp, topPath(m, n), **kwargs)
+
+@cached_function
+# Return all (m,n)-Tamari strict chains which are valid and end with the given path tp.
+# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
+# We also require that the bottommost path appear as the first path.
+def validTamariStrictChainsToPath(m, n, tp, **kwargs):
+    return validTamariStrictChainsBetweenPaths(m, n, bottomPath(m, n), tp, **kwargs)
+
+@cached_function
+# Return all (m,n)-Tamari strict chains which are valid.
+# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
+# By default, we require that the bottommost path appear as the first path, but not that the topmost path appears at the last path.
+# This default settings can be changed with the optional arguments includeBottom and includeTop.
+def validTamariStrictChains(m, n, includeBottom=true, includeTop=false):
+    return validTamariStrictChainsBetweenPaths(m, n, bottomPath(m, n), topPath(m, n), includeBottom=includeBottom, includeTop=includeTop)
+
+# MAXIMAL CHAINS
+
+# Return the inclusion maximal chains among a given set of chains.
+def maximalHopfChains(m, n):
+    return Poset([validTamariStrictChains(m,n, includeBottom=true, includeTop=true), is_sublist]).maximal_elements()
+
 """ ========================= Anklette and collar statistic ========================= """
 
 # ANKLETTE STATISTIC
@@ -494,9 +569,8 @@ def allValidSuperChainsWithLengthIntervals(m,n,chain):
     return allValidSuperChains
 
 # Return the length and number of saturated valid chains containing the chain.
-def recordMaximaLengthStrictSuperChains(chain):
-    n = len(chain[0])/2
-    return recordMaxima(map(len, strictSuperChains(TamariLattice(n), chain + (DyckWord([1]*n+[0]*n),), element_constructor=tuple)))
+def recordMaximaLengthStrictSuperChains(m, n, chain):
+    return recordMaxima(map(len, [superchain for superchain in strictSuperChains(TamariLattice(m,n), chain + (topPath(m,n),), element_constructor=tuple) if isValidChain(superchain)]))
 
 """ ========================= Dinv of parking function and LLT polynomials ========================= """
 
@@ -568,75 +642,6 @@ def partitionParkingFunction(pf):
 # return the llt of a path, that is the sum of the dinv of the parking functions over that path
 def llt2(path):
     return sum([q^diagonalInversionsParkingFunction(path, pf) * F(partitionParkingFunction(pf)) for pf in DyckWord(list(path)).list_parking_functions()])
-
-""" ========================= Enumeration of k-chains of paths in the Tamari lattice, and valid chains ========================= """
-
-# Check that a chain is valid for the nu-Tamari order of each of its element.
-# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
-def isValidChain(chain):
-    for i in range(len(chain)-2):
-        for j in range(i+1, len(chain)-1):
-            if not compareNuTamari(chain[i], chain[j], chain[j+1]):
-                return false
-    return true
-
-# WEAK CHAINS
-
-@cached_function
-# Return all (m,n)-Tamari weak chains of length k.
-def TamariWeakChains(m,n,k):
-    return weakChains(TamariLattice(m,n), k, element_constructor=tuple)
-
-@cached_function
-# Return all (m,n)-Tamari weak chains of length k which are valid.
-# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
-# We also require that the bottommost path appear as the first path.
-def validTamariWeakChains(m,n,k):
-    bp = bottomPath(m,n)
-    validChains = []
-    for chain in TamariWeakChains(m,n,k-1):
-        extChain = (bp,) + chain
-        if isValidChain(extChain):
-            validChains.append(extChain)
-    return validChains
-
-# STRICT CHAINS
-
-@cached_function
-# Return all (m,n)-Tamari strict chains which are valid and between the given bottom path bp and top path tp.
-# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
-# By default, we require that the bottom path appear as the first path, and that the top path appears at the last path.
-# This default settings can be changed with the optional arguments includeBottommost and includeTopmost.
-def validTamariStrictChainsBetweenPaths(m, n, bp, tp, includeBottom=true, includeTop=true):
-    tl = TamariLattice(m,n)
-    subTamariLattice = tl.subposet(tl.interval(bp, tp)[int(includeBottom):len(tl)-int(includeTop)])
-    validStrictChains = []
-    for chain in subTamariLattice.chains(element_constructor=tuple):
-        chain = (bp,)*(int(includeBottom)) + chain + (tp,)*(int(includeTop))
-        if isValidChain((bottomPath(m, n),)+chain):
-            validStrictChains.append(chain)
-    return validStrictChains
-
-@cached_function
-# Return all (m,n)-Tamari strict chains which are valid and start with the given path bp.
-# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
-def validTamariStrictChainsFromPath(m, n, bp, **kwargs):
-    return validTamariStrictChainsBetweenPaths(m, n, bp, topPath(m, n), **kwargs)
-
-@cached_function
-# Return all (m,n)-Tamari strict chains which are valid and end with the given path tp.
-# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
-# We also require that the bottommost path appear as the first path.
-def validTamariStrictChainsToPath(m, n, tp, **kwargs):
-    return validTamariStrictChainsBetweenPaths(m, n, bottomPath(m, n), tp, **kwargs)
-
-@cached_function
-# Return all (m,n)-Tamari strict chains which are valid.
-# This means that for all i < j < k, (Pj, Pk) is an interval in the Pi-Tamari lattice.
-# By default, we require that the bottommost path appear as the first path, but not that the topmost path appears at the last path.
-# This default settings can be changed with the optional arguments includeBottom and includeTop.
-def validTamariStrictChains(m, n, includeBottom=true, includeTop=false):
-    return validTamariStrictChainsBetweenPaths(m, n, bottomPath(m, n), topPath(m, n), includeBottom=includeBottom, includeTop=includeTop)
 
 """ ========================= Check the enumeration ========================= """
 
@@ -1971,35 +1976,53 @@ sage: for chain in allChainsToPath:
 """
 
 def candidateKillers(m, n, goal, mu):
-    candidates = []
+    killers = []
     bp = bottomPath(m,n) # the bottom path
     for tp in upStepDictionnary(m,n)[mu]: # the possible top paths
-        #longChains = set([c for c in TamariLattice(m,n).chains(element_constructor=tuple).elements_of_depth_iterator(height(TamariLattice(m,n), tp)) if c[0] == bp and c[-1] == tp and isValidChain(c)])
         belowtp = TamariLattice(m,n).subposet(TamariLattice(m,n).principal_lower_set(tp))
         for candidate in [c for c in belowtp.chains() if len(c) == 4 and c[0] == bp and c[-1] == tp]:
             contribution = sum(x^len(c) for c in strictSuperChains(belowtp, candidate, element_constructor=tuple) if isValidChain(c))
-            # we should have the contribution equal to the goal, but it just does not work. I don't understand why...
-            # therefore, I just take all chains of length 4 finishing with tp.
             if contribution == goal:
-                candidates.append(candidate)
-        """
-        # This is the code I had before. I have to think about that.
-        longChains = set([tuple(c) for c in belowtp.maximal_chains()])
-        for longChain in longChains:
-            for pair in Subwords(longChain[1:-1], 2):
-                candidate = tuple([bp] + list(pair) + [tp])
-                if (isValidChain(candidate)):
-                    contribution = sum(x^len(c) for c in strictSuperChains(belowtp, candidate, element_constructor=tuple) if isValidChain(c))
-                    if contribution == goal:
-                        candidates.append(candidate)
-        """
-    return candidates
+                killers.append(candidate)
+    return killers
+
+"""
+    Now we try to understand the killers:
+    - compute the chains that are killed by a given family of killers
+    - find candidates for the killers
+"""
+
+def candidateKillersFamily(m, n, mu):
+    killerFamilies = []
+    bp = bottomPath(m,n) # the bottom path
+    # first, we look for elements that kill a given excess
+    killerDictionary = defaultdict(lambda: tuple([]))
+    for tp in upStepDictionnary(m,n)[mu]: # the possible top paths
+        belowtp = TamariLattice(m,n).subposet(TamariLattice(m,n).principal_lower_set(tp))
+        for candidateKiller in [tuple(c) for c in belowtp.chains() if len(c) == 4 and c[0] == bp and c[-1] == tp]:
+            killedChains = tuple(strictSuperChains(belowtp, candidateKiller, element_constructor=tuple))
+            contribution = sum(x^len(c) for c in killedChains if isValidChain(c))
+            for i in range(1,4):
+                goal = add(x^len(c) for c in Subsets(range(i))) * x^4
+                if contribution == goal:
+                    killerDictionary[i] += ((candidateKiller, strictSuperChains(belowtp, candidateKiller, element_constructor=tuple)),)
+    print len(killerDictionary[1]), len(killerDictionary[2]), len(killerDictionary[3])
+    return killerDictionary
+    # second, we try to combine killers together
+    for p in [[(3,1)], [(2,2)], [(1,2),(2,1)], [(1,4)]]:
+        for candidateFamily in map(lambda t: reduced(union(t)), cartesian_product([Subsets(killerDictionary[i], ni) for (i,ni) in p])): 
+            killedChains = reduce(union, [superChains for (chain, superChains) in candidateFamily])
+            contribution = sum(x^len(c) for c in killedChains if isValidChain(c))
+            if contribution == add(x^len(c) for c in Subsets(range(3))) * x^4:
+                print candidateFamily
+                killerFamilies.append(candidateFamily)
+    return killerFamilies
 
 """
 
 ============================================== 55 ==============================================
 
-sage: candidates55 = candidateKillers(5, 5, sum(x^len(c) for c in Subsets(range(3))) * x^4, Partition([3,2]))
+sage: candidates55 = candidateKillers(5, 5, add(x^len(c) for c in Subsets(range(3))) * x^4, Partition([3,2]))
 sage: candidates55
 [[word: 1010101010, word: 1010110100, word: 1101011000, word: 1101110000],
 [word: 1010101010, word: 1010110100, word: 1011100100, word: 1101110000],
@@ -2074,7 +2097,7 @@ def chooseKiller1(m, n, candidates):
         print "---"
         print
         print candidate
-        stats = refinedCountValidChainsPolynForbidden_r(m,n, strictSuperChains(TamariLattice(m,n), candidate, element_constructor=tuple))
+        stats = refinedCountValidChainsPolynForbidden_r(m, n, strictSuperChains(TamariLattice(m,n), candidate, element_constructor=tuple))
         print stats - goal
         if stats == goal:
             keepCandidates.append(candidate)
@@ -2200,8 +2223,8 @@ sage: keep1Candidates65 = chooseKiller1(6, 5, candidates65)
 def refinedCountValidChainsPolynForbidden_r_q_first(m, n, forbiddenChains):
     return add([coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2)) * e(upStepsPartition(path)) for ((path, length, distances), coeff) in refinedCountValidChainsFirstLastForbidden(m, n, forbiddenChains).items()])
 
-# Return the polynomial expression, according to the shape of the last path and the maximal Hopf distance between the first two paths.
-# This is the anklette statistic.
+# Return the polynomial expression, according to the shape of the last path and the maximal Hopf distance between the last two paths.
+# This is the collar statistic.
 def refinedCountValidChainsPolynForbidden_r_q_last(m, n, forbiddenChains):
     return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * e(upStepsPartition(path)) for ((path, length, distances), coeff) in refinedCountValidChainsFirstLastForbidden(m, n, forbiddenChains).items()])
 
@@ -2214,9 +2237,10 @@ def chooseKiller2(m, n, candidates):
         print "---"
         print
         print candidate
-        statsFirst = refinedCountValidChainsPolynForbidden_r_q_first(m,n, strictSuperChains(TamariLattice(m,n), candidate, element_constructor=tuple))
+        forbiddenChains = strictSuperChains(TamariLattice(m,n), candidate, element_constructor=tuple)
+        statsFirst = refinedCountValidChainsPolynForbidden_r_q_first(m,n, forbiddenChains)
         print statsFirst - goal
-        statsLast = refinedCountValidChainsPolynForbidden_r_q_last(m,n, strictSuperChains(TamariLattice(m,n), candidate, element_constructor=tuple))
+        statsLast = refinedCountValidChainsPolynForbidden_r_q_last(m,n, forbiddenChains)
         print statsLast - goal
         if statsFirst == goal and statsLast == goal:
             keepCandidates.append(candidate)
@@ -2274,7 +2298,7 @@ sage: keep2Killers55 = chooseKiller2(5, 5, candidates55)
 ============================================== 46 ==============================================
 
 sage: keep2Killers46 = chooseKiller2(4, 6, keep1Candidates46)
-
+NOT UPDATED
 ---
 
 [word: 1101011010, word: 1101011100, word: 1110101100, word: 1110111000]
@@ -2312,7 +2336,7 @@ this is the killer
 ============================================== 56 ==============================================
 
 sage: keep2Killers56 = chooseKiller2(5, 6, keep1Candidates56)
-
+NOT UPDATED
 ---
 
 [word: 11010101010, word: 11010110100, word: 11101011000, word: 11101110000]
@@ -2335,7 +2359,7 @@ this is the killer
 ============================================== 65 ==============================================
 
 sage: keep2Killers65 = chooseKiller2(6, 5, keep1Candidates65)
-
+NOT UPDATED
 ---
 
 [word: 10101010100, word: 10101101000, word: 11010110000, word: 11011100000]
