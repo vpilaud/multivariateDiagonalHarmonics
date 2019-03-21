@@ -243,7 +243,7 @@ def widths(path):
             widths[-1] += 1
     return widths
 
-# Return the bracket vector of a path path2 with respect to the path path1.
+# Return the horizontal bracket vector of a path path2 with respect to the path path1.
 def bracketVectorWidth(path1, path2):
     widths1 = widths(path1)
     widths2 = widths(path2)
@@ -271,7 +271,7 @@ def heights(path):
             heights[-1] += 1
     return heights
 
-# Return the bracket vector of a path path2 with respect to the path path1.
+# Return the vertical bracket vector of a path path2 with respect to the path path1.
 def bracketVectorHeight(path1, path2):
     heights1 = heights(path1)
     heights2 = heights(path2)
@@ -643,180 +643,6 @@ def partitionParkingFunction(pf):
 def llt2(path):
     return sum([q^diagonalInversionsParkingFunction(path, pf) * F(partitionParkingFunction(pf)) for pf in DyckWord(list(path)).list_parking_functions()])
 
-""" ========================= Check the enumeration ========================= """
-
-@cached_function
-# Refine the count according to the shape of the last path.
-def refinedCountValidChains(m,n,k):
-    validChains = validTamariWeakChains(m,n,k)
-    res = dict({})
-    for chain in validChains:
-        upSteps = upStepsPartition(chain[k-1])
-        if not res.has_key(upSteps):
-            res[upSteps] = 0
-        res[upSteps] += 1
-    return res
-
-# Return the symmetric polynomial expression.
-def refinedCountValidChainsPolyn(m,n,k):
-    return add([coeff * e(partition) for (partition, coeff) in  refinedCountValidChains(m,n,k).items()])
-
-"""
-
-sage: for m in range(2,7):
-....:     for n in range(2,7):
-....:         for k in range(2,5):
-....:             print m, n, k, refinedCountValidChainsPolyn(m, n, k) == e(Eval1(Phi[(m, n)], k))
-....:         
-2 2 2 True
-2 2 3 True
-2 2 4 True
-2 3 2 True
-2 3 3 True
-2 3 4 True
-2 4 2 True
-2 4 3 True
-2 4 4 True
-2 5 2 True
-2 5 3 True
-2 5 4 True
-2 6 2 True
-2 6 3 True
-2 6 4 True
-3 2 2 True
-3 2 3 True
-3 2 4 True
-3 3 2 True
-3 3 3 True
-[...]
-
-"""
-
-@cached_function
-# Refine the count according to the shape of the last path, and the maximal Hopf distances between any two consecutive paths.
-def refinedCountValidChains_q(m,n,k):
-    validChains = validTamariWeakChains(m,n,k)
-    res = dict({})
-    for chain in validChains:
-        key = (upStepsPartition(chain[k-1]), maximalHopfDistancesFirstLast(m,n,chain))
-        if not res.has_key(key):
-            res[key] = 0
-        res[key] += 1
-    return res
-
-# Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the first two paths (including the staircase one).
-# This is the anklette statistic and it works (see below).
-def refinedCountValidChainsPolyn_q_first(m,n,k):
-    return add([coeff * q^distances[0] * e(partition) for ((partition, distances), coeff) in  refinedCountValidChains_q(m,n,k).items()])
-
-# Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the last two paths (not necessarily including the hook one).
-# This is the collar statistic and it works (see below).
-def refinedCountValidChainsPolyn_q_last(m,n,k):
-    return add([coeff * q^distances[-1] * e(partition) for ((partition, distances), coeff) in  refinedCountValidChains_q(m,n,k).items()])
-
-# Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the first two paths and between the last two paths. 
-# This does not work: the anklette and collar statistics are not compatible together (see below).
-def refinedCountValidChainsPolyn_q_firstLast(m,n,k):
-    return add([coeff * q^distances[0] * q^distances[-1] * e(partition) for ((partition, distances), coeff) in  refinedCountValidChains_q(m,n,k).items()])
-
-"""
-    
-sage: for m in range(2,7):
-....:     for n in range(2,7):
-....:         for k in range(2,5):
-....:             print m, n, k, refinedCountValidChainsPolyn_q_first(m, n, k) - e(Eval1(Phi[(m, n)], q+k-1)), refinedCountValidChainsPolyn_q_last(m, n, k) - e(Eval1(Phi[(m, n)], q+k-1))
-....:         
-2 2 2 0 0
-2 2 3 0 0
-2 2 4 0 0
-2 3 2 0 0
-2 3 3 0 0
-2 3 4 0 0
-2 4 2 0 0
-2 4 3 0 0
-2 4 4 0 0
-2 5 2 0 0
-2 5 3 0 0
-2 5 4 0 0
-2 6 2 0 0
-2 6 3 0 0
-2 6 4 0 0
-3 2 2 0 0
-3 2 3 0 0
-3 2 4 0 0
-3 3 2 0 0
-3 3 3 0 0
-3 3 4 0 0
-3 4 2 0 0
-3 4 3 0 0
-3 4 4 0 0
-3 5 2 0 0
-3 5 3 0 0
-3 5 4 0 0
-3 6 2 0 0
-3 6 3 0 0
-3 6 4 0 0
-4 2 2 0 0
-4 2 3 0 0
-4 2 4 0 0
-4 3 2 0 0
-4 3 3 0 0
-4 3 4 0 0
-4 4 2 0 0
-4 4 3 0 0
-4 4 4 0 0
-4 5 2 0 0
-4 5 3 0 0
-4 5 4 0 0
-4 6 2 0 0
-4 6 3 0 0
-4 6 4 q^2*e[3, 3] q^2*e[3, 3] + (q^3-q^2)*e[4, 2] + (q^4-q^3)*e[5, 1] + (q^5-q^4)*e[6]
-5 2 2 0 0
-5 2 3 0 0
-5 2 4 0 0
-5 3 2 0 0
-5 3 3 0 0
-5 3 4 0 0
-5 4 2 0 0
-5 4 3 0 0
-5 4 4 0 0
-5 5 2 0 0
-5 5 3 0 0
-5 5 4 q^4*e[3, 2] q^3*e[3, 2] + (q^4-q^3)*e[4, 1] + (q^5-q^4)*e[5]
-5 6 2 0 0
-5 6 3 0 0
-[...]
-
-
-sage: for m in range(2,7):
-....:     for n in range(2,7):
-....:         for k in range(3,5):
-....:             print m, n, k,  refinedCountValidChainsPolyn_q_firstLast(m, n, k) - e(Eval1(Phi[(m, n)], q+t+k-2))
-....:
-2 2 3 (q-t)*e[2]
-2 2 4 (q-t)*e[2]
-2 3 3 (q-t)*e[3]
-2 3 4 (q-t)*e[3]
-2 4 3 (q-t)*e[3, 1] + (2*q^2-q*t-t^2)*e[4]
-2 4 4 (q-t)*e[3, 1] + (2*q^2-q*t-t^2+q-t)*e[4]
-2 5 3 (q-t)*e[4, 1] + (2*q^2-q*t-t^2)*e[5]
-2 5 4 (q-t)*e[4, 1] + (2*q^2-q*t-t^2+q-t)*e[5]
-2 6 3 (q-t)*e[4, 2] + (2*q^2-q*t-t^2)*e[5, 1] + (3*q^3-q^2*t-q*t^2-t^3)*e[6]
-2 6 4 (q-t)*e[4, 2] + (2*q^2-q*t-t^2+q-t)*e[5, 1] + (3*q^3-q^2*t-q*t^2-t^3+2*q^2-q*t-t^2+q-t)*e[6]
-3 2 3 (q-t)*e[2]
-3 2 4 (q-t)*e[2]
-3 3 3 (2*q^2-q*t-t^2+2*q-2*t)*e[2, 1] + (3*q^3-q^2*t-q*t^2-t^3+q^2-q*t)*e[3]
-3 3 4 (2*q^2-q*t-t^2+3*q-3*t)*e[2, 1] + (3*q^3-q^2*t-q*t^2-t^3+3*q^2-2*q*t-t^2+2*q-2*t)*e[3]
-3 4 3 (q-t)*e[2, 2] + (2*q^2-q*t-t^2+q-t)*e[3, 1] + (3*q^3-q^2*t-q*t^2-t^3+q^2-q*t)*e[4]
-3 4 4 (q-t)*e[2, 2] + (2*q^2-q*t-t^2+2*q-2*t)*e[3, 1] + (3*q^3-q^2*t-q*t^2-t^3+3*q^2-2*q*t-t^2+2*q-2*t)*e[4]
-3 5 3 (q-t)*e[3, 1, 1] + (2*q^2-q*t-t^2+q-t)*e[3, 2] + (3*q^3-q^2*t-q*t^2-t^3+3*q^2-2*q*t-t^2)*e[4, 1] + (4*q^4-q^3*t-q^2*t^2-q*t^3-t^4+2*q^3-q^2*t-q*t^2)*e[5]
-3 5 4 (q-t)*e[3, 1, 1] + (2*q^2-q*t-t^2+2*q-2*t)*e[3, 2] + (3*q^3-q^2*t-q*t^2-t^3+5*q^2-3*q*t-2*t^2+3*q-3*t)*e[4, 1] + (4*q^4-q^3*t-q^2*t^2-q*t^3-t^4+5*q^3-2*q^2*t-2*q*t^2-t^3+5*q^2-3*q*t-2*t^2+2*q-2*t)*e[5]
-3 6 3 (2*q^2-q*t-t^2+2*q-2*t)*e[3, 2, 1] + (3*q^3-q^2*t-q*t^2-t^3+q^2-q*t)*e[3, 3] + (3*q^3-q^2*t-q*t^2-t^3+q^2-q*t)*e[4, 1, 1] + (5*q^4-q^3*t-q^2*t^2-q*t^3-t^4-q^2*t-q*t^2+4*q^2-q*t-2*t^2)*e[4, 2] + (6*q^5-q^4*t-q^3*t^2-q^2*t^3-q*t^4-t^5+5*q^4-2*q^3*t-2*q^2*t^2-2*q*t^3-t^4+3*q^3-q^2*t-q*t^2)*e[5, 1] + (7*q^6-q^5*t-q^4*t^2-q^3*t^3-q^2*t^4-q*t^5-t^6+2*q^5-q^4*t-q^3*t^2-q^2*t^3-q*t^4+2*q^4-q^2*t^2)*e[6]
-3 6 4 (2*q^2-q*t-t^2+3*q-3*t)*e[3, 2, 1] + (3*q^3-q^2*t-q*t^2-t^3+3*q^2-2*q*t-t^2+2*q-2*t)*e[3, 3] + (3*q^3-q^2*t-q*t^2-t^3+3*q^2-2*q*t-t^2+2*q-2*t)*e[4, 1, 1] + (5*q^4-q^3*t-q^2*t^2-q*t^3-t^4+3*q^3-2*q^2*t-2*q*t^2-t^3+9*q^2-4*q*t-4*t^2+3*q-3*t)*e[4, 2] + (6*q^5-q^4*t-q^3*t^2-q^2*t^3-q*t^4-t^5+9*q^4-3*q^3*t-3*q^2*t^2-3*q*t^3-2*t^4+14*q^3-5*q^2*t-5*q*t^2-3*t^3+10*q^2-6*q*t-4*t^2+4*q-4*t)*e[5, 1] + (7*q^6-q^5*t-q^4*t^2-q^3*t^3-q^2*t^4-q*t^5-t^6+7*q^5-2*q^4*t-2*q^3*t^2-2*q^2*t^3-2*q*t^4-t^5+13*q^4-3*q^3*t-4*q^2*t^2-3*q*t^3-2*t^4+10*q^3-4*q^2*t-4*q*t^2-2*t^3+7*q^2-4*q*t-3*t^2+2*q-2*t)*e[6]
-[...]
-
-"""
-
 """ ======================= r ======================= """
 
 @cached_function
@@ -866,7 +692,6 @@ sage: for m in range(2,7):
 6 4 True
 6 5 False
 6 6 False
-
 
 ============================================== 55 ==============================================
 
@@ -948,41 +773,49 @@ def refinedCountValidChainsPolyn_r_q_first(m,n):
 def refinedCountValidChainsPolyn_r_q_last(m,n):
     return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * e(partition) for ((partition, length, distances), coeff) in refinedCountValidChains_r_q(m,n).items()])
 
+"""
+
+sage: for m in range(2,7):
+....:     for n in range(2,7):
+....:         Pmn = refinedCountValidChainsPolyn_r_q_first(m, n)
+....:         Qmn = refinedCountValidChainsPolyn_r_q_last(m, n)
+....:         Rmn = e(Eval1(Phi[(m, n)], r-1+q, {r}))
+....:         print m, n, Pmn - Qmn, Pmn - Rmn, Qmn - Rmn
+....:         
+2 2 0 0 0
+2 3 0 0 0
+2 4 0 0 0
+2 5 0 0 0
+2 6 0 0 0
+3 2 0 0 0
+3 3 0 0 0
+3 4 0 0 0
+3 5 0 0 0
+3 6 0 0 0
+4 2 0 0 0
+4 3 0 0 0
+4 4 0 0 0
+4 5 0 0 0
+4 6
+(-1/2*r^2*q^3+1/2*r^2*q^2+5/2*r*q^3-5/2*r*q^2-3*q^3+3*q^2)*e[4, 2] + (-1/6*r^3*q^3-1/2*r^2*q^4+1/6*r^3*q^2+2*r^2*q^3+5/2*r*q^4-3/2*r^2*q^2-41/6*r*q^3-3*q^4+13/3*r*q^2+7*q^3-4*q^2)*e[5, 1] + (-1/24*r^4*q^3-1/6*r^3*q^4-1/2*r^2*q^5+1/24*r^4*q^2+7/12*r^3*q^3+2*r^2*q^4+5/2*r*q^5-5/12*r^3*q^2-71/24*r^2*q^3-41/6*r*q^4-3*q^5+35/24*r^2*q^2+77/12*r*q^3+7*q^4-25/12*r*q^2-5*q^3+q^2)*e[6]
+(1/24*r^4+1/6*r^3*q+1/2*r^2*q^2-5/12*r^3-3/2*r^2*q-5/2*r*q^2+35/24*r^2+13/3*r*q+3*q^2-25/12*r-4*q+1)*e[3, 3] + (1/120*r^5+1/24*r^4*q+1/6*r^3*q^2-1/8*r^4-7/12*r^3*q-3/2*r^2*q^2+17/24*r^3+71/24*r^2*q+13/3*r*q^2-15/8*r^2-77/12*r*q-4*q^2+137/60*r+5*q-1)*e[4, 2] + (1/720*r^6+1/120*r^5*q+1/24*r^4*q^2-1/48*r^5-1/8*r^4*q-5/12*r^3*q^2+17/144*r^4+17/24*r^3*q+35/24*r^2*q^2-5/16*r^3-15/8*r^2*q-25/12*r*q^2+137/360*r^2+137/60*r*q+q^2-1/6*r-q)*e[5, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2-1/360*r^6-1/48*r^5*q-1/12*r^4*q^2+1/72*r^5+17/144*r^4*q+7/24*r^3*q^2-1/36*r^4-5/16*r^3*q-5/12*r^2*q^2+7/720*r^3+137/360*r^2*q+1/5*r*q^2+11/360*r^2-1/6*r*q-1/42*r)*e[6]
+(1/24*r^4+1/6*r^3*q+1/2*r^2*q^2-5/12*r^3-3/2*r^2*q-5/2*r*q^2+35/24*r^2+13/3*r*q+3*q^2-25/12*r-4*q+1)*e[3, 3] + (1/120*r^5+1/24*r^4*q+1/6*r^3*q^2+1/2*r^2*q^3-1/8*r^4-7/12*r^3*q-2*r^2*q^2-5/2*r*q^3+17/24*r^3+71/24*r^2*q+41/6*r*q^2+3*q^3-15/8*r^2-77/12*r*q-7*q^2+137/60*r+5*q-1)*e[4, 2] + (1/720*r^6+1/120*r^5*q+1/24*r^4*q^2+1/6*r^3*q^3+1/2*r^2*q^4-1/48*r^5-1/8*r^4*q-7/12*r^3*q^2-2*r^2*q^3-5/2*r*q^4+17/144*r^4+17/24*r^3*q+71/24*r^2*q^2+41/6*r*q^3+3*q^4-5/16*r^3-15/8*r^2*q-77/12*r*q^2-7*q^3+137/360*r^2+137/60*r*q+5*q^2-1/6*r-q)*e[5, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3+1/6*r^3*q^4+1/2*r^2*q^5-1/360*r^6-1/48*r^5*q-1/8*r^4*q^2-7/12*r^3*q^3-2*r^2*q^4-5/2*r*q^5+1/72*r^5+17/144*r^4*q+17/24*r^3*q^2+71/24*r^2*q^3+41/6*r*q^4+3*q^5-1/36*r^4-5/16*r^3*q-15/8*r^2*q^2-77/12*r*q^3-7*q^4+7/720*r^3+137/360*r^2*q+137/60*r*q^2+5*q^3+11/360*r^2-1/6*r*q-q^2-1/42*r)*e[6]
+5 2 0 0 0
+5 3 0 0 0
+5 4 0 0 0
+5 5
+(1/6*r^3*q^4-1/6*r^3*q^3-r^2*q^4+r^2*q^3+11/6*r*q^4-11/6*r*q^3-q^4+q^3)*e[3, 2] + (-1/6*r^3*q^4+1/6*r^3*q^3+r^2*q^4-r^2*q^3-11/6*r*q^4+11/6*r*q^3+q^4-q^3)*e[4, 1] + (-1/24*r^4*q^5+1/24*r^4*q^4+1/4*r^3*q^5-1/4*r^3*q^4-11/24*r^2*q^5+11/24*r^2*q^4+1/4*r*q^5-1/4*r*q^4)*e[5]
+(1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3+1/6*r^3*q^4-1/720*r^6-1/80*r^5*q-1/12*r^4*q^2-5/12*r^3*q^3-r^2*q^4+1/720*r^5+5/144*r^4*q+7/24*r^3*q^2+35/24*r^2*q^3+11/6*r*q^4+1/144*r^4-1/48*r^3*q-5/12*r^2*q^2-25/12*r*q^3-q^4-1/90*r^3-13/360*r^2*q+1/5*r*q^2+q^3-1/180*r^2+1/30*r*q+1/105*r)*e[3, 2] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/3360*r^7-1/360*r^6*q-1/48*r^5*q^2-1/8*r^4*q^3-5/12*r^3*q^4+1/960*r^6+1/72*r^5*q+17/144*r^4*q^2+17/24*r^3*q^3+35/24*r^2*q^4-1/36*r^4*q-5/16*r^3*q^2-15/8*r^2*q^3-25/12*r*q^4-11/1920*r^4+7/720*r^3*q+137/360*r^2*q^2+137/60*r*q^3+q^4+1/160*r^3+11/360*r^2*q-1/6*r*q^2-q^3+47/10080*r^2-1/42*r*q-1/168*r)*e[4, 1] + (1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4-1/40320*r^8-1/3360*r^7*q-1/360*r^6*q^2-1/48*r^5*q^3-1/12*r^4*q^4+1/60480*r^7+1/960*r^6*q+1/72*r^5*q^2+17/144*r^4*q^3+7/24*r^3*q^4+1/2880*r^6-1/36*r^4*q^2-5/16*r^3*q^3-5/12*r^2*q^4-11/17280*r^5-11/1920*r^4*q+7/720*r^3*q^2+137/360*r^2*q^3+1/5*r*q^4-7/5760*r^4+1/160*r^3*q+11/360*r^2*q^2-1/6*r*q^3+59/22680*r^3+47/10080*r^2*q-1/42*r*q^2+1/1120*r^2-1/168*r*q-1/504*r)*e[5]
+(1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3-1/720*r^6-1/80*r^5*q-1/12*r^4*q^2-1/4*r^3*q^3+1/720*r^5+5/144*r^4*q+7/24*r^3*q^2+11/24*r^2*q^3+1/144*r^4-1/48*r^3*q-5/12*r^2*q^2-1/4*r*q^3-1/90*r^3-13/360*r^2*q+1/5*r*q^2-1/180*r^2+1/30*r*q+1/105*r)*e[3, 2] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/3360*r^7-1/360*r^6*q-1/48*r^5*q^2-1/8*r^4*q^3-1/4*r^3*q^4+1/960*r^6+1/72*r^5*q+17/144*r^4*q^2+13/24*r^3*q^3+11/24*r^2*q^4-1/36*r^4*q-5/16*r^3*q^2-7/8*r^2*q^3-1/4*r*q^4-11/1920*r^4+7/720*r^3*q+137/360*r^2*q^2+9/20*r*q^3+1/160*r^3+11/360*r^2*q-1/6*r*q^2+47/10080*r^2-1/42*r*q-1/168*r)*e[4, 1] + (1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4+1/24*r^4*q^5-1/40320*r^8-1/3360*r^7*q-1/360*r^6*q^2-1/48*r^5*q^3-1/8*r^4*q^4-1/4*r^3*q^5+1/60480*r^7+1/960*r^6*q+1/72*r^5*q^2+17/144*r^4*q^3+13/24*r^3*q^4+11/24*r^2*q^5+1/2880*r^6-1/36*r^4*q^2-5/16*r^3*q^3-7/8*r^2*q^4-1/4*r*q^5-11/17280*r^5-11/1920*r^4*q+7/720*r^3*q^2+137/360*r^2*q^3+9/20*r*q^4-7/5760*r^4+1/160*r^3*q+11/360*r^2*q^2-1/6*r*q^3+59/22680*r^3+47/10080*r^2*q-1/42*r*q^2+1/1120*r^2-1/168*r*q-1/504*r)*e[5]
+
+"""
+
 # Return the symmetric polynomial expression, according to the shape of the last path and the maximal Hopf distance between the first two paths and between the last two paths. 
 # This does not work: the anklette and collar statistics are not compatible together (see below).
 def refinedCountValidChainsPolyn_r_q_firstLast(m,n):
     return add([coeff * (binomial(r-2, length-1) + (t^(distances[0]) + q^(distances[-1])) * binomial(r-3, length-2) + t^(distances[0]) * q^(distances[-1]) * binomial(r-3, length-3)) * e(partition) for ((partition, length, distances), coeff) in refinedCountValidChains_r_q(m,n).items()])
 
 """
-
-sage: for m in range(2,7):
-....:     for n in range(2,7):
-....:         print i, j, refinedCountValidChainsPolyn_r_q_first(m, n) - e(Eval1(Phi[(m, n)], r-1+q, {r})), refinedCountValidChainsPolyn_r_q_last(m, n) - e(Eval1(Phi[(m, n)], r-1+q, {r}))
-....:         
-2 2 0 0
-2 3 0 0
-2 4 0 0
-2 5 0 0
-2 6 0 0
-3 2 0 0
-3 3 0 0
-3 4 0 0
-3 5 0 0
-3 6 0 0
-4 2 0 0
-4 3 0 0
-4 4 0 0
-4 5 0 0
-4 6 (1/24*r^4+1/6*r^3*q+1/2*r^2*q^2-5/12*r^3-3/2*r^2*q-5/2*r*q^2+35/24*r^2+13/3*r*q+3*q^2-25/12*r-4*q+1)*e[3, 3] + (1/120*r^5+1/24*r^4*q+1/6*r^3*q^2-1/8*r^4-7/12*r^3*q-3/2*r^2*q^2+17/24*r^3+71/24*r^2*q+13/3*r*q^2-15/8*r^2-77/12*r*q-4*q^2+137/60*r+5*q-1)*e[4, 2] + (1/720*r^6+1/120*r^5*q+1/24*r^4*q^2-1/48*r^5-1/8*r^4*q-5/12*r^3*q^2+17/144*r^4+17/24*r^3*q+35/24*r^2*q^2-5/16*r^3-15/8*r^2*q-25/12*r*q^2+137/360*r^2+137/60*r*q+q^2-1/6*r-q)*e[5, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2-1/360*r^6-1/48*r^5*q-1/12*r^4*q^2+1/72*r^5+17/144*r^4*q+7/24*r^3*q^2-1/36*r^4-5/16*r^3*q-5/12*r^2*q^2+7/720*r^3+137/360*r^2*q+1/5*r*q^2+11/360*r^2-1/6*r*q-1/42*r)*e[6]
-
-(1/24*r^4+1/6*r^3*q+1/2*r^2*q^2-5/12*r^3-3/2*r^2*q-5/2*r*q^2+35/24*r^2+13/3*r*q+3*q^2-25/12*r-4*q+1)*e[3, 3] + (1/120*r^5+1/24*r^4*q+1/6*r^3*q^2+1/2*r^2*q^3-1/8*r^4-7/12*r^3*q-2*r^2*q^2-5/2*r*q^3+17/24*r^3+71/24*r^2*q+41/6*r*q^2+3*q^3-15/8*r^2-77/12*r*q-7*q^2+137/60*r+5*q-1)*e[4, 2] + (1/720*r^6+1/120*r^5*q+1/24*r^4*q^2+1/6*r^3*q^3+1/2*r^2*q^4-1/48*r^5-1/8*r^4*q-7/12*r^3*q^2-2*r^2*q^3-5/2*r*q^4+17/144*r^4+17/24*r^3*q+71/24*r^2*q^2+41/6*r*q^3+3*q^4-5/16*r^3-15/8*r^2*q-77/12*r*q^2-7*q^3+137/360*r^2+137/60*r*q+5*q^2-1/6*r-q)*e[5, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3+1/6*r^3*q^4+1/2*r^2*q^5-1/360*r^6-1/48*r^5*q-1/8*r^4*q^2-7/12*r^3*q^3-2*r^2*q^4-5/2*r*q^5+1/72*r^5+17/144*r^4*q+17/24*r^3*q^2+71/24*r^2*q^3+41/6*r*q^4+3*q^5-1/36*r^4-5/16*r^3*q-15/8*r^2*q^2-77/12*r*q^3-7*q^4+7/720*r^3+137/360*r^2*q+137/60*r*q^2+5*q^3+11/360*r^2-1/6*r*q-q^2-1/42*r)*e[6]
-5 2 0 0
-5 3 0 0
-5 4 0 0
-5 5 (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3+1/6*r^3*q^4-1/720*r^6-1/80*r^5*q-1/12*r^4*q^2-5/12*r^3*q^3-r^2*q^4+1/720*r^5+5/144*r^4*q+7/24*r^3*q^2+35/24*r^2*q^3+11/6*r*q^4+1/144*r^4-1/48*r^3*q-5/12*r^2*q^2-25/12*r*q^3-q^4-1/90*r^3-13/360*r^2*q+1/5*r*q^2+q^3-1/180*r^2+1/30*r*q+1/105*r)*e[3, 2] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/3360*r^7-1/360*r^6*q-1/48*r^5*q^2-1/8*r^4*q^3-5/12*r^3*q^4+1/960*r^6+1/72*r^5*q+17/144*r^4*q^2+17/24*r^3*q^3+35/24*r^2*q^4-1/36*r^4*q-5/16*r^3*q^2-15/8*r^2*q^3-25/12*r*q^4-11/1920*r^4+7/720*r^3*q+137/360*r^2*q^2+137/60*r*q^3+q^4+1/160*r^3+11/360*r^2*q-1/6*r*q^2-q^3+47/10080*r^2-1/42*r*q-1/168*r)*e[4, 1] + (1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4-1/40320*r^8-1/3360*r^7*q-1/360*r^6*q^2-1/48*r^5*q^3-1/12*r^4*q^4+1/60480*r^7+1/960*r^6*q+1/72*r^5*q^2+17/144*r^4*q^3+7/24*r^3*q^4+1/2880*r^6-1/36*r^4*q^2-5/16*r^3*q^3-5/12*r^2*q^4-11/17280*r^5-11/1920*r^4*q+7/720*r^3*q^2+137/360*r^2*q^3+1/5*r*q^4-7/5760*r^4+1/160*r^3*q+11/360*r^2*q^2-1/6*r*q^3+59/22680*r^3+47/10080*r^2*q-1/42*r*q^2+1/1120*r^2-1/168*r*q-1/504*r)*e[5]
-
-(1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3-1/720*r^6-1/80*r^5*q-1/12*r^4*q^2-1/4*r^3*q^3+1/720*r^5+5/144*r^4*q+7/24*r^3*q^2+11/24*r^2*q^3+1/144*r^4-1/48*r^3*q-5/12*r^2*q^2-1/4*r*q^3-1/90*r^3-13/360*r^2*q+1/5*r*q^2-1/180*r^2+1/30*r*q+1/105*r)*e[3, 2] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/3360*r^7-1/360*r^6*q-1/48*r^5*q^2-1/8*r^4*q^3-1/4*r^3*q^4+1/960*r^6+1/72*r^5*q+17/144*r^4*q^2+13/24*r^3*q^3+11/24*r^2*q^4-1/36*r^4*q-5/16*r^3*q^2-7/8*r^2*q^3-1/4*r*q^4-11/1920*r^4+7/720*r^3*q+137/360*r^2*q^2+9/20*r*q^3+1/160*r^3+11/360*r^2*q-1/6*r*q^2+47/10080*r^2-1/42*r*q-1/168*r)*e[4, 1] + (1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4+1/24*r^4*q^5-1/40320*r^8-1/3360*r^7*q-1/360*r^6*q^2-1/48*r^5*q^3-1/8*r^4*q^4-1/4*r^3*q^5+1/60480*r^7+1/960*r^6*q+1/72*r^5*q^2+17/144*r^4*q^3+13/24*r^3*q^4+11/24*r^2*q^5+1/2880*r^6-1/36*r^4*q^2-5/16*r^3*q^3-7/8*r^2*q^4-1/4*r*q^5-11/17280*r^5-11/1920*r^4*q+7/720*r^3*q^2+137/360*r^2*q^3+9/20*r*q^4-7/5760*r^4+1/160*r^3*q+11/360*r^2*q^2-1/6*r*q^3+59/22680*r^3+47/10080*r^2*q-1/42*r*q^2+1/1120*r^2-1/168*r*q-1/504*r)*e[5]
-
 
 sage: for i in range(2,7):
 ....:     for j in range(2,7):
@@ -1007,7 +840,7 @@ sage: for i in range(2,7):
 
 """ ======================= r q t ======================= """
 
-""" Careful: all this only works for m=n since I don't know how to deal with dinv. """
+""" Careful: all this only works for m=n since I don't know how to deal with dinv in the rectangular case. """
 
 @cached_function
 # Count the number of valid (m,n)-Tamari strict chains, according to the shape of the last path, the length of the chain, the maximal Hopf distances between any two consecutive paths, and the dinv of the last path.
@@ -1103,167 +936,7 @@ sage: for n in range(2,6):
 """
 
 
-""" ======================= q and LLT ======================= """
-
-@cached_function
-# Refine the count according to the last path, and the maximal Hopf distances between any two consecutive paths.
-def refinedCountValidChains_q_LLT(m,n,k):
-    validChains = validTamariWeakChains(m,n,k)
-    res = dict({})
-    for chain in validChains:
-        key = (chain[-1], maximalHopfDistancesFirstLast(m,n,chain))
-        if not res.has_key(key):
-            res[key] = 0
-        res[key] += 1
-    return res
-
-# Return the polynomial expression with the distance between the first two path and the LLT
-def refinedCountValidChainsPolyn_q_t_bis_first(m,n,k):
-    return add([coeff * q^distances[0] * LLT[partitionPath(path)[:-1]] for ((path, distances), coeff) in refinedCountValidChains_q_LLT(m,n,k).items()])
-
-# Return the polynomial expression with the distance between the first two path and the LLT
-def refinedCountValidChainsPolyn_q_t_bis_last(m,n,k):
-    return add([coeff * q^distances[-1] * LLT[partitionPath(path)[:-1]] for ((path, distances), coeff) in refinedCountValidChains_q_LLT(m,n,k).items()])
-
-"""
-
-sage: for n in range(2,6):
-....:     for k in range(2,6):
-....:         Pnk = refinedCountValidChainsPolyn_q_t_bis_first(n,n,k)
-....:         Qnk = refinedCountValidChainsPolyn_q_t_bis_last(n,n,k)
-....:         Rnk = Eval1(Phi[(n,n)], q+t+k-2)
-....:         print n, k, Pnk - Qnk, Pnk - Rnk 
-....: 
-2 2 0 0
-2 3 0 0
-2 4 0 0
-2 5 0 0
-3 2 0 0
-3 3 0 0
-3 4 0 0
-3 5 0 0
-4 2 0 0
-4 3 0 0
-4 4 0 0
-4 5 0 0
-5 2 0 0
-5 3 0 0
-5 4 (-q^5+q^4)*s[1, 1, 1, 1, 1] + (q^4-q^3)*s[2, 2, 1] q^4*t*s[1, 1, 1, 1, 1] + q^4*s[2, 1, 1, 1] + q^4*s[2, 2, 1]
-
-sage: for m in range(2,7):
-....:     for n in range(i,7):
-....:         for k in range(2,6):
-....:             Pmnk = refinedCountValidChainsPolyn_q_t_bis_first(m,n,k)
-....:             Qmnk = refinedCountValidChainsPolyn_q_t_bis_last(m,n,k)
-....:             Rmnk = Eval1(Phi[(n,n)], q+t+k-2)
-....:             print m, n, k, Pmnk - Qmnk, Pmnk - Rmnk 
-....:
-[Problems with LLT when rectangular]
-
-"""
-
-# remark: it gives the same function if we reverse the path!!!!
-def checkWeirdSymmetry1(m,n,k):
-    return add([coeff * q^distances[0] * LLT[partitionPath(path)[:-1]] for ((path, distances), coeff) in refinedCountValidChains_q_LLT(m,n,k).items()]) == add([coeff * q^distances[0] * LLT[partitionPath(reversePath(path))[:-1]] for ((path, distances), coeff) in refinedCountValidChains_q_LLT(m,n,k).items()])
-
-"""
-
-sage: for n in range(2,6):
-....:     for k in range(2,6):
-....:         print n, k, checkWeirdSymmetry1(n, n, k)
-....: 
-2 2 True
-2 3 True
-2 4 True
-2 5 True
-3 2 True
-3 3 True
-3 4 True
-3 5 True
-4 2 True
-4 3 True
-4 4 True
-4 5 True
-5 2 True
-5 3 True
-5 4 False
-
-"""
-
-def checkWeirdSymmetry2(m,n,k):
-    pathSumCollarDictmn = dict({})
-    for ((path, distances), coeff) in refinedCountValidChains_q_LLT(m,n,k).items():
-        key = tuple(path)
-        if not pathSumCollarDictmn.has_key(key):
-            pathSumCollarDictmn[key] = 0
-        pathSumCollarDictmn[key] += coeff * q^distances[0]
-    if m != n:
-        pathSumCollarDictnm = dict({})
-        for ((path, distances), coeff) in refinedCountValidChains_q_LLT(n,m,k).items():
-            key = tuple(path)
-            if not pathSumCollarDictnm.has_key(key):
-                pathSumCollarDictnm[key] = 0
-            pathSumCollarDictnm[key] += coeff * q^distances[0]
-    else:
-        pathSumCollarDictnm = pathSumCollarDictmn 
-    return all([pathSumCollarDictmn[tuple(path)] == pathSumCollarDictnm[tuple(reversePath(path))] for path in TamariLattice(m,n)])
-
-"""
-
-sage: for m in range(2,7):
-....:     for n in range(i,7):
-....:         for k in range(2,6):
-....:             print m, n, k, checkWeirdSymmetry2(m, n, k)
-....: 
-2 2 2 True
-2 2 3 True
-2 2 4 True
-2 2 5 True
-2 3 2 True
-2 3 3 True
-2 3 4 True
-2 3 5 True
-2 4 2 True
-2 4 3 True
-2 4 4 True
-2 4 5 True
-2 5 2 True
-2 5 3 True
-2 5 4 True
-2 5 5 True
-2 6 2 True
-2 6 3 True
-2 6 4 True
-2 6 5 True
-3 3 2 True
-3 3 3 True
-3 3 4 True
-3 3 5 True
-3 4 2 True
-3 4 3 True
-3 4 4 True
-3 4 5 True
-3 5 2 True
-3 5 3 False
-3 5 4 False
-3 5 5 False
-3 6 2 True
-3 6 3 False
-3 6 4 False
-3 6 5 False
-4 4 2 True
-4 4 3 True
-4 4 4 True
-4 4 5 True
-4 5 2 True
-4 5 3 True
-4 5 4 True
-4 5 5 True
-4 6 2 True
-4 6 3 False
-4 6 4 False
-
-"""
+""" ======================= r q and LLT ======================= """
 
 @cached_function
 # Count the number of valid (m,n)-Tamari strict chains, according to the last path, the length of the chain, the maximal Hopf distances between any two consecutive paths.
@@ -1285,56 +958,47 @@ def refinedCountValidChainsPolyn_r_q_LLT_first(m,n):
 def refinedCountValidChainsPolyn_r_q_LLT_last(m,n):
     return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
 
+# The next function is just used to print nice formulas for the paper.
+# Return the polynomial expression with the maximal Hopf distance between the last two paths written in latex.
+def refinedCountValidChainsPolyn_r_q_LLT_last_latex(m,n):
+    return [(mu, latex(add(coeff * abstractBinomial(r-2,i) for (i,coeff) in enumerate(coeffs)))) for (mu,coeffs) in expressSymFunctOnBinomialCoeffs(e(refinedCountValidChainsPolyn_r_q_LLT_last(n,n)),-2)]
+
+
 """
 
 sage: for n in range(2,6):
 ....:     Pn = refinedCountValidChainsPolyn_r_q_LLT_first(n,n)
 ....:     Qn = refinedCountValidChainsPolyn_r_q_LLT_last(n,n)
 ....:     Rn = Eval1(Phi[(n,n)], q+t+r-2, {r})
-....:     print n, Pn - Qn, Pn - Rn
+....:     print n, Pn - Qn, Pn - Rn, Qn - Rn
 ....:
-2 0 0
-3 0 0
-4 0 0
-5 (-1/24*r^4*q^5+1/24*r^4*q^4+1/4*r^3*q^5-1/4*r^3*q^4-11/24*r^2*q^5+11/24*r^2*q^4+1/4*r*q^5-1/4*r*q^4)*s[1, 1, 1, 1, 1] + (1/6*r^3*q^4-1/6*r^3*q^3-r^2*q^4+r^2*q^3+11/6*r*q^4-11/6*r*q^3-q^4+q^3)*s[2, 2, 1] (1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4+1/40320*r^8*t+1/5040*r^7*q*t+1/720*r^6*q^2*t+1/120*r^5*q^3*t+1/24*r^4*q^4*t-1/40320*r^8-1/3360*r^7*q-1/360*r^6*q^2-1/48*r^5*q^3-1/12*r^4*q^4-1/10080*r^7*t-1/720*r^6*q*t-1/80*r^5*q^2*t-1/12*r^4*q^3*t-1/4*r^3*q^4*t+1/60480*r^7+1/960*r^6*q+1/72*r^5*q^2+17/144*r^4*q^3+7/24*r^3*q^4-1/2880*r^6*t+1/720*r^5*q*t+5/144*r^4*q^2*t+7/24*r^3*q^3*t+11/24*r^2*q^4*t+1/2880*r^6-1/36*r^4*q^2-5/16*r^3*q^3-5/12*r^2*q^4+1/720*r^5*t+1/144*r^4*q*t-1/48*r^3*q^2*t-5/12*r^2*q^3*t-1/4*r*q^4*t-11/17280*r^5-11/1920*r^4*q+7/720*r^3*q^2+137/360*r^2*q^3+1/5*r*q^4+7/5760*r^4*t-1/90*r^3*q*t-13/360*r^2*q^2*t+1/5*r*q^3*t-7/5760*r^4+1/160*r^3*q+11/360*r^2*q^2-1/6*r*q^3-7/1440*r^3*t-1/180*r^2*q*t+1/30*r*q^2*t+59/22680*r^3+47/10080*r^2*q-1/42*r*q^2-1/1120*r^2*t+1/105*r*q*t+1/1120*r^2-1/168*r*q+1/280*r*t-1/504*r)*s[1, 1, 1, 1, 1] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/10080*r^7-1/720*r^6*q-1/80*r^5*q^2-1/12*r^4*q^3-1/4*r^3*q^4-1/2880*r^6+1/720*r^5*q+5/144*r^4*q^2+7/24*r^3*q^3+11/24*r^2*q^4+1/720*r^5+1/144*r^4*q-1/48*r^3*q^2-5/12*r^2*q^3-1/4*r*q^4+7/5760*r^4-1/90*r^3*q-13/360*r^2*q^2+1/5*r*q^3-7/1440*r^3-1/180*r^2*q+1/30*r*q^2-1/1120*r^2+1/105*r*q+1/280*r)*s[2, 1, 1, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3+1/6*r^3*q^4-1/720*r^6-1/80*r^5*q-1/12*r^4*q^2-5/12*r^3*q^3-r^2*q^4+1/720*r^5+5/144*r^4*q+7/24*r^3*q^2+35/24*r^2*q^3+11/6*r*q^4+1/144*r^4-1/48*r^3*q-5/12*r^2*q^2-25/12*r*q^3-q^4-1/90*r^3-13/360*r^2*q+1/5*r*q^2+q^3-1/180*r^2+1/30*r*q+1/105*r)*s[2, 2, 1]
+2 0 0 0
+3 0 0 0
+4 0 0 0
+5
+(-1/24*r^4*q^5+1/24*r^4*q^4+1/4*r^3*q^5-1/4*r^3*q^4-11/24*r^2*q^5+11/24*r^2*q^4+1/4*r*q^5-1/4*r*q^4)*s[1, 1, 1, 1, 1] + (1/6*r^3*q^4-1/6*r^3*q^3-r^2*q^4+r^2*q^3+11/6*r*q^4-11/6*r*q^3-q^4+q^3)*s[2, 2, 1]
+(1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4+1/40320*r^8*t+1/5040*r^7*q*t+1/720*r^6*q^2*t+1/120*r^5*q^3*t+1/24*r^4*q^4*t-1/40320*r^8-1/3360*r^7*q-1/360*r^6*q^2-1/48*r^5*q^3-1/12*r^4*q^4-1/10080*r^7*t-1/720*r^6*q*t-1/80*r^5*q^2*t-1/12*r^4*q^3*t-1/4*r^3*q^4*t+1/60480*r^7+1/960*r^6*q+1/72*r^5*q^2+17/144*r^4*q^3+7/24*r^3*q^4-1/2880*r^6*t+1/720*r^5*q*t+5/144*r^4*q^2*t+7/24*r^3*q^3*t+11/24*r^2*q^4*t+1/2880*r^6-1/36*r^4*q^2-5/16*r^3*q^3-5/12*r^2*q^4+1/720*r^5*t+1/144*r^4*q*t-1/48*r^3*q^2*t-5/12*r^2*q^3*t-1/4*r*q^4*t-11/17280*r^5-11/1920*r^4*q+7/720*r^3*q^2+137/360*r^2*q^3+1/5*r*q^4+7/5760*r^4*t-1/90*r^3*q*t-13/360*r^2*q^2*t+1/5*r*q^3*t-7/5760*r^4+1/160*r^3*q+11/360*r^2*q^2-1/6*r*q^3-7/1440*r^3*t-1/180*r^2*q*t+1/30*r*q^2*t+59/22680*r^3+47/10080*r^2*q-1/42*r*q^2-1/1120*r^2*t+1/105*r*q*t+1/1120*r^2-1/168*r*q+1/280*r*t-1/504*r)*s[1, 1, 1, 1, 1] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/10080*r^7-1/720*r^6*q-1/80*r^5*q^2-1/12*r^4*q^3-1/4*r^3*q^4-1/2880*r^6+1/720*r^5*q+5/144*r^4*q^2+7/24*r^3*q^3+11/24*r^2*q^4+1/720*r^5+1/144*r^4*q-1/48*r^3*q^2-5/12*r^2*q^3-1/4*r*q^4+7/5760*r^4-1/90*r^3*q-13/360*r^2*q^2+1/5*r*q^3-7/1440*r^3-1/180*r^2*q+1/30*r*q^2-1/1120*r^2+1/105*r*q+1/280*r)*s[2, 1, 1, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3+1/6*r^3*q^4-1/720*r^6-1/80*r^5*q-1/12*r^4*q^2-5/12*r^3*q^3-r^2*q^4+1/720*r^5+5/144*r^4*q+7/24*r^3*q^2+35/24*r^2*q^3+11/6*r*q^4+1/144*r^4-1/48*r^3*q-5/12*r^2*q^2-25/12*r*q^3-q^4-1/90*r^3-13/360*r^2*q+1/5*r*q^2+q^3-1/180*r^2+1/30*r*q+1/105*r)*s[2, 2, 1]
+(1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4+1/24*r^4*q^5+1/40320*r^8*t+1/5040*r^7*q*t+1/720*r^6*q^2*t+1/120*r^5*q^3*t+1/24*r^4*q^4*t-1/40320*r^8-1/3360*r^7*q-1/360*r^6*q^2-1/48*r^5*q^3-1/8*r^4*q^4-1/4*r^3*q^5-1/10080*r^7*t-1/720*r^6*q*t-1/80*r^5*q^2*t-1/12*r^4*q^3*t-1/4*r^3*q^4*t+1/60480*r^7+1/960*r^6*q+1/72*r^5*q^2+17/144*r^4*q^3+13/24*r^3*q^4+11/24*r^2*q^5-1/2880*r^6*t+1/720*r^5*q*t+5/144*r^4*q^2*t+7/24*r^3*q^3*t+11/24*r^2*q^4*t+1/2880*r^6-1/36*r^4*q^2-5/16*r^3*q^3-7/8*r^2*q^4-1/4*r*q^5+1/720*r^5*t+1/144*r^4*q*t-1/48*r^3*q^2*t-5/12*r^2*q^3*t-1/4*r*q^4*t-11/17280*r^5-11/1920*r^4*q+7/720*r^3*q^2+137/360*r^2*q^3+9/20*r*q^4+7/5760*r^4*t-1/90*r^3*q*t-13/360*r^2*q^2*t+1/5*r*q^3*t-7/5760*r^4+1/160*r^3*q+11/360*r^2*q^2-1/6*r*q^3-7/1440*r^3*t-1/180*r^2*q*t+1/30*r*q^2*t+59/22680*r^3+47/10080*r^2*q-1/42*r*q^2-1/1120*r^2*t+1/105*r*q*t+1/1120*r^2-1/168*r*q+1/280*r*t-1/504*r)*s[1, 1, 1, 1, 1] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/10080*r^7-1/720*r^6*q-1/80*r^5*q^2-1/12*r^4*q^3-1/4*r^3*q^4-1/2880*r^6+1/720*r^5*q+5/144*r^4*q^2+7/24*r^3*q^3+11/24*r^2*q^4+1/720*r^5+1/144*r^4*q-1/48*r^3*q^2-5/12*r^2*q^3-1/4*r*q^4+7/5760*r^4-1/90*r^3*q-13/360*r^2*q^2+1/5*r*q^3-7/1440*r^3-1/180*r^2*q+1/30*r*q^2-1/1120*r^2+1/105*r*q+1/280*r)*s[2, 1, 1, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3-1/720*r^6-1/80*r^5*q-1/12*r^4*q^2-1/4*r^3*q^3+1/720*r^5+5/144*r^4*q+7/24*r^3*q^2+11/24*r^2*q^3+1/144*r^4-1/48*r^3*q-5/12*r^2*q^2-1/4*r*q^3-1/90*r^3-13/360*r^2*q+1/5*r*q^2-1/180*r^2+1/30*r*q+1/105*r)*s[2, 2, 1]
 
 """
 
-def checkWeirdSymmetry3(m,n):
-    pathSumCollarDictmn = dict({})
-    for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items():
-        key = tuple(path)
-        if not pathSumCollarDictmn.has_key(key):
-            pathSumCollarDictmn[key] = 0
-        pathSumCollarDictmn[key] += coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2))
-    pathSumCollarDictnm = dict({})
-    for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(n,m).items():
-        key = tuple(path)
-        if not pathSumCollarDictnm.has_key(key):
-            pathSumCollarDictnm[key] = 0
-        pathSumCollarDictnm[key] += coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2))
-    return all([pathSumCollarDictmn[tuple(path)] == pathSumCollarDictnm[tuple(reversePath(path))] for path in TamariLattice(m,n)])
+# remark: it gives the same function if we reverse the path!!!!
+def checkWeirdSymmetry(m,n):
+    return add([coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()]) == add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(reversePath(path))[:-1]] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
 
 """
 
-sage: for i in range(2,7):
-....:     for j in range(i,7):
-....:         print i, j, checkWeirdSymmetry3(i,j)
+In the square case, we observe a weird symmetry.
+This symmetry of course makes absolutly no sense on the rectangular case.
+We are not sure whether or not to expect that this symmetry should hold for any square.
+
+sage: for n in range(2,6):
+....:     print n, checkWeirdSymmetry(n,n)
 ....: 
-2 2 2 True
-2 3 2 True
-2 4 2 True
-2 5 2 True
-2 6 2 True
-3 3 2 True
-3 4 2 True
-3 5 2 False
-3 6 2 False
-4 4 2 True
-4 5 2 True
-4 6 2 False
-5 5 2 False
-[...]
+2 True
+3 True
+4 True
+5 False
 
 """
 
@@ -1987,38 +1651,6 @@ def candidateKillers(m, n, goal, mu):
     return killers
 
 """
-    Now we try to understand the killers:
-    - compute the chains that are killed by a given family of killers
-    - find candidates for the killers
-"""
-
-def candidateKillersFamily(m, n, mu):
-    killerFamilies = []
-    bp = bottomPath(m,n) # the bottom path
-    # first, we look for elements that kill a given excess
-    killerDictionary = defaultdict(lambda: tuple([]))
-    for tp in upStepDictionnary(m,n)[mu]: # the possible top paths
-        belowtp = TamariLattice(m,n).subposet(TamariLattice(m,n).principal_lower_set(tp))
-        for candidateKiller in [tuple(c) for c in belowtp.chains() if len(c) == 4 and c[0] == bp and c[-1] == tp]:
-            killedChains = tuple(strictSuperChains(belowtp, candidateKiller, element_constructor=tuple))
-            contribution = sum(x^len(c) for c in killedChains if isValidChain(c))
-            for i in range(1,4):
-                goal = add(x^len(c) for c in Subsets(range(i))) * x^4
-                if contribution == goal:
-                    killerDictionary[i] += ((candidateKiller, strictSuperChains(belowtp, candidateKiller, element_constructor=tuple)),)
-    print len(killerDictionary[1]), len(killerDictionary[2]), len(killerDictionary[3])
-    return killerDictionary
-    # second, we try to combine killers together
-    for p in [[(3,1)], [(2,2)], [(1,2),(2,1)], [(1,4)]]:
-        for candidateFamily in map(lambda t: reduced(union(t)), cartesian_product([Subsets(killerDictionary[i], ni) for (i,ni) in p])): 
-            killedChains = reduce(union, [superChains for (chain, superChains) in candidateFamily])
-            contribution = sum(x^len(c) for c in killedChains if isValidChain(c))
-            if contribution == add(x^len(c) for c in Subsets(range(3))) * x^4:
-                print candidateFamily
-                killerFamilies.append(candidateFamily)
-    return killerFamilies
-
-"""
 
 ============================================== 55 ==============================================
 
@@ -2063,7 +1695,7 @@ sage: candidates65 = candidateKillers(6, 5, sum(x^len(c) for c in Subsets(range(
 """
 
 """
-Once we have candidates for killers, we can try to use fingerprints (such as the formula with the collar statistic, or the dinv, or... to choose among the killers.
+Once we have candidates for killers, we can try to use fingerprints (such as the formula with the collar statistic, or with the anklet statistic, or with the dinv, or...) to choose among the killers.
 """
 
 # Compute the maximal Hopf distances between the first two paths and the last two paths with respect to chain and a set of forbidden chains.
@@ -2215,6 +1847,7 @@ sage: keep1Candidates56 = chooseKiller1(5, 6, candidates56)
 ============================================== 65 ==============================================
 
 sage: keep1Candidates65 = chooseKiller1(6, 5, candidates65)
+...
 
 """
 
@@ -2228,7 +1861,7 @@ def refinedCountValidChainsPolynForbidden_r_q_first(m, n, forbiddenChains):
 def refinedCountValidChainsPolynForbidden_r_q_last(m, n, forbiddenChains):
     return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * e(upStepsPartition(path)) for ((path, length, distances), coeff) in refinedCountValidChainsFirstLastForbidden(m, n, forbiddenChains).items()])
 
-# choose among the candidates using the statistics collar
+# choose among the candidates using the statistics anklet and collar
 def chooseKiller2(m, n, candidates):
     goal = e(Eval1(Phi[(m,n)], r-1+q, {r}))
     keepCandidates = []
@@ -2380,39 +2013,116 @@ this is the killer
 
 """
 
-# count the number of valid Tamari strict chains, according to the shape of the last path, the length of the chain, and the maximal valid distance of last two paths with respect to a set of forbidden chains
-def refinedCountValidChainsForbidden3(m, n, forbiddenChains):
-    validStrictChains = set(validTamariStrictChains(m,n)).difference(forbiddenChains)
-    upStepsLengthHDValidStrictChainsDict = dict({})
-    for chain in validStrictChains:
-        key = (partitionPath(chain[-1]), len(chain), maximalHopfDistanceForbidden(m, n, chain, forbiddenChains))
-        if not upStepsLengthHDValidStrictChainsDict.has_key(key):
-            upStepsLengthHDValidStrictChainsDict[key] = 0
-        upStepsLengthHDValidStrictChainsDict[key] += 1
-    return upStepsLengthHDValidStrictChainsDict
-
 # returns the polynomial expression
-def refinedCountValidChainsPolynForbidden3(m, n, forbiddenChains):
-    return add([coeff * (binomial(r-2, length-1) + q^distance * binomial(r-2, length-2)) * LLT[partition] for ((partition, length, distance), coeff) in refinedCountValidChainsForbidden3(m, n, forbiddenChains).items()])
+def refinedCountValidChainsPolynForbidden_r_q_LLT_last(m, n, forbiddenChains):
+    return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]] for ((path, length, distances), coeff) in refinedCountValidChainsFirstLastForbidden(m, n, forbiddenChains).items()])
 
 # choose among the candidates using the statistic
 def chooseKiller3(m, n, candidates):
-    goal = Pleth1(Phi[(m,n)], s[1] + q)
+    goal = Eval1(Phi[(n,n)], q+t+r-2, {r})
     keepCandidates = []
     for candidate in candidates:
         print
         print "---"
         print
         print candidate
-        print
-        stats = refinedCountValidChainsPolynForbidden3(m,n, strictSuperChains(TamariLattice(m,n), candidate, element_constructor=tuple))
-        print
-        print stats - goal
-        if stats == goal:
+        forbiddenChains = strictSuperChains(TamariLattice(m,n), candidate, element_constructor=tuple)
+        statsLast = refinedCountValidChainsPolynForbidden_r_q_LLT_last(m,n, forbiddenChains)
+        print statsLast - goal
+        if statsLast == goal:
             keepCandidates.append(candidate)
             print "this is the killer"
     return keepCandidates
 
 """
-This test with chooseKiller3 was not finished
+sage: keep3Killers55 = chooseKiller3(5, 5, candidates55)
+
+---
+
+[word: 1010101010, word: 1010110100, word: 1101011000, word: 1101110000]
+0
+this is the killer
+
+---
+
+[word: 1010101010, word: 1010110100, word: 1011100100, word: 1101110000]
+0
+this is the killer
+
+---
+
+[word: 1010101010, word: 1011010100, word: 1011100100, word: 1101110000]
+0
+this is the killer
+
+---
+
+[word: 1010101010, word: 1011010100, word: 1101100100, word: 1110110000]
+(1/362880*r^9+1/40320*r^8*q+1/5040*r^7*q^2+1/720*r^6*q^3+1/120*r^5*q^4+1/24*r^4*q^5+1/40320*r^8*t+1/5040*r^7*q*t+1/720*r^6*q^2*t+1/120*r^5*q^3*t+1/24*r^4*q^4*t-1/20160*r^8-1/2016*r^7*q-1/240*r^6*q^2-1/48*r^5*q^3-1/8*r^4*q^4-1/4*r^3*q^5-1/3360*r^7*t-1/360*r^6*q*t-1/80*r^5*q^2*t-1/12*r^4*q^3*t-1/4*r^3*q^4*t+19/60480*r^7+11/2880*r^6*q+19/720*r^5*q^2+17/144*r^4*q^3+13/24*r^3*q^4+11/24*r^2*q^5+1/960*r^6*t+1/180*r^5*q*t+5/144*r^4*q^2*t+7/24*r^3*q^3*t+11/24*r^2*q^4*t-1/1440*r^6-1/72*r^5*q-1/16*r^4*q^2-5/16*r^3*q^3-7/8*r^2*q^4-1/4*r*q^5+1/72*r^4*q*t-1/48*r^3*q^2*t-5/12*r^2*q^3*t-1/4*r*q^4*t-11/17280*r^5+127/5760*r^4*q+11/360*r^3*q^2+137/360*r^2*q^3+9/20*r*q^4-11/1920*r^4*t-23/720*r^3*q*t-13/360*r^2*q^2*t+1/5*r*q^3*t+13/2880*r^4-1/288*r^3*q+1/15*r^2*q^2-1/6*r*q^3+1/160*r^3*t-1/90*r^2*q*t+1/30*r*q^2*t-331/90720*r^3-29/1120*r^2*q-2/35*r*q^2+47/10080*r^2*t+11/420*r*q*t-19/5040*r^2+1/56*r*q-1/168*r*t+1/252*r)*s[1, 1, 1, 1, 1] + (1/40320*r^8+1/5040*r^7*q+1/720*r^6*q^2+1/120*r^5*q^3+1/24*r^4*q^4-1/3360*r^7-1/360*r^6*q-1/80*r^5*q^2-1/12*r^4*q^3-1/4*r^3*q^4+1/960*r^6+1/180*r^5*q+5/144*r^4*q^2+7/24*r^3*q^3+11/24*r^2*q^4+1/72*r^4*q-1/48*r^3*q^2-5/12*r^2*q^3-1/4*r*q^4-11/1920*r^4-23/720*r^3*q-13/360*r^2*q^2+1/5*r*q^3+1/160*r^3-1/90*r^2*q+1/30*r*q^2+47/10080*r^2+11/420*r*q-1/168*r)*s[2, 1, 1, 1] + (1/5040*r^7+1/720*r^6*q+1/120*r^5*q^2+1/24*r^4*q^3-1/360*r^6-1/48*r^5*q-1/12*r^4*q^2-1/4*r^3*q^3+1/72*r^5+11/144*r^4*q+7/24*r^3*q^2+11/24*r^2*q^3-1/36*r^4-1/16*r^3*q-5/12*r^2*q^2-1/4*r*q^3+7/720*r^3-7/90*r^2*q+1/5*r*q^2+11/360*r^2+1/12*r*q-1/42*r)*s[2, 2, 1]
+
+---
+
+ALL OTHER ARE BAD
 """
+
+""" ======================= LOOKING FOR A KILLER FAMILY ========================= """
+
+"""
+    Now we try to understand the possible killer families:
+    - compute the chains that are killed by a given family of killers
+    - find candidates for the killers
+"""
+
+def candidateKillerFamilies(m, n, mu):
+    killerFamilies = []
+    bp = bottomPath(m,n) # the bottom path
+    # first, we look for elements that kill a given excess
+    killerDictionary = defaultdict(lambda: tuple([]))
+    for tp in upStepDictionnary(m,n)[mu]: # the possible top paths
+        belowtp = TamariLattice(m,n).subposet(TamariLattice(m,n).principal_lower_set(tp))
+        for j in range(4,7):
+            for candidateKiller in [tuple(c) for c in belowtp.chains() if len(c) == j and c[0] == bp and c[-1] == tp]:
+                killedChains = tuple(strictSuperChains(belowtp, candidateKiller, element_constructor=tuple))
+                contribution = sum(x^len(c) for c in killedChains if isValidChain(c))
+                for i in range(1,8-j):
+                    goal = add(x^len(c) for c in Subsets(range(i))) * x^j
+                    if contribution == goal:
+                        killerDictionary[(i,j)] += ((candidateKiller, killedChains),)
+    # a short print to see how difficult it will be...
+    print 'here is the size of the dictionary...'
+    for i in range(1,4):
+        for j in range(4,5+i):
+            print i, j, len(killerDictionary[(i,j)])
+    print '...'
+    # second, we try to combine killers together
+    for p in [[(2,4),(2,5)]]:
+        print p
+        for candidateFamily in cartesian_product([killerDictionary[ij] for ij in p]):
+            killers = [candidateKiller for (candidateKiller, killedChains) in candidateFamily]
+            killedChains = reduce(union, [killedChains for (candidateKiller, killedChains) in candidateFamily])
+            contribution = sum(x^len(c) for c in killedChains if isValidChain(c))
+            if contribution == add(x^len(c) for c in Subsets(range(3))) * x^4:
+                # print candidateFamily
+                killerFamilies.append((killers, killedChains))
+    return killerFamilies
+
+# choose among the candidate families using the statistics anklet and collar
+def chooseKillerFamily2(m, n, candidateKillerFamilies):
+    goal = e(Eval1(Phi[(m,n)], r-1+q, {r}))
+    keepCandidates = []
+    cmp = 0
+    for (candidateFamily, killedChains) in candidateKillerFamilies:
+        print
+        print "---"
+        print cmp
+        print candidateFamily
+        statsFirst = refinedCountValidChainsPolynForbidden_r_q_first(m,n, killedChains)
+        print statsFirst - goal
+        statsLast = refinedCountValidChainsPolynForbidden_r_q_last(m,n, killedChains)
+        print statsLast - goal
+        if statsFirst == goal and statsLast == goal:
+            keepCandidates.append(candidateFamily)
+            print "this is the killer"
+        cmp += 1
+    return keepCandidates
+
