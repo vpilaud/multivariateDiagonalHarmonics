@@ -158,3 +158,5 @@ pythontex-files-*/
 # Python code
 *.pyc
 
+# mac
+.DS_Store
