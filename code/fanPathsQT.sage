@@ -29,6 +29,11 @@ from collections import defaultdict
     They are given by tensors of symmetric functions.
 """
 
+"""
+    Note that for (2, n), we could use the following function
+    sage: Phi2 = lambda n: add([tensor([s([i]), e([(n+1)//2+i, n//2-i])]) for i in range(n//2+1)])
+"""
+
 Phi = {(2, 2): tensor([s([]), s[2]]) + tensor([s[1], s[1,1]]),
        (2, 3): tensor([s([]), s[2, 1]]) + tensor([s[1], s[1, 1, 1]]),
        (2, 4): tensor([s([]), s[2, 2]]) + tensor([s[1], s[2, 1, 1]]) + tensor([s[2], s[1, 1, 1, 1]]),
@@ -443,11 +448,12 @@ def validTamariWeakChains(m,n,k):
 # This default settings can be changed with the optional arguments includeBottommost and includeTopmost.
 def validTamariStrictChainsBetweenPaths(m, n, bp, tp, includeBottom=true, includeTop=true):
     tl = TamariLattice(m,n)
-    subTamariLattice = tl.subposet(tl.interval(bp, tp)[int(includeBottom):len(tl)-int(includeTop)])
+    interval = tl.interval(bp, tp)
+    subTamariLattice = tl.subposet(interval[int(includeBottom):len(interval)-int(includeTop)])
     validStrictChains = []
     for chain in subTamariLattice.chains(element_constructor=tuple):
         chain = (bp,)*(int(includeBottom)) + chain + (tp,)*(int(includeTop))
-        if isValidChain((bottomPath(m, n),)+chain):
+        if isValidChain((bottomPath(m, n),)*(1-int(includeBottom))+chain):
             validStrictChains.append(chain)
     return validStrictChains
 
@@ -642,6 +648,31 @@ def partitionParkingFunction(pf):
 # return the llt of a path, that is the sum of the dinv of the parking functions over that path
 def llt2(path):
     return sum([q^diagonalInversionsParkingFunction(path, pf) * F(partitionParkingFunction(pf)) for pf in DyckWord(list(path)).list_parking_functions()])
+
+""" ========================= Check the enumeration ========================= """
+    
+@cached_function
+# Refine the count according to the shape of the last path.
+def refinedCountValidChains(m,n,k):
+    validChains = validTamariWeakChains(m,n,k)
+    res = dict({})
+    for chain in validChains:
+        upSteps = upStepsPartition(chain[k-1])
+        if not res.has_key(upSteps):
+            res[upSteps] = 0
+        res[upSteps] += 1
+    return res
+
+# Return the symmetric polynomial expression.
+def refinedCountValidChainsPolyn(m,n,k):
+    return add([coeff * e(partition) for (partition, coeff) in  refinedCountValidChains(m,n,k).items()])
+
+"""
+
+sage: for n in range(2,7):
+....:         print n, refinedCountValidChainsPolyn(3, n, 2) == e(Eval1(Phi[(3, n)], 2))
+
+"""
 
 """ ======================= r ======================= """
 
@@ -1313,8 +1344,8 @@ sage: for n in range(2,7):
 def numberValidTamariStrictChainsToPartition(m, n, partition):
     res = 0
     for path in TamariLattice(m,n):
-        if eastStepsPartition(path) == partition:
-            res += len(validTamariStrictChainsToPath(m,n,path))
+        if upStepsPartition(path) == partition:
+            res += len(validTamariStrictChainsToPath(m, n, path))
     return res
 
 def numberQSymMonomial(m, n, partition):
@@ -1323,23 +1354,49 @@ def numberQSymMonomial(m, n, partition):
         res += coeff * sum(QSym(Sym.monomial()(partition2)).coefficients())
     return res
 
-def testNumbersMonomials(n):
+def testNumbersMonomials(m, n):
     for partition in Partitions(n):
-        print partition
-        print numberValidTamariStrictChainsToPartition(n, n, partition) - numberQSymMonomial(n, n, partition)
+        print partition, numberValidTamariStrictChainsToPartition(m, n, partition) - numberQSymMonomial(m, n, partition)
 
 """
-sage: testNumbersMonomials(4)
-[4]
-0
-[3, 1]
-0
-[2, 2]
-0
-[2, 1, 1]
-0
-[1, 1, 1, 1]
-0
+
+sage: testNumbersMonomials(3,3)
+[3] 0
+[2, 1] 0
+[1, 1, 1] 0
+
+sage: testNumbersMonomials(4,4)
+[4] 0
+[3, 1] 0
+[2, 2] 0
+[2, 1, 1] 0
+[1, 1, 1, 1] 0
+
+sage: testNumbersMonomials(3,4)
+[4] 0
+[3, 1] 0
+[2, 2] 0
+[2, 1, 1] 0
+[1, 1, 1, 1] 0
+
+sage: sage: testNumbersMonomials(4,3)
+[3] 0
+[2, 1] 0
+[1, 1, 1] 0
+
+sage: sage: testNumbersMonomials(3,6)
+[6] 0
+[5, 1] 0
+[4, 2] 0
+[4, 1, 1] 0
+[3, 3] 0
+[3, 2, 1] 0
+[3, 1, 1, 1] 0
+[2, 2, 2] 0
+[2, 2, 1, 1] 0
+[2, 1, 1, 1, 1] 0
+[1, 1, 1, 1, 1, 1] 0
+
 """
 
 # Some data to help Francois 
@@ -1353,12 +1410,19 @@ def HopfChainsBelowPathCollarAnklette(m, n, path):
         #print "!!!! anklette != collar !!!!"
     return resFirst
 
+# Some pictures to help François and Cesar
+def TamariLatticeWithNumberHopfChains(m, n):
+    tl = TamariLattice(m,n)
+    dictPaths = {path:i for (i,path) in enumerate(tl)}
+    return tl.relabel(lambda path: (dictPaths[path], HopfChainsBelowPathCollarAnklette(m,n,path).subs(q=1)))
+
 def helpFrancois(n):
     for path in DyckWords(n-1):
         extPath = Word([1]+list(path)+[0])
         polExtPath =  HopfChainsBelowPathCollarAnklette(n, n, extPath)
         print partitionPath(extPath), "---", polExtPath, "---", polExtPath.subs(q=1)
 
+# This was a conjecture of Francois...
 def quasiSymCesarFrancois(m, n, path):
     return add([M(list(maximalHopfDistances(m, n, chain))) for chain in validTamariStrictChainsToPath(m,n,path)])
 
