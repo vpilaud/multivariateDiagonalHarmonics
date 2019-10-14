@@ -513,9 +513,9 @@ The anklet~$\ank({\bf c})$ of a Hopf chain~${\bf c} = (c_1, \dots, c_r)$ is the 
 Note that the anklet looks like the area of the second path~$c_2$, but it is not since the rest of the chain matters.
 
 The anklet statistic can be decomposed according to the level of the flips.
-Namely, given a Hopf chain~${\bf c} = (c_1, \dots, c_r)$, consider a Hopf chain~${\bf C}$ containing~$c$ together with $\ank({\bf c})$ additional paths in between the first two paths~$c_1$ and~$c_2$ of~${\bf c}$.
+Namely, given a Hopf chain~${\bf c} = (c_1, \dots, c_r)$, consider a Hopf chain~${\bf C}$ containing~${\bf c}$ together with $\ank({\bf c})$ additional paths in between the first two paths~$c_1$ and~$c_2$ of~${\bf c}$.
 Let $\ank_p({\bf c})$ be the number of flips at the horizontal level~$p$ that were made in the part of~${\bf C}$ between the first two paths of~${\bf c}$.
-This decomposes the anklet into $\ank({\bf c}) = \ank_1({\bf c}) + ... + \ank_n({\bf c})$.
+This decomposes the anklet into $\ank({\bf c}) = \ank_1({\bf c}) + \cdots + \ank_n({\bf c})$.
 (\green{WARNING: it is not clear that this decomposition is independent of the choice of the superchain~${\bf C}$.})
 It yields the following generalized $\Delta$-conjecture:
 \[
@@ -526,7 +526,7 @@ It yields the following generalized $\Delta$-conjecture:
 where~$\desc({\bf c}) = \set{i}{\ank_i({\bf c}) < \ank_{i-1}({\bf c})}$.
 Note that this can also be computed using strict chains as follows:
 \[
-(e_k^\perp {\mathcal E}_n)(q, t, 1^{r-2};\Zvar) = \sum_\ell \sum_{{\bf c} \text{ strict good} \atop \text{chain of length } \ell} \sum_{J \subseteq [n-1] \atop |J| = k, \, \desc({\bf c}) \subseteq J} \!\!\!\! \bigg( \one_{k = 0} \binom{r-2}{\ell-1} + q^{\sum_{p \in J} \ank_p({\bf c})} \binom{r-2}{\ell-2} \!\! \bigg) \otimes {\mathbb L}_{c_r}(t;\Zvar).
+(e_{n-1-k}^\perp {\mathcal E}_n)(q, t, 1^{r-2};\Zvar) = \sum_\ell \sum_{{\bf c} \text{ strict good} \atop \text{chain of length } \ell} \sum_{J \subseteq [n-1] \atop |J| = k, \, \desc({\bf c}) \subseteq J} \!\!\!\! \bigg( \one_{k = 0} \binom{r-2}{\ell-1} + q^{\sum_{p \in J} \ank_p({\bf c})} \binom{r-2}{\ell-2} \!\! \bigg) \otimes {\mathbb L}_{c_r}(t;\Zvar).
 \]
 This was checked by computer for~$k < n \le 4$. For $n = 5$, we do not have the right notion of good chains.
 

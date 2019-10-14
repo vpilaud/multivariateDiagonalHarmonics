@@ -530,10 +530,10 @@ def flipLevels(m, n, chain, direction='C'):
         levels[flipLevel(chain[i], chain[i+1], direction=direction)] += 1
     return tuple(levels)
 
-# Return the maximal Hopf distance by levels between paths chain[-2] and chain[-1] with respect to chain.
-# This means the length of the maximal (m,n)-Tamari chain between chain[-2] and chain[-1] which is also valid with respect to chain[:-2].
+# Return the maximal Hopf distance by levels between paths chain[0] and chain[1] with respect to chain.
+# This means the length of the maximal (m,n)-Tamari chain between chain[0] and chain[1] which is also valid with respect to chain[2:].
 # The levels are rows or columns depending on direction.
-def maximalHopfDistanceLevels(m, n, chain, direction='C'):
+def maximalHopfDistanceFirstLevels(m, n, chain, direction='C'):
     if len(chain) == 1:
         return ((0,)*m,)
     max = 0
@@ -997,7 +997,6 @@ def refinedCountValidChainsPolyn_r_q_LLT_last(m,n):
 def refinedCountValidChainsPolyn_r_q_LLT_last_latex(m,n):
     return [(mu, latex(add(coeff * abstractBinomial(r-2,i) for (i,coeff) in enumerate(coeffs)))) for (mu,coeffs) in expressSymFunctOnBinomialCoeffs(e(refinedCountValidChainsPolyn_r_q_LLT_last(n,n)),-2)]
 
-
 """
 
 sage: for n in range(2,6):
@@ -1038,270 +1037,22 @@ sage: for n in range(2,6):
 
 """ ======================= Delta conjecture ========================= """
 
-# We try to decompose the collar statistic according to the levels.
-
-""" First r by r """
-
-# count the number of valid (m,n)-Tamari strict chains, according to the shape of the last path, the length of the chain, and the maximal Hopf distance levels of last two paths
-def refinedCountValidChainsDeltaConj_q(m, n, r, direction='C'):
-    (direction, reverseDirection) = ('C','R') if direction == 'C' else ('R','C')
-    validWeakChains = validTamariWeakChains(m, n, r)
-    upStepsHDCValidWeakChainsDict = dict({})
-    for chain in validWeakChains:
-        key = (upStepsPartition(chain[-1]), tuple(maximalHopfDistanceLevels(m, n, chain, direction=reverseDirection)), tuple(maximalHopfDistanceLevels(m, n, chain, direction=direction)))
-        # print t, key
-        if not upStepsHDCValidWeakChainsDict.has_key(key):
-            upStepsHDCValidWeakChainsDict[key] = 0
-        upStepsHDCValidWeakChainsDict[key] += 1
-    return upStepsHDCValidWeakChainsDict
-
-# returns the polynomial expression
-def refinedCountValidChainsPolynDeltaConj_q(m, n, k, r, direction='C'):
-    upStepsHDCValidWeakChainsDict = refinedCountValidChainsDeltaConj(m, n, r, direction=direction)
-    res = 0
-    for ((partition, distanceRows, distanceCols), coeff) in upStepsHDCValidWeakChainsDict.items():
-        if len(distanceCols) == 1:
-            distanceCols = distanceCols[0]
-            nondescents = [i for i in range(1, len(distanceCols)) if distanceCols[i] > distanceCols[i-1]]
-            # print partition, distanceRows, distanceCols, nondescents
-            for s in Subsets(nondescents, k):
-                # rem is a subset of size n-1-k containing all descents
-                rem = set(range(1,len(distanceCols))).difference(s)
-                # print rem, prod([q^distanceCols[n-i] for i in rem]) * e(partition)
-                res += coeff * prod([q^distanceCols[i] for i in rem]) * e(partition)
-    return res
-
-def checkDeltaConjecture_q(m, n, k, r, direction='C'):
-    A = refinedCountValidChainsPolynDeltaConj_q(m, n, k, r, direction=direction)
-    B = e(Eval1(Skew1(e[k], Phi[(m,n)]), (r-1+q)*s[0]))
-    return A == B
-
-"""
-    
-sage: for n in range(2,7):
-....:     for k in range(n):
-....:         print n, k, checkDeltaConjecture(n, n, k, 2)
-....: 
-2 0 True
-2 1 True
-2 2 True
-2 3 True
-2 4 True
-3 0 True
-3 1 True
-3 2 True
-3 3 True
-3 4 True
-4 0 True
-4 1 True
-4 2 True
-4 3 True
-4 4 True
-5 0 True
-[...]
-
-sage: for i in range(2,7):
-....:     for k in range(0,6):
-....:         print i, k, checkDeltaConjecture(i, i, k, 3)
-....: 
-2 0 True
-2 1 True
-2 2 True
-2 3 True
-2 4 True
-3 0 True
-3 1 True
-3 2 True
-3 3 True
-3 4 True
-4 0 True
-4 1 True
-4 2 True
-4 3 True
-4 4 True
-5 0 I did not expect that...
-I did not expect that...
-True
-5 1 I did not expect that...
-I did not expect that...
-False
-5 2 I did not expect that...
-I did not expect that...
-False
-5 3 I did not expect that...
-I did not expect that...
-True
-5 4 I did not expect that...
-I did not expect that...
-True
-[...]
-
-sage: sage: for i in range(2,7):
-....: ....:     for k in range(0,5):
-....: ....:         print i, k, checkDeltaConjecture(i, i, k, 4)
-....: 
-2 0 True
-2 1 True
-2 2 True
-2 3 True
-2 4 True
-3 0 True
-3 1 True
-3 2 True
-3 3 True
-3 4 True
-4 0 True
-4 1 True
-4 2 True
-4 3 True
-4 4 True
-[...]
-
-"""
+# We decompose the anklette statistic according to the levels of the flips.
+# Note that this does not work with the collar statistics.
 
 @cached_function
-# count the number of valid (m,n)-Tamari strict chains, according to the shape of the last path, the length of the chain, and the maximal Hopf distance levels of last two paths
+# count the number of valid (m,n)-Tamari strict chains, according to the shape of the last path, the length of the chain, and the maximal Hopf distance levels of first two paths
 def refinedCountValidChainsDeltaConj(m, n, direction='C'):
     (direction, reverseDirection) = ('C','R') if direction == 'C' else ('R','C')
     validStrictChains = validTamariStrictChains(m, n)
     res = dict({})
     for chain in validStrictChains:
-        key = (chain[-1], len(chain), tuple(maximalHopfDistanceLevels(m, n, chain, direction=reverseDirection)), tuple(maximalHopfDistanceLevels(m, n, chain, direction=direction)))
+        key = (chain[-1], len(chain), tuple(maximalHopfDistanceFirstLevels(m, n, chain, direction=reverseDirection)), tuple(maximalHopfDistanceFirstLevels(m, n, chain, direction=direction)))
         # print t, key
         if not res.has_key(key):
             res[key] = 0
         res[key] += 1
     return res
-
-# returns the polynomial expression
-def refinedCountValidChainsPolynDeltaConj_r_q(m, n, k, direction='C'):
-    topPathLengthHDCValidWeakChainsDict = refinedCountValidChainsDeltaConj(m, n, direction=direction)
-    res = 0
-    for ((path, length, distanceRows, distanceCols), coeff) in topPathLengthHDCValidWeakChainsDict.items():
-        if len(distanceCols) == 1:
-            distanceCols = distanceCols[0]
-            nondescents = [i for i in range(1, len(distanceCols)) if distanceCols[i] > distanceCols[i-1]]
-            for s in Subsets(nondescents, k):
-                # rem is a subset of size n-1-k containing all descents
-                rem = set(range(1,len(distanceCols))).difference(s)
-                res += coeff * (int(k==0) * binomial(r-2, length-1) + prod([q^distanceCols[i] for i in rem]) * binomial(r-2, length-2)) * e(upStepsPartition(path))
-    return res
-
-def checkDeltaConjecture_r_q(m, n, k, direction='C'):
-    A = refinedCountValidChainsPolynDeltaConj_r_q(m, n, k, direction=direction)
-    B = e(Eval1(Skew1(e[k], Phi[(m,n)]), r-1+q, {r}))
-    return A == B
-
-"""
-
-sage: for n in range(2,7):
-....:     for k in range(n):
-....:         print n, k, checkDeltaConjecture_r_q(n, n, k)
-....: 
-2 0 True
-2 1 True
-2 2 True
-2 3 True
-2 4 True
-3 0 True
-3 1 True
-3 2 True
-3 3 True
-3 4 True
-4 0 True
-4 1 True
-4 2 True
-4 3 True
-4 4 True
-5 0 I did not expect that...
-[...]
-
-Same for rectangular Delta conjecture:
-
-sage: for m in range(2,7):
-....:     for n in range(2,7):
-....:         for k in range(n):
-....:             print m, n, k, checkDeltaConjecture_r_q(m, n, k)
-....: 
-2 2 0 True
-2 2 1 True
-2 3 0 True
-2 3 1 True
-2 3 2 True
-2 4 0 True
-2 4 1 False
-2 4 2 True
-2 4 3 True
-2 5 0 True
-2 5 1 False
-2 5 2 True
-2 5 3 True
-2 5 4 True
-2 6 0 True
-2 6 1 False
-2 6 2 True
-2 6 3 True
-2 6 4 True
-2 6 5 True
-3 2 0 True
-3 2 1 True
-3 3 0 True
-3 3 1 True
-3 3 2 True
-3 4 0 True
-3 4 1 True
-3 4 2 True
-3 4 3 True
-3 5 0 True
-3 5 1 False
-3 5 2 False
-3 5 3 True
-3 5 4 True
-3 6 0 True
-3 6 1 False
-3 6 2 False
-3 6 3 True
-3 6 4 True
-3 6 5 True
-4 2 0 True
-4 2 1 True
-4 3 0 True
-4 3 1 True
-4 3 2 True
-4 4 0 True
-4 4 1 True
-4 4 2 True
-4 4 3 True
-4 5 0 True
-4 5 1 True
-4 5 2 True
-4 5 3 True
-4 5 4 True
-4 6 0 I did not expect that...
-I did not expect that...
-I did not expect that...
-I did not expect that...
-I did not expect that...
-I did not expect that...
-I did not expect that...
-I did not expect that...
-False
-4 6 1 False
-4 6 2 False
-4 6 3 False
-4 6 4 True
-4 6 5 True
-5 2 0 True
-5 2 1 True
-5 3 0 True
-5 3 1 True
-5 3 2 True
-5 4 0 True
-5 4 1 True
-5 4 2 True
-5 4 3 True
-
-"""
 
 # returns the polynomial expression
 def refinedCountValidChainsPolynDeltaConj_r_q_LLT(m, n, k, direction='C'):
