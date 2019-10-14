@@ -58,7 +58,10 @@ Phi = {(2, 2): tensor([s([]), s[2]]) + tensor([s[1], s[1,1]]),
        (6, 3): tensor([s[1, 1], s[3]]) + tensor([s[2, 1], s[2, 1]]) + tensor([s[2, 2], s[1, 1, 1]]) + tensor([s[3], s[3]]) + tensor([s[3, 1], s[2, 1]]) + tensor([s[4], s[2, 1]]) + tensor([s[4, 1], s[1, 1, 1]]) + tensor([s[5], s[2, 1]]) + tensor([s[6], s[1, 1, 1]]),
        (6, 4): tensor([s[1, 1, 1], s[2, 2]]) + tensor([s[2], s[4]]) + tensor([s[2, 1], s[3, 1]]) + tensor([s[2, 1, 1], s[2, 1, 1]]) + tensor([s[2, 2], s[2, 2]]) + tensor([s[3], s[3, 1]]) + tensor([s[3, 1], s[2, 1, 1]]) + tensor([s[3, 1], s[2, 2]]) + tensor([s[3, 1], s[3, 1]]) + tensor([s[3, 1, 1], s[1, 1, 1, 1]]) + tensor([s[3, 2], s[2, 1, 1]]) + tensor([s[4], s[2, 2]]) + tensor([s[4], s[3, 1]]) + tensor([2*s[4, 1], s[2, 1, 1]]) + tensor([s[4, 1], s[2, 2]]) + tensor([s[4, 2], s[1, 1, 1, 1]]) + tensor([s[5], s[2, 1, 1]]) + tensor([s[5], s[3, 1]]) + tensor([s[5, 1], s[1, 1, 1, 1]]) + tensor([s[5, 1], s[2, 1, 1]]) + tensor([s[6], s[2, 1, 1]]) + tensor([s[6], s[2, 2]]) + tensor([s[6, 1], s[1, 1, 1, 1]]) + tensor([s[7], s[2, 1, 1]]) + tensor([s[8], s[1, 1, 1, 1]]),
        (6, 5): tensor([s([]), s[5]]) + tensor([s[1], s[4, 1]]) + tensor([s[1, 1], s[3, 1, 1]]) + tensor([s[1, 1, 1], s[2, 1, 1, 1]]) + tensor([s[1, 1, 1, 1], s[1, 1, 1, 1, 1]]) + tensor([s[2], s[3, 2]]) + tensor([s[2], s[4, 1]]) + tensor([s[2, 1], s[2, 2, 1]]) + tensor([s[2, 1], s[3, 1, 1]]) + tensor([s[2, 1], s[3, 2]]) + tensor([s[2, 1, 1], s[2, 1, 1, 1]]) + tensor([s[2, 1, 1], s[2, 2, 1]]) + tensor([s[2, 2], s[2, 2, 1]]) + tensor([s[2, 2], s[3, 2]]) + tensor([s[3], s[3, 1, 1]]) + tensor([s[3], s[3, 2]]) + tensor([s[3], s[4, 1]]) + tensor([s[3, 1], s[2, 1, 1, 1]]) + tensor([s[3, 1], s[2, 2, 1]]) + tensor([2*s[3, 1], s[3, 1, 1]]) + tensor([s[3, 1], s[3, 2]]) + tensor([s[3, 1, 1], s[1, 1, 1, 1, 1]]) + tensor([s[3, 1, 1], s[2, 1, 1, 1]]) + tensor([s[3, 1, 1], s[2, 2, 1]]) + tensor([s[3, 2], s[2, 1, 1, 1]]) + tensor([s[3, 2], s[2, 2, 1]]) + tensor([s[3, 2], s[3, 1, 1]]) + tensor([s[3, 3], s[2, 1, 1, 1]]) + tensor([s[4], s[2, 2, 1]]) + tensor([s[4], s[3, 1, 1]]) + tensor([s[4], s[3, 2]]) + tensor([s[4], s[4, 1]]) + tensor([2*s[4, 1], s[2, 1, 1, 1]]) + tensor([2*s[4, 1], s[2, 2, 1]]) + tensor([s[4, 1], s[3, 1, 1]]) + tensor([s[4, 1], s[3, 2]]) + tensor([s[4, 1, 1], s[1, 1, 1, 1, 1]]) + tensor([s[4, 1, 1], s[2, 1, 1, 1]]) + tensor([s[4, 2], s[1, 1, 1, 1, 1]]) + tensor([s[4, 2], s[2, 1, 1, 1]]) + tensor([s[4, 2], s[2, 2, 1]]) + tensor([s[4, 3], s[1, 1, 1, 1, 1]]) + tensor([s[5], s[2, 2, 1]]) + tensor([2*s[5], s[3, 1, 1]]) + tensor([s[5], s[3, 2]]) + tensor([2*s[5, 1], s[2, 1, 1, 1]]) + tensor([2*s[5, 1], s[2, 2, 1]]) + tensor([s[5, 1], s[3, 1, 1]]) + tensor([s[5, 1, 1], s[1, 1, 1, 1, 1]]) + tensor([s[5, 2], s[2, 1, 1, 1]]) + tensor([s[6], s[2, 1, 1, 1]]) + tensor([s[6], s[2, 2, 1]]) + tensor([s[6], s[3, 1, 1]]) + tensor([s[6], s[3, 2]]) + tensor([s[6, 1], s[1, 1, 1, 1, 1]]) + tensor([2*s[6, 1], s[2, 1, 1, 1]]) + tensor([s[6, 1], s[2, 2, 1]]) + tensor([s[6, 2], s[1, 1, 1, 1, 1]]) + tensor([s[7], s[2, 1, 1, 1]]) + tensor([s[7], s[2, 2, 1]]) + tensor([s[7], s[3, 1, 1]]) + tensor([s[7, 1], s[1, 1, 1, 1, 1]]) + tensor([s[7, 1], s[2, 1, 1, 1]]) + tensor([s[8], s[2, 1, 1, 1]]) + tensor([s[8], s[2, 2, 1]]) + tensor([s[8, 1], s[1, 1, 1, 1, 1]]) + tensor([s[9], s[2, 1, 1, 1]]) + tensor([s[10], s[1, 1, 1, 1, 1]]),
-       (6, 6): tensor([s([]), s[6]]) + tensor([s[1]+s[2]+s[3]+s[4]+s[5], s[5,1]]) + tensor([s[2]+s[2,1]+s[2,2]+s[3]+s[3,1]+s[3,2]+2*s[4]+2*s[4,1]+s[4,2]+s[5]+s[5,1]+2*s[6]+s[6,1]+s[7]+s[8], s[4,2]]) + tensor([s[1,1]+s[2,1]+s[3]+2*s[3,1]+s[3,2]+s[3,3]+s[4]+2*s[4,1]+s[4,2]+2*s[5]+2*s[5,1]+s[5,2]+2*s[6]+s[6,1]+2*s[7]+s[7,1]+s[8]+s[9], s[4,1,1]]) + tensor([s[2,2]+s[2,2,1]+s[3]+s[3,1]+s[3,2]+s[4,1]+s[4,1,1]+s[4,2]+s[5]+s[5,1]+s[5,2]+s[6]+s[6,1]+s[7]+s[7,1]+s[9], s[3,3]]) + tensor([s[2,2]+s[2,2,1]+s[3,1,1]+s[3,1,1,1]+s[3,2,1]+s[3,3,1]+s[4,1]+s[4,1,1]+2*s[4,2]+s[4,2,1]+s[4,3]+s[4,4]+s[5,1]+2*s[5,1,1]+2*s[5,2]+s[5,2,1]+s[5,3]+s[6]+2*s[6,1]+s[6,1,1]+2*s[6,2]+s[6,3]+2*s[7,1]+s[7,1,1]+s[7,2]+s[8]+2*s[8,1]+s[8,2]+s[9]+s[9,1]+s[10]+s[10,1]+s[12], s[2,2,2]]) + tensor([s[1,1,1]+s[2,1,1]+s[3,1]+2*s[3,1,1]+s[3,2]+s[3,2,1]+2*s[3,3]+s[3,3,1]+2*s[4,1]+2*s[4,1,1]+2*s[4,2]+s[4,2,1]+2*s[4,3]+3*s[5,1]+2*s[5,1,1]+3*s[5,2]+s[5,2,1]+2*s[5,3]+s[6]+4*s[6,1]+s[6,1,1]+3*s[6,2]+s[6,3]+s[7]+4*s[7,1]+s[7,1,1]+2*s[7,2]+2*s[8]+3*s[8,1]+s[8,2]+2*s[9]+2*s[9,1]+2*s[10]+s[10,1]+s[11]+s[12], s[3,1,1,1]]) + tensor([s[2,1]+s[2,1,1]+s[2,2]+s[2,2,1]+2*s[3,1]+2*s[3,1,1]+3*s[3,2]+2*s[3,2,1]+s[3,3]+s[4]+3*s[4,1]+2*s[4,1,1]+4*s[4,2]+s[4,2,1]+2*s[4,3]+2*s[5]+5*s[5,1]+2*s[5,1,1]+4*s[5,2]+s[5,3]+2*s[6]+5*s[6,1]+s[6,1,1]+3*s[6,2]+3*s[7]+4*s[7,1]+s[7,2]+3*s[8]+3*s[8,1]+2*s[9]+s[9,1]+2*s[10]+s[11], s[3,2,1]]) + tensor([s[1,1,1,1]+s[2,1,1,1]+s[3,1,1]+s[3,1,1,1]+s[3,2,1]+s[3,3,1]+2*s[4,1,1]+s[4,1,1,1]+s[4,2]+2*s[4,2,1]+2*s[4,3]+2*s[4,3,1]+s[4,4]+3*s[5,1,1]+s[5,1,1,1]+s[5,2]+2*s[5,2,1]+2*s[5,3]+s[5,3,1]+s[5,4]+s[6,1]+3*s[6,1,1]+3*s[6,2]+2*s[6,2,1]+3*s[6,3]+s[6,4]+2*s[7,1]+3*s[7,1,1]+3*s[7,2]+s[7,2,1]+2*s[7,3]+3*s[8,1]+2*s[8,1,1]+3*s[8,2]+s[8,3]+3*s[9,1]+s[9,1,1]+2*s[9,2]+s[10]+3*s[10,1]+s[10,2]+s[11]+2*s[11,1]+s[12]+s[12,1]+s[13]+s[14], s[2,1,1,1,1]]) + tensor([s[2,1,1]+s[2,1,1,1]+s[2,2,1]+s[3,1,1]+s[3,1,1,1]+s[3,2]+2*s[3,2,1]+s[3,3]+s[3,3,1]+s[4,1]+3*s[4,1,1]+s[4,1,1,1]+2*s[4,2]+3*s[4,2,1]+2*s[4,3]+s[4,3,1]+s[4,4]+2*s[5,1]+3*s[5,1,1]+4*s[5,2]+2*s[5,2,1]+3*s[5,3]+s[5,4]+3*s[6,1]+4*s[6,1,1]+4*s[6,2]+s[6,2,1]+2*s[6,3]+s[7]+4*s[7,1]+2*s[7,1,1]+4*s[7,2]+s[7,3]+s[8]+4*s[8,1]+s[8,1,1]+2*s[8,2]+2*s[9]+4*s[9,1]+s[9,2]+s[10]+2*s[10,1]+2*s[11]+s[11,1]+s[12]+s[13], s[2,2,1,1]]) + tensor([2*s[8,1,1]+s[8,2,1]+s[8,2]+s[6,2,1]+s[9,1,1]+s[15]+s[9,3]+s[6,1,1]+s[13,1]+s[10,2]+s[4,1,1,1]+s[6,1,1,1]+s[7,2,1]+s[8,3]+s[12,1]+s[4,3,1]+s[4,4]+s[4,2,1]+s[9,2]+s[11,2]+s[11,1]+s[4,4,1]+s[6,4]+s[5,1,1,1]+s[7,2]+s[5,3,1]+s[7,3]+s[10,1]+s[7,1,1]+s[6,3]+s[1,1,1,1,1]+s[3,1,1,1]+s[7,4]+s[10,1,1]+s[5,2,1]+s[6,3,1], s[1,1,1,1,1,1]])}
+       (6, 6): tensor([s([]), s[6]]) + tensor([s[1]+s[2]+s[3]+s[4]+s[5], s[5,1]]) + tensor([s[2]+s[2,1]+s[2,2]+s[3]+s[3,1]+s[3,2]+2*s[4]+2*s[4,1]+s[4,2]+s[5]+s[5,1]+2*s[6]+s[6,1]+s[7]+s[8], s[4,2]]) + tensor([s[1,1]+s[2,1]+s[3]+2*s[3,1]+s[3,2]+s[3,3]+s[4]+2*s[4,1]+s[4,2]+2*s[5]+2*s[5,1]+s[5,2]+2*s[6]+s[6,1]+2*s[7]+s[7,1]+s[8]+s[9], s[4,1,1]]) + tensor([s[2,2]+s[2,2,1]+s[3]+s[3,1]+s[3,2]+s[4,1]+s[4,1,1]+s[4,2]+s[5]+s[5,1]+s[5,2]+s[6]+s[6,1]+s[7]+s[7,1]+s[9], s[3,3]]) + tensor([s[2,2]+s[2,2,1]+s[3,1,1]+s[3,1,1,1]+s[3,2,1]+s[3,3,1]+s[4,1]+s[4,1,1]+2*s[4,2]+s[4,2,1]+s[4,3]+s[4,4]+s[5,1]+2*s[5,1,1]+2*s[5,2]+s[5,2,1]+s[5,3]+s[6]+2*s[6,1]+s[6,1,1]+2*s[6,2]+s[6,3]+2*s[7,1]+s[7,1,1]+s[7,2]+s[8]+2*s[8,1]+s[8,2]+s[9]+s[9,1]+s[10]+s[10,1]+s[12], s[2,2,2]]) + tensor([s[1,1,1]+s[2,1,1]+s[3,1]+2*s[3,1,1]+s[3,2]+s[3,2,1]+2*s[3,3]+s[3,3,1]+2*s[4,1]+2*s[4,1,1]+2*s[4,2]+s[4,2,1]+2*s[4,3]+3*s[5,1]+2*s[5,1,1]+3*s[5,2]+s[5,2,1]+2*s[5,3]+s[6]+4*s[6,1]+s[6,1,1]+3*s[6,2]+s[6,3]+s[7]+4*s[7,1]+s[7,1,1]+2*s[7,2]+2*s[8]+3*s[8,1]+s[8,2]+2*s[9]+2*s[9,1]+2*s[10]+s[10,1]+s[11]+s[12], s[3,1,1,1]]) + tensor([s[2,1]+s[2,1,1]+s[2,2]+s[2,2,1]+2*s[3,1]+2*s[3,1,1]+3*s[3,2]+2*s[3,2,1]+s[3,3]+s[4]+3*s[4,1]+2*s[4,1,1]+4*s[4,2]+s[4,2,1]+2*s[4,3]+2*s[5]+5*s[5,1]+2*s[5,1,1]+4*s[5,2]+s[5,3]+2*s[6]+5*s[6,1]+s[6,1,1]+3*s[6,2]+3*s[7]+4*s[7,1]+s[7,2]+3*s[8]+3*s[8,1]+2*s[9]+s[9,1]+2*s[10]+s[11], s[3,2,1]]) + tensor([s[1,1,1,1]+s[2,1,1,1]+s[3,1,1]+s[3,1,1,1]+s[3,2,1]+s[3,3,1]+2*s[4,1,1]+s[4,1,1,1]+s[4,2]+2*s[4,2,1]+2*s[4,3]+2*s[4,3,1]+s[4,4]+3*s[5,1,1]+s[5,1,1,1]+s[5,2]+2*s[5,2,1]+2*s[5,3]+s[5,3,1]+s[5,4]+s[6,1]+3*s[6,1,1]+3*s[6,2]+2*s[6,2,1]+3*s[6,3]+s[6,4]+2*s[7,1]+3*s[7,1,1]+3*s[7,2]+s[7,2,1]+2*s[7,3]+3*s[8,1]+2*s[8,1,1]+3*s[8,2]+s[8,3]+3*s[9,1]+s[9,1,1]+2*s[9,2]+s[10]+3*s[10,1]+s[10,2]+s[11]+2*s[11,1]+s[12]+s[12,1]+s[13]+s[14], s[2,1,1,1,1]]) + tensor([s[2,1,1]+s[2,1,1,1]+s[2,2,1]+s[3,1,1]+s[3,1,1,1]+s[3,2]+2*s[3,2,1]+s[3,3]+s[3,3,1]+s[4,1]+3*s[4,1,1]+s[4,1,1,1]+2*s[4,2]+3*s[4,2,1]+2*s[4,3]+s[4,3,1]+s[4,4]+2*s[5,1]+3*s[5,1,1]+4*s[5,2]+2*s[5,2,1]+3*s[5,3]+s[5,4]+3*s[6,1]+4*s[6,1,1]+4*s[6,2]+s[6,2,1]+2*s[6,3]+s[7]+4*s[7,1]+2*s[7,1,1]+4*s[7,2]+s[7,3]+s[8]+4*s[8,1]+s[8,1,1]+2*s[8,2]+2*s[9]+4*s[9,1]+s[9,2]+s[10]+2*s[10,1]+2*s[11]+s[11,1]+s[12]+s[13], s[2,2,1,1]]) + tensor([2*s[8,1,1]+s[8,2,1]+s[8,2]+s[6,2,1]+s[9,1,1]+s[15]+s[9,3]+s[6,1,1]+s[13,1]+s[10,2]+s[4,1,1,1]+s[6,1,1,1]+s[7,2,1]+s[8,3]+s[12,1]+s[4,3,1]+s[4,4]+s[4,2,1]+s[9,2]+s[11,2]+s[11,1]+s[4,4,1]+s[6,4]+s[5,1,1,1]+s[7,2]+s[5,3,1]+s[7,3]+s[10,1]+s[7,1,1]+s[6,3]+s[1,1,1,1,1]+s[3,1,1,1]+s[7,4]+s[10,1,1]+s[5,2,1]+s[6,3,1], s[1,1,1,1,1,1]]),
+       (7, 4): tensor([s[1, 1], s[4]]) + tensor([s[1, 1, 1], s[3, 1]]) + tensor([s[2, 1], s[3, 1]]) + tensor([s[2, 1, 1], s[2, 1, 1]]) + tensor([s[2, 1, 1], s[2, 2]]) + tensor([s[2, 2], s[2, 1, 1]]) + tensor([s[2, 2, 1], s[1, 1, 1, 1]]) + tensor([s[3], s[4]]) + tensor([s[3, 1], s[2, 2]]) + tensor([2*s[3, 1], s[3, 1]]) + tensor([s[3, 1, 1], s[2, 1, 1]]) + tensor([s[3, 2], s[2, 1, 1]]) + tensor([s[3, 2], s[2, 2]]) + tensor([s[4], s[3, 1]]) + tensor([2*s[4, 1], s[2, 1, 1]]) + tensor([s[4, 1], s[2, 2]]) + tensor([s[4, 1], s[3, 1]]) + tensor([s[4, 1, 1], s[1, 1, 1, 1]]) + tensor([s[4, 2], s[1, 1, 1, 1]]) + tensor([s[4, 2], s[2, 1, 1]]) + tensor([s[5], s[2, 2]]) + tensor([s[5], s[3, 1]]) + tensor([2*s[5, 1], s[2, 1, 1]]) + tensor([s[5, 1], s[2, 2]]) + tensor([s[5, 2], s[1, 1, 1, 1]]) + tensor([s[6], s[2, 1, 1]]) + tensor([s[6], s[3, 1]]) + tensor([s[6, 1], s[1, 1, 1, 1]]) + tensor([s[6, 1], s[2, 1, 1]]) + tensor([s[7], s[2, 1, 1]]) + tensor([s[7], s[2, 2]]) + tensor([s[7, 1], s[1, 1, 1, 1]]) + tensor([s[8], s[2, 1, 1]]) + tensor([s[9], s[1, 1, 1, 1]]),
+       (8, 4): tensor([s[1, 1, 1], s[4]]) + tensor([s[2, 1, 1], s[3, 1]]) + tensor([s[2, 2, 1], s[2, 1, 1]]) + tensor([s[2, 2, 2], s[1, 1, 1, 1]]) + tensor([s[3, 1], s[4]]) + tensor([s[3, 1, 1], s[2, 2]]) + tensor([s[3, 1, 1], s[3, 1]]) + tensor([s[3, 2], s[3, 1]]) + tensor([s[3, 2, 1], s[2, 1, 1]]) + tensor([s[3, 2, 1], s[2, 2]]) + tensor([s[3, 3], s[3, 1]]) + tensor([s[4, 1], s[3, 1]]) + tensor([s[4, 1], s[4]]) + tensor([s[4, 1, 1], s[2, 1, 1]]) + tensor([s[4, 1, 1], s[3, 1]]) + tensor([s[4, 2], s[2, 1, 1]]) + tensor([s[4, 2], s[2, 2]]) + tensor([s[4, 2], s[3, 1]]) + tensor([s[4, 2, 1], s[1, 1, 1, 1]]) + tensor([s[4, 2, 1], s[2, 1, 1]]) + tensor([s[4, 3], s[2, 1, 1]]) + tensor([s[4, 3], s[2, 2]]) + tensor([s[4, 4], s[1, 1, 1, 1]]) + tensor([s[5, 1], s[2, 2]]) + tensor([2*s[5, 1], s[3, 1]]) + tensor([s[5, 1, 1], s[2, 1, 1]]) + tensor([s[5, 1, 1], s[2, 2]]) + tensor([2*s[5, 2], s[2, 1, 1]]) + tensor([s[5, 2], s[2, 2]]) + tensor([s[5, 2], s[3, 1]]) + tensor([s[5, 2, 1], s[1, 1, 1, 1]]) + tensor([s[5, 3], s[2, 1, 1]]) + tensor([s[6], s[4]]) + tensor([s[6, 1], s[2, 1, 1]]) + tensor([s[6, 1], s[2, 2]]) + tensor([2*s[6, 1], s[3, 1]]) + tensor([s[6, 1, 1], s[2, 1, 1]]) + tensor([s[6, 2], s[1, 1, 1, 1]]) + tensor([2*s[6, 2], s[2, 1, 1]]) + tensor([s[6, 2], s[2, 2]]) + tensor([s[6, 3], s[1, 1, 1, 1]]) + tensor([s[7], s[3, 1]]) + tensor([2*s[7, 1], s[2, 1, 1]]) + tensor([s[7, 1], s[2, 2]]) + tensor([s[7, 1], s[3, 1]]) + tensor([s[7, 1, 1], s[1, 1, 1, 1]]) + tensor([s[7, 2], s[1, 1, 1, 1]]) + tensor([s[7, 2], s[2, 1, 1]]) + tensor([s[8], s[2, 2]]) + tensor([s[8], s[3, 1]]) + tensor([2*s[8, 1], s[2, 1, 1]]) + tensor([s[8, 1], s[2, 2]]) + tensor([s[8, 2], s[1, 1, 1, 1]]) + tensor([s[9], s[2, 1, 1]]) + tensor([s[9], s[3, 1]]) + tensor([s[9, 1], s[1, 1, 1, 1]]) + tensor([s[9, 1], s[2, 1, 1]]) + tensor([s[10], s[2, 1, 1]]) + tensor([s[10], s[2, 2]]) + tensor([s[10, 1], s[1, 1, 1, 1]]) + tensor([s[11], s[2, 1, 1]]) + tensor([s[12], s[1, 1, 1, 1]]),
+       (9, 4): tensor([s[1, 1, 1], s[4]]) + tensor([s[2, 1, 1], s[3, 1]]) + tensor([s[2, 2, 1], s[2, 1, 1]]) + tensor([s[2, 2, 2], s[1, 1, 1, 1]]) + tensor([s[3, 1], s[4]]) + tensor([s[3, 1, 1], s[2, 2]]) + tensor([s[3, 1, 1], s[3, 1]]) + tensor([s[3, 2], s[3, 1]]) + tensor([s[3, 2, 1], s[2, 1, 1]]) + tensor([s[3, 2, 1], s[2, 2]]) + tensor([s[3, 3], s[3, 1]]) + tensor([s[4, 1], s[3, 1]]) + tensor([s[4, 1], s[4]]) + tensor([s[4, 1, 1], s[2, 1, 1]]) + tensor([s[4, 1, 1], s[3, 1]]) + tensor([s[4, 2], s[2, 1, 1]]) + tensor([s[4, 2], s[2, 2]]) + tensor([s[4, 2], s[3, 1]]) + tensor([s[4, 2, 1], s[1, 1, 1, 1]]) + tensor([s[4, 2, 1], s[2, 1, 1]]) + tensor([s[4, 3], s[2, 1, 1]]) + tensor([s[4, 3], s[2, 2]]) + tensor([s[4, 4], s[1, 1, 1, 1]]) + tensor([s[5, 1], s[2, 2]]) + tensor([2*s[5, 1], s[3, 1]]) + tensor([s[5, 1, 1], s[2, 1, 1]]) + tensor([s[5, 1, 1], s[2, 2]]) + tensor([2*s[5, 2], s[2, 1, 1]]) + tensor([s[5, 2], s[2, 2]]) + tensor([s[5, 2], s[3, 1]]) + tensor([s[5, 2, 1], s[1, 1, 1, 1]]) + tensor([s[5, 3], s[2, 1, 1]]) + tensor([s[6], s[4]]) + tensor([s[6, 1], s[2, 1, 1]]) + tensor([s[6, 1], s[2, 2]]) + tensor([2*s[6, 1], s[3, 1]]) + tensor([s[6, 1, 1], s[2, 1, 1]]) + tensor([s[6, 2], s[1, 1, 1, 1]]) + tensor([2*s[6, 2], s[2, 1, 1]]) + tensor([s[6, 2], s[2, 2]]) + tensor([s[6, 3], s[1, 1, 1, 1]]) + tensor([s[7], s[3, 1]]) + tensor([2*s[7, 1], s[2, 1, 1]]) + tensor([s[7, 1], s[2, 2]]) + tensor([s[7, 1], s[3, 1]]) + tensor([s[7, 1, 1], s[1, 1, 1, 1]]) + tensor([s[7, 2], s[1, 1, 1, 1]]) + tensor([s[7, 2], s[2, 1, 1]]) + tensor([s[8], s[2, 2]]) + tensor([s[8], s[3, 1]]) + tensor([2*s[8, 1], s[2, 1, 1]]) + tensor([s[8, 1], s[2, 2]]) + tensor([s[8, 2], s[1, 1, 1, 1]]) + tensor([s[9], s[2, 1, 1]]) + tensor([s[9], s[3, 1]]) + tensor([s[9, 1], s[1, 1, 1, 1]]) + tensor([s[9, 1], s[2, 1, 1]]) + tensor([s[10], s[2, 1, 1]]) + tensor([s[10], s[2, 2]]) + tensor([s[10, 1], s[1, 1, 1, 1]]) + tensor([s[11], s[2, 1, 1]]) + tensor([s[12], s[1, 1, 1, 1]])}
 
 """
 To evaluate these tensors, we just need to use plethism...
@@ -1341,6 +1344,7 @@ sage: for n in range(2,7):
 
 """ ======================= The Cesar-Francois conjecture ========================= """
 
+# compute the number of valid Hopf chains below all paths with a given up steps partition
 def numberValidTamariStrictChainsToPartition(m, n, partition):
     res = 0
     for path in TamariLattice(m,n):
@@ -1348,43 +1352,48 @@ def numberValidTamariStrictChainsToPartition(m, n, partition):
             res += len(validTamariStrictChainsToPath(m, n, path))
     return res
 
+# compute the sum of the coefficients in the M basis
 def numberQSymMonomial(m, n, partition):
     res = 0
     for partition2, coeff in Sym.monomial()(Scalar2(Pleth1(Phi[(m,n)], s[1]+1), f(partition))):
         res += coeff * sum(QSym(Sym.monomial()(partition2)).coefficients())
     return res
 
+# check that both coincide for all paths
 def testNumbersMonomials(m, n):
+    return all([numberValidTamariStrictChainsToPartition(m, n, partition) == numberQSymMonomial(m, n, partition) for partition in Partitions(n)])
+
+def testNumbersMonomialsPrint(m, n):
     for partition in Partitions(n):
         print partition, numberValidTamariStrictChainsToPartition(m, n, partition) - numberQSymMonomial(m, n, partition)
 
 """
 
-sage: testNumbersMonomials(3,3)
+sage: testNumbersMonomialsPrint(3,3)
 [3] 0
 [2, 1] 0
 [1, 1, 1] 0
 
-sage: testNumbersMonomials(4,4)
+sage: testNumbersMonomialsPrint(4,4)
 [4] 0
 [3, 1] 0
 [2, 2] 0
 [2, 1, 1] 0
 [1, 1, 1, 1] 0
 
-sage: testNumbersMonomials(3,4)
+sage: testNumbersMonomialsPrint(3,4)
 [4] 0
 [3, 1] 0
 [2, 2] 0
 [2, 1, 1] 0
 [1, 1, 1, 1] 0
 
-sage: sage: testNumbersMonomials(4,3)
+sage: testNumbersMonomialsPrint(4,3)
 [3] 0
 [2, 1] 0
 [1, 1, 1] 0
 
-sage: sage: testNumbersMonomials(3,6)
+sage: testNumbersMonomialsPrint(3,6)
 [6] 0
 [5, 1] 0
 [4, 2] 0
@@ -1396,6 +1405,36 @@ sage: sage: testNumbersMonomials(3,6)
 [2, 2, 1, 1] 0
 [2, 1, 1, 1, 1] 0
 [1, 1, 1, 1, 1, 1] 0
+
+sage: for m in range(2,7):
+....:     print m, testNumbersMonomials(m,3)
+....:     
+2 True
+3 True
+4 True
+5 True
+6 True
+
+sage: for m in range(2,10):
+....:     print m, testNumbersMonomials(m,4)
+....:     
+2 True
+3 True
+4 True
+5 True
+6 True
+7 True
+8 False
+9 False
+
+sage: for n in range(2,7):
+....:     print n, testNumbersMonomials(4,n)
+....:
+2 True
+3 True
+4 True
+5 True
+6 False
 
 """
 
