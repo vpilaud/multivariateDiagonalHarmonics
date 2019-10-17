@@ -11,7 +11,7 @@
 """ ========================= Initial data ========================= """
 
 # We need to load the following to make this code work with symmetric and quasisymmetric functions
-R.<r,q,t> = QQ['r','q','t']
+R.<r,q,t,u1,u2,u3,u4,u5,u6,u7,u8,u9,u10,u11,u12,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12> = QQ['r','q','t','u1','u2','u3','u4','u5','u6','u7','u8','u9','u10','u11','u12','v1','v2','v3','v4','v5','v6','v7','v8','v9','v10','v11','v12']
 Sym = SymmetricFunctions(R)
 Sym.inject_shorthands()
 QSym = QuasiSymmetricFunctions(R)
@@ -67,6 +67,10 @@ Phi = {(2, 2): tensor([s([]), s[2]]) + tensor([s[1], s[1,1]]),
 To evaluate these tensors, we just need to use plethism...
 """
 
+# dimension of the corresponding representation
+def dimensionSymFunc(f):
+    return [t[1]*factorial(add(t[0]))*p(s(t[0])).coefficient([1]*(add(t[0]))) for t in s(f)]
+
 """ ========================= Conjectural sigmas ===================== """
 
 Sigma = {
@@ -90,21 +94,21 @@ Sigma = {
     (1, 0, 0, 0): s[5] + s[3, 1],
     (0, 0, 0, 0): s[6] + s[4, 1] + s[3, 1] + s[1, 1, 1],
     (0, 0, 0, 0, 0): s[1, 1, 1, 1] + s[3, 1, 1] + s[4, 1, 1] + s[4, 2] + s[4, 3] + s[5, 1, 1] + s[6, 1] + s[6, 2] + s[7, 1] + s[8, 1] + s[10],
-    (1, 0, 0, 0, 0): s[3, 3] + s[4, 1, 1] + s[5, 2] + s[6, 1] + s[7, 1] + s[9],
-    (2, 0, 0, 0, 0): s[3, 1, 1] + s[4, 2] + s[5, 1] + s[6, 1] + s[8],
-    (1, 1, 0, 0, 0): s[3, 1, 1] + s[4, 2] + s[5, 1] + s[6, 1] + s[8],
-    (3, 0, 0, 0, 0): s[2, 1, 1] + s[3, 2] + s[4, 1] + s[5, 1] + s[7],
-    (2, 1, 0, 0, 0): -s[2, 2] + s[3, 2] + s[5, 1] + s[7],
-    (1, 1, 1, 0, 0): s[2, 1, 1] + s[3, 2] + s[4, 1] + s[5, 1] + s[7],
+    (1, 0, 0, 0, 0): s[3, 3] + s[4, 1, 1] + s[5, 2] + s[6, 1] + s[7, 1] + s[9] + 0*s[2, 2] + 0*s[3, 2], #1
+    (2, 0, 0, 0, 0): s[3, 1, 1] + s[4, 2] + s[5, 1] + s[6, 1] + s[8] + 0*s[2, 2] + 0*s[3, 2], #2
+    (1, 1, 0, 0, 0): s[3, 1, 1] + s[4, 2] + s[5, 1] + s[6, 1] + s[8] + 0*s[2, 2] + 0*s[3, 2], #3
+    (3, 0, 0, 0, 0): s[2, 1, 1] + s[4, 1] + s[5, 1] + s[7] + 0*s[2, 2] + 1*s[3, 2], #4
+    (2, 1, 0, 0, 0): s[5, 1] + s[7] + (-1)*s[2, 2] + 1*s[3, 2] , #5
+    (1, 1, 1, 0, 0): s[2, 1, 1] + s[4, 1] + s[5, 1] + s[7] + 0*s[2, 2] + 1*s[3, 2], #6
     (4, 0, 0, 0, 0): s[1, 1, 1] + s[3, 1] + s[4, 1] + s[6],
-    (3, 1, 0, 0, 0): s[2, 2] + s[4, 1] + s[6],
-    (2, 2, 0, 0, 0): s[2, 1, 1] + s[2, 2] + 2*s[4, 1] + s[6],
-    (2, 1, 1, 0, 0): t*s[2, 2] + s[4, 1] + s[6],
+    (3, 1, 0, 0, 0): s[4, 1] + s[6] + 1*s[2, 2] + 0*s[3, 2] , #7
+    (2, 2, 0, 0, 0): s[2, 1, 1] + 2*s[4, 1] + s[6] + 1*s[2, 2] + 0*s[3, 2], #8
+    (2, 1, 1, 0, 0): s[4, 1] + s[6] + 1*s[2, 2] + 0*s[3, 2], #9
     (1, 1, 1, 1, 0): s[1, 1, 1] + s[3, 1] + s[4, 1] + s[6],
     (4, 1, 0, 0, 0): s[3, 1] + s[5],
-    (3, 2, 0, 0, 0): s[3, 1] + s[5],
-    (3, 1, 1, 0, 0): s[3, 1] + s[5],
-    (2, 2, 1, 0, 0): s[3, 1] + s[5],
+    (3, 2, 0, 0, 0): s[3, 1] + s[5] + 0*s[2, 2] + 0*s[3, 2], #10
+    (3, 1, 1, 0, 0): s[3, 1] + s[5] + 0*s[2, 2] + 0*s[3, 2], #11
+    (2, 2, 1, 0, 0): s[3, 1] + s[5] + 0*s[2, 2] + 0*s[3, 2], #12
     (2, 1, 1, 1, 0): s[3, 1] + s[5],
     (4, 2, 0, 0, 0): s[2, 1] + s[4],
     (4, 1, 1, 0, 0): s[2, 1] + s[4],
@@ -140,6 +144,55 @@ Sigma = {
     3 0
     4 0
     5 -s[3] # s[2, 2] + s[4] # s[2, 2]
+"""
+
+"""
+
+sage: psi = {
+    (0, 0, 0, 0, 0): (4, 3, 2, 1, 0),
+    (1, 0, 0, 0, 0): (4, 3, 2, 0, 0),
+    (2, 0, 0, 0, 0): (4, 2, 2, 1, 0),
+    (1, 1, 0, 0, 0): (4, 2, 1, 1, 0),
+    (3, 0, 0, 0, 0): (3, 3, 2, 1, 0),
+    (2, 1, 0, 0, 0): (3, 3, 1, 1, 0),
+    (1, 1, 1, 0, 0): (3, 2, 1, 1, 0),
+    (4, 0, 0, 0, 0): (4, 3, 1, 1, 0),
+    (3, 1, 0, 0, 0): (3, 3, 2, 0, 0),
+    (2, 2, 0, 0, 0): (3, 2, 2, 1, 0),
+    (2, 1, 1, 0, 0): (3, 3, 1, 0, 0),
+    (1, 1, 1, 1, 0): (3, 2, 1, 0, 0),
+    (4, 1, 0, 0, 0): (4, 1, 0, 0, 0),
+    (3, 2, 0, 0, 0): (3, 2, 2, 0, 0),
+    (3, 1, 1, 0, 0): (4, 2, 2, 0, 0),
+    (2, 2, 1, 0, 0): (3, 1, 1, 1, 0),
+    (2, 1, 1, 1, 0): (2, 2, 2, 1, 0),
+    (4, 2, 0, 0, 0): (4, 1, 1, 1, 0),
+    (4, 1, 1, 0, 0): (4, 1, 1, 0, 0),
+    (3, 3, 0, 0, 0): (4, 3, 1, 0, 0),
+    (3, 2, 1, 0, 0): (1, 1, 1, 1, 0),
+    (3, 1, 1, 1, 0): (2, 2, 1, 0, 0),
+    (2, 2, 2, 0, 0): (4, 2, 1, 0, 0),
+    (2, 2, 1, 1, 0): (2, 2, 1, 1, 0),
+    (4, 3, 0, 0, 0): (4, 3, 0, 0, 0),
+    (4, 2, 1, 0, 0): (2, 2, 2, 0, 0),
+    (4, 1, 1, 1, 0): (4, 2, 0, 0, 0),
+    (3, 3, 1, 0, 0): (2, 1, 1, 0, 0),
+    (3, 2, 2, 0, 0): (3, 2, 0, 0, 0),
+    (3, 2, 1, 1, 0): (1, 1, 1, 0, 0),
+    (2, 2, 2, 1, 0): (2, 1, 1, 1, 0),
+    (4, 3, 1, 0, 0): (3, 3, 0, 0, 0),
+    (4, 2, 2, 0, 0): (3, 1, 1, 0, 0),
+    (4, 2, 1, 1, 0): (1, 1, 0, 0, 0),
+    (3, 3, 2, 0, 0): (3, 1, 0, 0, 0),
+    (3, 3, 1, 1, 0): (2, 1, 0, 0, 0),
+    (3, 2, 2, 1, 0): (2, 2, 0, 0, 0),
+    (4, 3, 2, 0, 0): (1, 0, 0, 0, 0),
+    (4, 3, 1, 1, 0): (4, 0, 0, 0, 0),
+    (4, 2, 2, 1, 0): (2, 0, 0, 0, 0),
+    (3, 3, 2, 1, 0): (3, 0, 0, 0, 0),
+    (4, 3, 2, 1, 0): (0, 0, 0, 0, 0)
+}
+
 """
 
 """ ========================= Binomials ========================= """
@@ -401,6 +454,31 @@ def eta(m, n, path):
     shm = int(gcd(m,n) != 1)
     path = path + [0]*shm
     return list(reversed(map(lambda x: x[2], sorted(zip(map(lambda (x,y):y*(m+shm)-x*n, positions(path)[1:]), range(len(path)), path)))))[:len(path)+(-1)*shm]
+
+# return a dictionnary D where D(a,d) is the list of paths with area a and dinv d.
+def areaDinvDict(n):
+    addict = defaultdict(lambda: [])
+    for path in DyckWords(n):
+        addict[(path.area(), path.dinv())].append(path)
+    return addict
+
+def involutions(n):
+    return [p for p in Permutaitons(n) if p.inverse() == p]
+
+# return all possible maps that invert area and dinv
+def areaDinvInversions(n):
+    addict = areaDinvDict(n)
+    halfaddictkeys = [(a,d) for (a,d) in addict if a <= d]
+    return [dict(flatten([[(addict[(d,a)][i], perms[j][i]) for i in range(len(addict[(a,d)]))] + [(perms[j][i], addict[(d,a)][i]) for i in range(len(addict[(a,d)]))] for (j,(a,d)) in enumerate(halfaddictkeys)], max_level=1)) for perms in cartesian_product([[tuple(addict[(a,d)][i-1] for i in p) for p in Permutations(len(addict[(a,d)])) if (a < d or p.inverse() == p)] for (a,d) in halfaddictkeys])]
+
+"""
+    
+sage: n = 5
+sage: goal = (Sigma[(0,)*n]).coproduct()
+sage: for psi in areaDinvInversions(n):
+        print goal - add([tensor([Sigma[partitionPath(path)], Sigma[partitionPath(psi[path])]]) for path in DyckWords(n)])
+
+"""
 
 """ ========================= drawings ========================= """
 
