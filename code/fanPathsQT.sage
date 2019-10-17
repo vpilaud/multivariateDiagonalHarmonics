@@ -67,6 +67,81 @@ Phi = {(2, 2): tensor([s([]), s[2]]) + tensor([s[1], s[1,1]]),
 To evaluate these tensors, we just need to use plethism...
 """
 
+""" ========================= Conjectural sigmas ===================== """
+
+Sigma = {
+    (2,1,0): s([]),
+    (1,1,0): s[1],
+    (2,0,0): s[1],
+    (1,0,0): s[2],
+    (0,0,0): s[3] + s[1, 1],
+    (3, 2, 1, 0): s([]),
+    (3, 2, 0, 0): s[1],
+    (3, 1, 1, 0): s[1],
+    (3, 1, 0, 0): s[2],
+    (3, 0, 0, 0): s[3] + s[1, 1],
+    (2, 2, 1, 0): s[1],
+    (2, 2, 0, 0): s[2] + s[1, 1],
+    (2, 1, 1, 0): s[2],
+    (2, 1, 0, 0): s[3],
+    (2, 0, 0, 0): s[4] + s[2, 1],
+    (1, 1, 1, 0): s[3] + s[1, 1],
+    (1, 1, 0, 0): s[4] + s[2, 1],
+    (1, 0, 0, 0): s[5] + s[3, 1],
+    (0, 0, 0, 0): s[6] + s[4, 1] + s[3, 1] + s[1, 1, 1],
+    (0, 0, 0, 0, 0): s[1, 1, 1, 1] + s[3, 1, 1] + s[4, 1, 1] + s[4, 2] + s[4, 3] + s[5, 1, 1] + s[6, 1] + s[6, 2] + s[7, 1] + s[8, 1] + s[10],
+    (1, 0, 0, 0, 0): s[3, 3] + s[4, 1, 1] + s[5, 2] + s[6, 1] + s[7, 1] + s[9],
+    (2, 0, 0, 0, 0): s[3, 1, 1] + s[4, 2] + s[5, 1] + s[6, 1] + s[8],
+    (1, 1, 0, 0, 0): s[3, 1, 1] + s[4, 2] + s[5, 1] + s[6, 1] + s[8],
+    (3, 0, 0, 0, 0): s[2, 1, 1] + s[3, 2] + s[4, 1] + s[5, 1] + s[7],
+    (2, 1, 0, 0, 0): -s[2, 2] + s[3, 2] + s[5, 1] + s[7],
+    (1, 1, 1, 0, 0): s[2, 1, 1] + s[3, 2] + s[4, 1] + s[5, 1] + s[7],
+    (4, 0, 0, 0, 0): s[1, 1, 1] + s[3, 1] + s[4, 1] + s[6],
+    (3, 1, 0, 0, 0): s[2, 2] + s[4, 1] + s[6],
+    (2, 2, 0, 0, 0): s[2, 1, 1] + s[2, 2] + 2*s[4, 1] + s[6],
+    (2, 1, 1, 0, 0): t*s[2, 2] + s[4, 1] + s[6],
+    (1, 1, 1, 1, 0): s[1, 1, 1] + s[3, 1] + s[4, 1] + s[6],
+    (4, 1, 0, 0, 0): s[3, 1] + s[5],
+    (3, 2, 0, 0, 0): s[3, 1] + s[5],
+    (3, 1, 1, 0, 0): s[3, 1] + s[5],
+    (2, 2, 1, 0, 0): s[3, 1] + s[5],
+    (2, 1, 1, 1, 0): s[3, 1] + s[5],
+    (4, 2, 0, 0, 0): s[2, 1] + s[4],
+    (4, 1, 1, 0, 0): s[2, 1] + s[4],
+    (3, 3, 0, 0, 0): s[1, 1, 1] + s[2, 1] + s[3, 1] + s[4],
+    (3, 2, 1, 0, 0): s[4],
+    (3, 1, 1, 1, 0): s[2, 1] + s[4],
+    (2, 2, 2, 0, 0): s[1, 1, 1] + s[2, 1] + s[3, 1] + s[4],
+    (2, 2, 1, 1, 0): s[2, 1] + s[4],
+    (4, 3, 0, 0, 0): s[1, 1] + s[3],
+    (4, 2, 1, 0, 0): s[3],
+    (4, 1, 1, 1, 0): s[1, 1] + s[3],
+    (3, 3, 1, 0, 0): s[2, 1] + s[3],
+    (3, 2, 2, 0, 0): s[2, 1] + s[3],
+    (3, 2, 1, 1, 0): s[3],
+    (2, 2, 2, 1, 0): s[1, 1] + s[3],
+    (4, 3, 1, 0, 0): s[2],
+    (4, 2, 2, 0, 0): s[1, 1] + s[2],
+    (4, 2, 1, 1, 0): s[2],
+    (3, 3, 2, 0, 0): s[1, 1] + s[2],
+    (3, 3, 1, 1, 0): s[1, 1] + s[2],
+    (3, 2, 2, 1, 0): s[2],
+    (4, 3, 2, 0, 0): s[1],
+    (4, 3, 1, 1, 0): s[1],
+    (4, 2, 2, 1, 0): s[1],
+    (3, 3, 2, 1, 0): s[1],
+    (4, 3, 2, 1, 0): s([])
+}
+
+"""
+    sage: for n in [3..5]:
+    ....:     print n, (Sigma[(0,)*n]).coproduct() - add([tensor([Sigma[partitionPath(path)], Sigma[partitionPath(zeta(n,n,path))]]) for path in DyckWords(n)])
+    ....:     
+    3 0
+    4 0
+    5 -s[3] # s[2, 2] + s[4] # s[2, 2]
+"""
+
 """ ========================= Binomials ========================= """
 
 # Return the abstract binomial binom(var, j).
@@ -183,7 +258,7 @@ def partitionPath(path):
             partition[-1] -= 1
         else:
             partition.append(partition[-1])
-    return tuple(partition)
+    return tuple(partition[:-1])
 
 # Return the path of a partition (the limit of the partition).
 def pathPartition(partition):
@@ -560,6 +635,26 @@ def maximalHopfDistances(m,n,chain):
         return (0,)
     return tuple([max([len(superChain)-1 for superChain in strictBoundedSuperChains(TamariLattice(m,n), chain[i:i+2], element_constructor=tuple) if isValidChain(chain[:i] + superChain + chain[i+2:])]) for i in range(len(chain)-1)])
 
+# Compute the maximal Hopf distances in chain.
+# For all i, we compute the maximal length of a superchain between chain[i] and chain[i+1] that is valid with the rest of chain already constructed.
+def maximalHopfDistancesSequential(m,n,chain):
+    if len(chain) == 1:
+        return (0,)
+    candidateSuperChains = [[]]
+    for i in range(len(chain)-1):
+        nextCandidates = flatten([[candidateSuperChain + [superChain[:-1]] for superChain in strictBoundedSuperChains(TamariLattice(m,n), chain[i:i+2], element_constructor=tuple) if isValidChain(tuple(flatten(candidateSuperChain, max_level=1)) + superChain + chain[i+2:])] for candidateSuperChain in candidateSuperChains], max_level=1)
+        maxTotalLength = 0
+        candidateSuperchains = []
+        for candidate in nextCandidates:
+            totalLength = len(candidate[-1])
+            if totalLength > maxTotalLength:
+                candidateSuperChains = []
+                maxTotalLength = totalLength
+            if maxTotalLength == totalLength:
+                candidateSuperChains.append(candidate)
+    print len(candidateSuperChains)
+    return tuple([len(x) for x in candidateSuperChains[0]])
+
 # Compute the maximal Hopf distances between the first two paths and the last two paths.
 # This is just to gain time from the previous function
 def maximalHopfDistancesFirstLast(m,n,chain):
@@ -792,6 +887,7 @@ def refinedCountValidChains_r_q(m,n):
     res = dict({})
     for chain in validStrictChains:
         key = (upStepsPartition(chain[-1]), len(chain), maximalHopfDistancesFirstLast(m,n,chain))
+        #key = (upStepsPartition(chain[-1]), len(chain), maximalHopfDistancesSequential(m,n,chain))
         if not res.has_key(key):
             res[key] = 0
         res[key] += 1
@@ -986,11 +1082,11 @@ def refinedCountValidChains_r_q_LLT(m,n):
 
 # Return the polynomial expression with the maximal Hopf distance between the first two paths.
 def refinedCountValidChainsPolyn_r_q_LLT_first(m,n):
-    return add([coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
+    return add([coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2)) * LLT[partitionPath(path)] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
 
 # Return the polynomial expression with the maximal Hopf distance between the last two paths.
 def refinedCountValidChainsPolyn_r_q_LLT_last(m,n):
-    return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
+    return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(path)] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
 
 # The next function is just used to print nice formulas for the paper.
 # Return the polynomial expression with the maximal Hopf distance between the last two paths written in latex.
@@ -1017,7 +1113,7 @@ sage: for n in range(2,6):
 
 # remark: it gives the same function if we reverse the path!!!!
 def checkWeirdSymmetry(m,n):
-    return add([coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()]) == add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(reversePath(path))[:-1]] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
+    return add([coeff * (binomial(r-2, length-1) + q^distances[0] * binomial(r-2, length-2)) * LLT[partitionPath(path)] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()]) == add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(reversePath(path))] for ((path, length, distances), coeff) in refinedCountValidChains_r_q_LLT(m,n).items()])
 
 """
 
@@ -1065,7 +1161,7 @@ def refinedCountValidChainsPolynDeltaConj_r_q_LLT(m, n, k, direction='C'):
             for s in Subsets(nondescents, k):
                 # rem is a subset of size n-1-k containing all descents
                 rem = set(range(1,len(distanceCols))).difference(s)
-                res += coeff * (int(k==0) * binomial(r-2, length-1) + prod([q^distanceCols[i] for i in rem]) * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]]
+                res += coeff * (int(k==0) * binomial(r-2, length-1) + prod([q^distanceCols[i] for i in rem]) * binomial(r-2, length-2)) * LLT[partitionPath(path)]
     return res
 
 def checkDeltaConjecture_r_q_LLT(m, n, k, direction='C'):
@@ -1869,7 +1965,7 @@ this is the killer
 
 # returns the polynomial expression
 def refinedCountValidChainsPolynForbidden_r_q_LLT_last(m, n, forbiddenChains):
-    return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(path)[:-1]] for ((path, length, distances), coeff) in refinedCountValidChainsFirstLastForbidden(m, n, forbiddenChains).items()])
+    return add([coeff * (binomial(r-2, length-1) + q^distances[-1] * binomial(r-2, length-2)) * LLT[partitionPath(path)] for ((path, length, distances), coeff) in refinedCountValidChainsFirstLastForbidden(m, n, forbiddenChains).items()])
 
 # choose among the candidates using the statistic
 def chooseKiller3(m, n, candidates):
