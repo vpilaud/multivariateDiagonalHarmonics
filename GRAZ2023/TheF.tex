@@ -1,0 +1,963 @@
+
+% !TEX encoding = UTF-8 Unicode
+\documentclass[12pt]{amsart}
+
+%\usepackage[notcite,notref]{showkeys}
+\usepackage{tikz}
+%\usepackage{bbm,bm}
+%\usepackage{rotating}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage[all]{xy}
+%\usepackage{todonotes}
+
+
+
+\sloppy
+\flushbottom
+
+\usepackage{color}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\green}[1]{\textcolor{green!75!black}{#1}}
+
+\def\Pda{\Psi_{21}(\alpha)}
+
+\usepackage[colorlinks=true,%linkcolor=RoyalBlue,
+citecolor=cyan,urlcolor=blue,linktocpage=true,pagebackref]{hyperref} 
+
+
+%%%%%%%%%%%%%%
+\usepackage{xargs}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny,linecolor=red,backgroundcolor=red!25,bordercolor=red]{todonotes}
+\setlength{\marginparwidth}{2cm}
+\newcommandx{\nantel}[2][1=]{\todo[linecolor=brown,backgroundcolor=red!25,bordercolor=blue,#1]{#2 ---Nantel}}
+\newcommandx{\jc}[2][1=]{\todo[linecolor=purple,backgroundcolor=blue!25,bordercolor=red,#1]{#2 ---JC}}
+\newcommandx{\john}[2][1=]{\todo[linecolor=purple,backgroundcolor=green!25,bordercolor=red,#1]{#2 ---John}}
+
+
+%%---- page geometry & headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\addtolength{\textheight}{48pt}
+\addtolength{\voffset}{-24pt}
+\addtolength{\textwidth}{86pt}
+\addtolength{\hoffset}{-42pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{headings} % empty}
+
+\date{\today}
+
+%-------------------------------------------------------------------
+% ENVIRONMENTS
+%-------------------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}{\red{Conjecture}}
+\newtheorem{property}{\red{Property}}
+
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example} 
+\newtheorem{remark}[theorem]{Remark} 
+\newtheorem{definition}[theorem]{Definition} 
+
+\theoremstyle{remark}
+\newtheorem*{associativity}{Associativity}
+%\newtheorem*{unitality}{Unitality}
+%\newtheorem*{naturality}{Naturality}
+\newtheorem*{compatibility}{Compatibility}
+%\newtheorem*{connectedness}{Connectedness}
+%\newtheorem*{multiplicativity}{Multiplicativity}
+%\newtheorem*{warning}{Warning}
+
+ 
+ 
+% TO SEE SPECIAL COMMENT "uncomment" the line bellow
+% make sure that "\excludecomment{moredetails}" is the "commented" 
+% TO HIDE SPECIAL COMMENT do the opposite as above
+\specialcomment{moredetails}{\begingroup\color{red}}{\endgroup}
+%\excludecomment{moredetails}
+
+
+% SET: I,J,K,L
+% Set composition:  A,B,C,D
+% Parts O,P,Q,R,T,E,F
+
+%-------------------------------------------------------------------
+% MACROS
+%-------------------------------------------------------------------
+\newcommand{\draftnote}[1]{\marginpar{\raggedright\textsf{\hspace{0pt}\red{#1}}}}
+
+\newcommand{\Vinc}{\begin{turn}{90}$\subseteq$\end{turn}} 
+\newcommand{\Veq}{\begin{turn}{90}$=$\end{turn}}
+
+\def\id{\mathrm{id}}
+\def\Id{{\bf 1}}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\End}{End}
+
+\def\llb{{[\![}}
+\def\rrb{{]\!]}}
+
+
+\newcommand{\abs}[1]{\lvert#1\rvert} %for absolute value
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}} %for round matrix
+
+\newcommand{\larc}[1]{\hspace{-.4ex}\overset{#1}{\frown}\hspace{-.4ex}}
+\newcommand{\slarc}[1]{\overset{#1}{\frown}}
+
+\newcommand{\gel}{>_{\ell}}
+\newcommand{\lel}{<_{\ell}}
+
+\newcommand{\one}{\bm {1}}
+\newcommand{\euler}{\bm {e}}
+
+\let\onto=\twoheadrightarrow
+\let\into=\hookrightarrow
+\let\map=\xrightarrow
+\newcommand{\xyinc}{\ar@{^{(}->}}
+\newcommand{\mapsby}[1]{ \overset{#1}{\longmapsto}}
+
+\newcommand{\type}[2]{\mathsf T_{#1}(#2)}
+
+\def\field{\Bbbk}
+\newcommand{\Sr}{\mathrm{S}} %symmetric group
+
+\newcommand{\rH}{\mathrm{H}}
+\newcommand{\rL}{{\bm  l}}
+\newcommand{\rG}{{\bm  g}}
+\newcommand{\rD}{\mathrm{D}}
+
+\newcommand{\bL}{\bm  L}
+\newcommand{\bE}{\bm  E}
+\newcommand{\bH}{\bm  H}
+\newcommand{\bh}{\bm  h}
+\newcommand{\bk}{\bm  k}
+\newcommand{\bK}{\bm  K}
+\newcommand{\bPi}{\bm  \Pi}
+\newcommand{\bG}{\bm {G}} 
+\newcommand{\bp}{\bm  p}
+\newcommand{\bq}{\bm  q}
+\newcommand{\bmm}{\bm  m}%\bm exists
+\newcommand{\bd}{\bm  d}
+
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Kc}{\mathcal{K}}
+\newcommand{\Kcb}{\overline{\Kc}}
+
+\newcommand{\Nb}{\mathbb{N}}
+\newcommand{\Qb}{\mathbb{Q}}
+\newcommand{\Cb}{\mathbb{C}}
+\newcommand{\Zb}{\mathbb{Z}}
+\newcommand{\Fb}{\mathbb{F}}
+\newcommand{\Fq}{\Fb_q}
+
+
+\newcommand{\Qvar}{{\bm q}}
+\newcommand{\Zvar}{{\bm z}}
+
+
+\newcommand{\Nf}{\mathfrak{n}}
+\newcommand{\bNf}{\overline{\Nf}}
+\newcommand{\Mf}{\mathfrak{m}}
+\newcommand{\bMf}{\overline{\Mf}}
+
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Un}{\mathrm{U}}
+\newcommand{\Mat}{\mathrm{M}}
+\newcommand{\Tri}{\mathrm{T}}
+
+\newcommand{\FC}{\bm{\mathrm{f}}}
+\newcommand{\CF}{\bm{\mathrm{cf}}}
+\newcommand{\SC}{\bm{\mathrm{scf}}}
+
+\newcommand{\bdot}{\bm\cdot}
+
+\newcommand{\qand}{\quad\text{and}\quad}
+\newcommand{\qor}{\quad\text{or}\quad}
+\newcommand{\qqand}{\qquad\text{and}\qquad}
+\newcommand{\qqor}{\qquad\text{or}\qquad}
+
+%\newcommand{\jc}[1]{\todo[color=orange!30]{#1 \\ \hfill --- J-C.}}
+%\newcommand{}[1]{\todo[color=red!30]{#1 \\ \hfill --- N.}}
+\setlength{\marginparwidth}{2cm}
+
+\newcommand{\PF}{\mathcal{PF}}
+\newcommand\area{\mathop{\mathrm{area}}}
+\newcommand{\dinv}{\mathop{\mathrm{dinv}}}
+\newcommand{\ides}{\mathop{\mathrm{ides}}}
+\newcommand{\des}{\mathop{\mathrm{des}}}
+\newcommand{\desc}{\mathop{\mathrm{desc}}}
+\newcommand{\ank}{\mathop{\mathrm{ank}}}
+\newcommand{\ret}{\mathop{\mathrm{ret}}}
+\newcommand{\comp}{\mathop{\mathrm{comp}}}
+\newcommand{\ps}{\mathop{\mathrm ps^1}}
+
+% math commands
+\newcommand{\set}[2]{\left\{ #1 \;\middle|\; #2 \right\}} % set notation
+\newcommand{\bigset}[2]{\big\{ #1 \;\big|\; #2 \big\}} % big set notation
+\newcommand{\Bigset}[2]{\Big\{ #1 \;\Big|\; #2 \Big\}} % Big set notation
+\newcommand{\setangle}[2]{\left\langle #1 \;\middle|\; #2 \right\rangle} % set notation
+\newcommand{\ssm}{\smallsetminus} % small set minus
+\newcommand{\dotprod}[2]{\left\langle \, #1 \; \middle| \; #2 \, \right\rangle} % dot product
+\newcommand{\symdif}{\,\triangle\,} % symmetric difference
+\newcommand{\eqdef}{\mbox{\,\raisebox{0.2ex}{\scriptsize\ensuremath{\mathrm:}}\ensuremath{=}\,}} % :=
+\newcommand{\defeq}{\mbox{~\ensuremath{=}\raisebox{0.2ex}{\scriptsize\ensuremath{\mathrm:}} }} % =:
+\newcommand{\simplex}{\triangle} % simplex
+\renewcommand{\implies}{\Rightarrow} % imply sign
+\newcommand{\transpose}[1]{{#1}^t} % transpose matrix
+
+%%%%%%%%%%%%%%
+%%  TITLE AND AUTHORS
+%%%%%%%%%%%%%%
+\author{Fran\c{c}ois Bergeron}
+\author{Nantel Bergeron}
+\author{Cesar Caballos}
+\author{Vincent Pilaud}
+
+\title{The $F_\tau(Q;Z)= \overline{{\mathcal E}_\tau(Q+1;Z)} $ for various shapes and large $n$}
+
+\begin{document}
+
+\begin{abstract}
+Work in Graz June 2023. We take a large $n$ and compute ${\mathcal E}_\tau(Q+1;Z)$, then the large part $\lambda_1$ in $e_\lambda$ is removed $\overline{e_\lambda}=e_{\lambda_2\cdots\lambda_k}$
+Then $F_\tau(Q;Z)$ is independent of $n$ and is the {\sl stable form}.
+\end{abstract}
+
+\maketitle
+
+
+$$F_{ 0 }(Q;Z)=
+\boldsymbol{1} \otimes e_{ 0 }
+$$
+
+$$F_{ 1 }(Q;Z)=
+s_{1} \otimes e_{ 0 }
++ \boldsymbol{1} \otimes e_{ 1 }
+$$
+
+$$F_{ 11 }(Q;Z)=
+s_{2} \otimes e_{ 0 }
++ s_{1} \otimes e_{ 1 }
++ \boldsymbol{1} \otimes e_{ 2 }
+$$
+
+$$F_{ 2 }(Q;Z)=
+s_{2} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} \big) \otimes e_{ 1 }
+$$
+
+$$F_{ 111 }(Q;Z)=
+s_{3} \otimes e_{ 0 }
++ s_{2} \otimes e_{ 1 }
++ s_{1} \otimes e_{ 2 }
++ \boldsymbol{1} \otimes e_{ 3 }
+$$
+
+$$F_{ 21 }(Q;Z)=
+\big( s_{3} + s_{11} \big) \otimes e_{ 0 }
++\big( s_{1} + s_{2} \big) \otimes e_{ 1 }
++ \boldsymbol{1} \otimes e_{ 11 }
++ s_{1} \otimes e_{ 2 }
+$$
+
+$$F_{ 3 }(Q;Z)=
+s_{3} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} \big) \otimes e_{ 1 }
+$$
+
+$$F_{ 1111 }(Q;Z)=
+s_{4} \otimes e_{ 0 }
++ s_{3} \otimes e_{ 1 }
++ s_{2} \otimes e_{ 2 }
++ s_{1} \otimes e_{ 3 }
++ \boldsymbol{1} \otimes e_{ 4 }
+$$
+
+$$F_{ 211 }(Q;Z)=
+\big( s_{4} + s_{21} \big) \otimes e_{ 0 }
++\big( s_{2} + s_{3} + s_{11} \big) \otimes e_{ 1 }
++ s_{1} \otimes e_{ 11 }
++ s_{2} \otimes e_{ 2 }
++ \boldsymbol{1} \otimes e_{ 21 }
++ s_{1} \otimes e_{ 3 }
+$$
+
+$$F_{ 31 }(Q;Z)=
+\big( s_{4} + s_{21} \big) \otimes e_{ 0 }
++\big( s_{1} + s_{2} + s_{3} + s_{11} \big) \otimes e_{ 1 }
++\big( \boldsymbol{1} + s_{1} \big) \otimes e_{ 11 }
++ s_{2} \otimes e_{ 2 }
+$$
+
+$$F_{ 4 }(Q;Z)=
+s_{4} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} \big) \otimes e_{ 1 }
+$$
+
+$$F_{ 11111 }(Q;Z)=
+s_{5} \otimes e_{ 0 }
++ s_{4} \otimes e_{ 1 }
++ s_{3} \otimes e_{ 2 }
++ s_{2} \otimes e_{ 3 }
++ s_{1} \otimes e_{ 4 }
++ \boldsymbol{1} \otimes e_{ 5 }
+$$
+
+$$F_{ 2111 }(Q;Z)=
+\big( s_{5} + s_{31} \big) \otimes e_{ 0 }
++\big( s_{3} + s_{4} + s_{21} \big) \otimes e_{ 1 }
++ s_{2} \otimes e_{ 11 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 2 }
++ s_{1} \otimes e_{ 21 }
++ s_{2} \otimes e_{ 3 }
++ \boldsymbol{1} \otimes e_{ 31 }
++ s_{1} \otimes e_{ 4 }
+$$
+
+$$F_{ 221 }(Q;Z)=
+\big( s_{5} + s_{31} \big) \otimes e_{ 0 }
++\big( s_{3} + s_{4} + s_{21} \big) \otimes e_{ 1 }
++ s_{2} \otimes e_{ 11 }
++\big( s_{1} + s_{3} + s_{11} \big) \otimes e_{ 2 }
++\big( \boldsymbol{1} + s_{1} \big) \otimes e_{ 21 }
++ s_{2} \otimes e_{ 3 }
+$$
+
+$$F_{ 32 }(Q;Z)=
+\big( s_{5} + s_{31} \big) \otimes e_{ 0 }
++\big( s_{2} + s_{3} + s_{4} + s_{21} \big) \otimes e_{ 1 }
++\big( \boldsymbol{1} + s_{1} + s_{2} \big) \otimes e_{ 11 }
++\big( s_{1} + s_{3} + s_{11} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 41 }(Q;Z)=
+\big( s_{5} + s_{31} \big) \otimes e_{ 0 }
++\big( s_{1} + s_{2} + s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 1 }
++\big( \boldsymbol{1} + s_{1} + s_{2} \big) \otimes e_{ 11 }
++ s_{3} \otimes e_{ 2 }
+$$
+
+$$F_{ 5 }(Q;Z)=
+s_{5} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} \big) \otimes e_{ 1 }
+\hskip 5in \   $$
+
+$$F_{ 111111 }(Q;Z)=
+s_{6} \otimes e_{ 0 }
++ s_{5} \otimes e_{ 1 }
++ s_{4} \otimes e_{ 2 }
++ s_{3} \otimes e_{ 3 }
++ s_{2} \otimes e_{ 4 }
++ s_{1} \otimes e_{ 5 }
++ \boldsymbol{1} \otimes e_{ 6 }
+ \hskip 5in \  $$
+
+$$F_{ 21111 }(Q;Z)=
+\big( s_{6} + s_{41} \big) \otimes e_{ 0 }
++\big( s_{4} + s_{5} + s_{31} \big) \otimes e_{ 1 }
++ s_{3} \otimes e_{ 11 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 2 }
++ s_{2} \otimes e_{ 21 } $$ $$
++\big( s_{3} + s_{11} \big) \otimes e_{ 3 }
++ s_{1} \otimes e_{ 31 }
++ s_{2} \otimes e_{ 4 }
++ \boldsymbol{1} \otimes e_{ 41 }
++ s_{1} \otimes e_{ 5 }
+$$
+
+$$F_{ 2211 }(Q;Z)=
+\big( s_{6} + s_{22} + s_{41} \big) \otimes e_{ 0 }
++\big( s_{4} + s_{5} + s_{21} + s_{31} \big) \otimes e_{ 1 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 11 }
++\big( s_{2} + s_{4} - s_{11} + s_{21} \big) \otimes e_{ 2 } $$ $$
++\big( s_{1} + s_{2} \big) \otimes e_{ 21 }
++ \boldsymbol{1} \otimes e_{ 22 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 3 }
++ s_{1} \otimes e_{ 31 }
++ s_{2} \otimes e_{ 4 }
+$$
+
+$$F_{ 321 }(Q;Z)=
+\big( s_{6} + s_{31} + s_{41} + s_{111} \big) \otimes e_{ 0 }
++\big( s_{3} + s_{4} + s_{5} + s_{11} + s_{21} + s_{31} \big) \otimes e_{ 1 }
++\big( s_{1} + s_{2} + s_{3} \big) \otimes e_{ 11 } $$ $$
++ \boldsymbol{1} \otimes e_{ 111 }
++\big( s_{2} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 2 }
++\big( 2 s_{1} + s_{2} \big) \otimes e_{ 21 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 3 }
+$$
+
+$$F_{ 42 }(Q;Z)=
+\big( s_{6} + s_{22} + s_{41} \big) \otimes e_{ 0 }
++\big( s_{2} + s_{3} + s_{4} + s_{5} + s_{21} + s_{31} \big) \otimes e_{ 1 }  \hskip 5in \  $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + s_{2} + s_{3} + s_{11} \big) \otimes e_{ 11 }
++\big( s_{2} + s_{4} + s_{21} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 51 }(Q;Z)=
+\big( s_{6} + s_{41} \big) \otimes e_{ 0 }
++\big( s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{11} + s_{21} + s_{31} \big) \otimes e_{ 1 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} \big) \otimes e_{ 11 }
++ s_{4} \otimes e_{ 2 }
+$$
+
+$$F_{ 6 }(Q;Z)=
+s_{6} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} \big) \otimes e_{ 1 }
+ \hskip 5in \  $$
+
+$$F_{ 1111111 }(Q;Z)=
+s_{7} \otimes e_{ 0 }
++ s_{6} \otimes e_{ 1 }
++ s_{5} \otimes e_{ 2 }
++ s_{4} \otimes e_{ 3 }
++ s_{3} \otimes e_{ 4 }
++ s_{2} \otimes e_{ 5 }
++ s_{1} \otimes e_{ 6 }
++ \boldsymbol{1} \otimes e_{ 7 }
+$$
+
+$$F_{ 211111 }(Q;Z)=
+\big( s_{7} + s_{51} \big) \otimes e_{ 0 }
++\big( s_{5} + s_{6} + s_{41} \big) \otimes e_{ 1 }
++ s_{4} \otimes e_{ 11 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 2 }
++ s_{3} \otimes e_{ 21 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 3 } $$ $$
++ s_{2} \otimes e_{ 31 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 4 }
++ s_{1} \otimes e_{ 41 }
++ s_{2} \otimes e_{ 5 }
++ \boldsymbol{1} \otimes e_{ 51 }
++ s_{1} \otimes e_{ 6 }
+$$
+
+
+
+$$F_{ 22111 }(Q;Z)=
+\big( s_{7} + s_{32} + s_{51} \big) \otimes e_{ 0 }
++\big( s_{5} + s_{6} + s_{22} + s_{31} + s_{41} \big) \otimes e_{ 1 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 11 }
++\big( s_{3} + s_{5} + s_{31} \big) \otimes e_{ 2 } $$ $$
++\big( s_{2} + s_{3} + s_{11} \big) \otimes e_{ 21 }
++ s_{1} \otimes e_{ 22 } 
++\big( s_{4} - s_{11} + s_{21} \big) \otimes e_{ 3 }
++ s_{2} \otimes e_{ 31 } $$ $$
++ \boldsymbol{1} \otimes e_{ 32 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 4 }
++ s_{1} \otimes e_{ 41 }
++ s_{2} \otimes e_{ 5 }
+$$
+
+\vfill\eject
+$$F_{ 3211 }(Q;Z)=
+\big( s_{7} + s_{32} + s_{41} + s_{51} + s_{211} \big) \otimes e_{ 0 }
++\big( s_{4} + s_{5} + s_{6} + s_{21} + s_{22} + 2 s_{31} + s_{41} + s_{111} \big) \otimes e_{ 1 } $$ $$
++\big( s_{2} + s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 11 }
++ s_{1} \otimes e_{ 111 }
++\big( s_{3} + s_{5} + s_{21} + s_{31} \big) \otimes e_{ 2 } $$ $$
++\big( 2 s_{2} + s_{3} + s_{11} \big) \otimes e_{ 21 }
++ \boldsymbol{1} \otimes e_{ 211 }
++ s_{1} \otimes e_{ 22 } $$ $$
++\big( s_{4} + s_{21} \big) \otimes e_{ 3 }
++\big( s_{1} + s_{2} \big) \otimes e_{ 31 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 4 }
+$$
+
+$$F_{ 421 }(Q;Z)=
+\big( s_{7} + s_{32} + s_{41} + s_{51} + s_{211} \big) \otimes e_{ 0 }
++\big( s_{3} + s_{4} + s_{5} + s_{6} + s_{11} + s_{21} + s_{22} + 2 s_{31} + s_{41} + s_{111} \big) \otimes e_{ 1 } $$ $$
++\big( s_{1} + 2 s_{2} + s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 11 }
++\big( \boldsymbol{1} + s_{1} \big) \otimes e_{ 111 } $$ $$
++\big( s_{3} + s_{5} + s_{21} + s_{31} \big) \otimes e_{ 2 }
++\big( s_{1} + 2 s_{2} + s_{3} + s_{11} \big) \otimes e_{ 21 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 3 }
+$$
+
+$$F_{ 52 }(Q;Z)=
+\big( s_{7} + s_{32} + s_{51} \big) \otimes e_{ 0 }
++\big( s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{21} + s_{22} + s_{31} + s_{41} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 2 s_{2} + s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 11 }
++\big( s_{3} + s_{5} + s_{31} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 61 }(Q;Z)=
+\big( s_{7} + s_{51} \big) \otimes e_{ 0 }
++\big( s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{11} + s_{21} + s_{31} + s_{41} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} \big) \otimes e_{ 11 }
++ s_{5} \otimes e_{ 2 }
+$$
+
+$$F_{ 7 }(Q;Z)=
+s_{7} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} \big) \otimes e_{ 1 }
+ \hskip 5in \  $$
+
+$$F_{ 11111111 }(Q;Z)=
+s_{8} \otimes e_{ 0 }
++ s_{7} \otimes e_{ 1 }
++ s_{6} \otimes e_{ 2 }
++ s_{5} \otimes e_{ 3 }
++ s_{4} \otimes e_{ 4 }
++ s_{3} \otimes e_{ 5 }
++ s_{2} \otimes e_{ 6 }
++ s_{1} \otimes e_{ 7 }
++ \boldsymbol{1} \otimes e_{ 8 }
+$$
+
+$$F_{ 2111111 }(Q;Z)=
+\big( s_{8} + s_{61} \big) \otimes e_{ 0 }
++\big( s_{6} + s_{7} + s_{51} \big) \otimes e_{ 1 }
++ s_{5} \otimes e_{ 11 }
++\big( s_{6} + s_{41} \big) \otimes e_{ 2 }
++ s_{4} \otimes e_{ 21 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 3 } $$ $$
++ s_{3} \otimes e_{ 31 } +\big( s_{4} + s_{21} \big) \otimes e_{ 4 }
++ s_{2} \otimes e_{ 41 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 5 }
++ s_{1} \otimes e_{ 51 }
++ s_{2} \otimes e_{ 6 } $$ $$
++ \boldsymbol{1} \otimes e_{ 61 }
++ s_{1} \otimes e_{ 7 }
+$$
+
+$$F_{ 221111 }(Q;Z)=
+\big( s_{8} + s_{42} + s_{61} \big) \otimes e_{ 0 }
++\big( s_{6} + s_{7} + s_{32} + s_{41} + s_{51} \big) \otimes e_{ 1 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 11 } $$ $$
++\big( s_{4} + s_{6} + s_{22} + s_{41} \big) \otimes e_{ 2 }
++\big( s_{3} + s_{4} + s_{21} \big) \otimes e_{ 21 }
++ s_{2} \otimes e_{ 22 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 3 } $$ $$
++\big( s_{3} + s_{11} \big) \otimes e_{ 31 }
++ s_{1} \otimes e_{ 32 }
++\big( s_{4} - s_{11} + s_{21} \big) \otimes e_{ 4 }
++ s_{2} \otimes e_{ 41 } $$ $$
++ \boldsymbol{1} \otimes e_{ 42 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 5 }
++ s_{1} \otimes e_{ 51 }
++ s_{2} \otimes e_{ 6 }
+$$
+
+$$F_{ 22211 }(Q;Z)=
+\big( s_{8} + s_{42} + s_{61} \big) \otimes e_{ 0 }
++\big( s_{6} + s_{7} + s_{32} + s_{41} + s_{51} \big) \otimes e_{ 1 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 11 } $$ $$
++\big( s_{4} + s_{6} + s_{22} + s_{41} \big) \otimes e_{ 2 }
++\big( s_{3} + s_{4} + s_{21} \big) \otimes e_{ 21 }
++ s_{2} \otimes e_{ 22 } $$ $$
++\big( s_{2} + s_{5} + s_{31} \big) \otimes e_{ 3 }
++\big( s_{1} + s_{3} + s_{11} \big) \otimes e_{ 31 }
++\big( \boldsymbol{1} + s_{1} \big) \otimes e_{ 32 } $$ $$
++\big( s_{4} + s_{21} \big) \otimes e_{ 4 }
++ s_{2} \otimes e_{ 41 }
++ s_{3} \otimes e_{ 5 }
+$$
+
+\vfill\eject
+$$F_{ 3221 }(Q;Z)=
+\big( s_{8} + s_{42} + s_{51} + s_{61} + s_{311} \big) \otimes e_{ 0 }
++\big( s_{5} + s_{6} + s_{7} + s_{31} + s_{32} + 2 s_{41} + s_{51} + s_{211} \big) \otimes e_{ 1 } $$ $$
++\big( s_{3} + s_{4} + s_{5} + s_{21} + s_{31} \big) \otimes e_{ 11 } 
++ s_{2} \otimes e_{ 111 }
++\big( s_{4} + s_{6} + s_{31} + s_{11} + s_{22} + s_{41} + s_{111} \big) \otimes e_{ 2 } $$ $$
++\big( s_{1} + 2 s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 21 }
++\big( \boldsymbol{1} + s_{1} \big) \otimes e_{ 211 } 
++ s_{2} \otimes e_{ 22 } $$ $$
++\big( s_{2} + s_{5} + s_{21} + s_{31} \big) \otimes e_{ 3 }
++\big( s_{1} + s_{2} + s_{3} + s_{11} \big) \otimes e_{ 31 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 4 }
+$$
+
+$$F_{ 431 }(Q;Z)=
+\big( s_{8} + s_{42} + s_{51} + s_{61} + s_{311} \big) \otimes e_{ 0 }
++\big( s_{4} + s_{5} + s_{6} + s_{7} + s_{21} + s_{31} + s_{32} + 2 s_{41} + s_{51} + s_{211} \big) \otimes e_{ 1 } $$ $$
++\big( s_{1} + s_{2} + 2 s_{3} + s_{4} + s_{5} + s_{11} + s_{21} + s_{31} \big) \otimes e_{ 11 }
++\big( \boldsymbol{1} + s_{1} + s_{2} \big) \otimes e_{ 111 } $$ $$
++\big( s_{2} + s_{4} + s_{6} + s_{11} + s_{21} + s_{31} + s_{22} + s_{41} + s_{111} \big) \otimes e_{ 2 }
++\big( s_{1} + s_{2} + 2 s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 21 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 3 }
+$$
+
+$$F_{ 53 }(Q;Z)=
+\big( s_{8} + s_{42} + s_{61} \big) \otimes e_{ 0 }
++\big( s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{31} + s_{32} + s_{41} + s_{51} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 2 s_{2} + 2 s_{3} + s_{4} + s_{5} + s_{11} + s_{21} + s_{31} \big) \otimes e_{ 11 } $$ $$
++\big( s_{2} + s_{4} + s_{6} + s_{21} + s_{22} + s_{41} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 62 }(Q;Z)=
+\big( s_{8} + s_{42} + s_{61} \big) \otimes e_{ 0 }
++\big( s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{21} + s_{22} + s_{31} + s_{32} + s_{41} + s_{51} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 2 s_{2} + 2 s_{3} + s_{4} + s_{5} + s_{11} + s_{21} + s_{31} \big) \otimes e_{ 11 }
++\big( s_{4} + s_{6} + s_{41} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 71 }(Q;Z)=
+\big( s_{8} + s_{61} \big) \otimes e_{ 0 }
++\big( s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{11} + s_{21} + s_{31} + s_{41} + s_{51} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} \big) \otimes e_{ 11 }
++ s_{6} \otimes e_{ 2 }
+$$
+
+$$F_{ 8 }(Q;Z)=
+s_{8} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} \big) \otimes e_{ 1 }
+\hskip 5in \  $$
+
+$$F_{ 111111111 }(Q;Z)=
+s_{9} \otimes e_{ 0 }
++ s_{8} \otimes e_{ 1 }
++ s_{7} \otimes e_{ 2 }
++ s_{6} \otimes e_{ 3 }
++ s_{5} \otimes e_{ 4 }
++ s_{4} \otimes e_{ 5 }
++ s_{3} \otimes e_{ 6 }
++ s_{2} \otimes e_{ 7 }
++ s_{1} \otimes e_{ 8 }
++ \boldsymbol{1} \otimes e_{ 9 }
+$$
+
+$$F_{ 21111111 }(Q;Z)=
+\big( s_{9} + s_{71} \big) \otimes e_{ 0 }
++\big( s_{7} + s_{8} + s_{61} \big) \otimes e_{ 1 }
++ s_{6} \otimes e_{ 11 }
++\big( s_{7} + s_{51} \big) \otimes e_{ 2 }
++ s_{5} \otimes e_{ 21 }
++\big( s_{6} + s_{41} \big) \otimes e_{ 3 } $$ $$
++ s_{4} \otimes e_{ 31 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 4 }
++ s_{3} \otimes e_{ 41 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 5 }
++ s_{2} \otimes e_{ 51 } $$ $$
++\big( s_{3} + s_{11} \big) \otimes e_{ 6 } 
++ s_{1} \otimes e_{ 61 }
++ s_{2} \otimes e_{ 7 }
++ \boldsymbol{1} \otimes e_{ 71 }
++ s_{1} \otimes e_{ 8 }
+$$
+
+$$F_{ 2211111 }(Q;Z)=
+\big( s_{9} + s_{52} + s_{71} \big) \otimes e_{ 0 }
++\big( s_{7} + s_{8} + s_{42} + s_{51} + s_{61} \big) \otimes e_{ 1 }
++\big( s_{6} + s_{41} \big) \otimes e_{ 11 } $$ $$
++\big( s_{5} + s_{7} + s_{32} + s_{51} \big) \otimes e_{ 2 }
++\big( s_{4} + s_{5} + s_{31} \big) \otimes e_{ 21 }
++ s_{3} \otimes e_{ 22 } $$ $$
++\big( s_{6} + s_{22} + s_{41} \big) \otimes e_{ 3 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 31 }
++ s_{2} \otimes e_{ 32 } $$ $$
++\big( s_{5} + s_{31} \big) \otimes e_{ 4 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 41 }
++ s_{1} \otimes e_{ 42 } $$ $$
++\big( s_{4} - s_{11} + s_{21} \big) \otimes e_{ 5 }
++ s_{2} \otimes e_{ 51 }
++ \boldsymbol{1} \otimes e_{ 52 } $$ $$
++\big( s_{3} + s_{11} \big) \otimes e_{ 6 }
++ s_{1} \otimes e_{ 61 }
++ s_{2} \otimes e_{ 7 }
+$$
+
+$$F_{ 222111 }(Q;Z)=
+\big( s_{9} + s_{33} + s_{52} + s_{71} \big) \otimes e_{ 0 }
++\big( s_{7} + s_{8} + s_{32} + s_{42} + s_{51} + s_{61} \big) \otimes e_{ 1 } $$ $$
++\big( s_{6} + s_{22} + s_{41} \big) \otimes e_{ 11 }
++\big( s_{5} + s_{7} - s_{22} + s_{31} + s_{32} + s_{51} \big) \otimes e_{ 2 } $$ $$
++\big( s_{4} + s_{5} + s_{21} + s_{31} \big) \otimes e_{ 21 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 22 } $$ $$
++\big( s_{3} + s_{6} - s_{21} + s_{22} + s_{41} \big) \otimes e_{ 3 }
++\big( s_{2} + s_{4} - s_{11} + s_{21} \big) \otimes e_{ 31 }
++\big( s_{1} + s_{2} \big) \otimes e_{ 32 }$$ $$
++ \boldsymbol{1} \otimes e_{ 33 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 4 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 41 } $$ $$
++ s_{1} \otimes e_{ 42 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 5 }
++ s_{2} \otimes e_{ 51 }
++ s_{3} \otimes e_{ 6 }
+$$
+
+$$F_{ 32211 }(Q;Z)=
+\big( s_{9} + s_{42} + s_{52} + s_{61} + s_{71} + s_{221} + s_{411} \big) \otimes e_{ 0 }  \hskip 5in \  $$ $$
++\big( s_{6} + s_{7} + s_{8} + s_{22} + s_{32} + 2 s_{41} + s_{42} + 2 s_{51} + s_{61} + s_{211} + s_{311} \big) \otimes e_{ 1 } $$ $$
++\big( s_{4} + s_{5} + s_{6} + s_{21} + 2 s_{31} + s_{41} + s_{111} \big) \otimes e_{ 11 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 111 } $$ $$
++\big( s_{5} + s_{7} + s_{41} + s_{22} + s_{32} + s_{51} - s_{111} + s_{211} \big) \otimes e_{ 2 }
++\big( s_{2} + 2 s_{4} + s_{5} - s_{11} + 2 s_{21} + s_{31} \big) \otimes e_{ 21 }
++\big( s_{1} + s_{2} \big) \otimes e_{ 211 } $$ $$
++ s_{3} \otimes e_{ 22 }
++ \boldsymbol{1} \otimes e_{ 221 }
++\big( s_{3} + s_{6} + s_{11} + s_{31} + s_{22} + s_{41} + s_{111} \big) \otimes e_{ 3 } $$ $$
++\big( s_{2} + s_{3} + s_{4} + 2 s_{11} + s_{21} \big) \otimes e_{ 31 }
++ s_{1} \otimes e_{ 311 }
++\big( s_{1} + s_{2} \big) \otimes e_{ 32 } $$ $$
++\big( s_{5} - s_{11} + s_{21} + s_{31} \big) \otimes e_{ 4 }
++\big( s_{2} + s_{3} + s_{11} \big) \otimes e_{ 41 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 5 }
+$$
+
+$$F_{ 3321 }(Q;Z)=
+\big( s_{9} + s_{33} + s_{52} + s_{61} + s_{71} + s_{411} \big) \otimes e_{ 0 }
++\big( s_{6} + s_{7} + s_{8} + s_{32} + s_{41} + s_{42} + 2 s_{51} + s_{61} + s_{311} \big) \otimes e_{ 1 } $$ $$
++\big( s_{4} + s_{5} + s_{6} + s_{22} + s_{31} + s_{41} \big) \otimes e_{ 11 }
++ s_{3} \otimes e_{ 111 } 
++\big( s_{5} + s_{3} + s_{7} - s_{22} + s_{31} + s_{41} + s_{21} + s_{32} + s_{51} + s_{211} \big) \otimes e_{ 2 } $$ $$
++\big( s_{1} + 2 s_{2} + 2 s_{4} + s_{5} + s_{11} + 2 s_{21} + s_{31} \big) \otimes e_{ 21 } 
++\big( \boldsymbol{1} + s_{1} + s_{2} \big) \otimes e_{ 211 }
++\big( s_{1} + s_{3} + s_{11} \big) \otimes e_{ 22 } $$ $$
++\big( s_{3} + s_{6} + s_{11} + s_{31} + s_{22} + s_{41} + s_{111} \big) \otimes e_{ 3 }
++\big( s_{2} + s_{3} + s_{4} + s_{21} \big) \otimes e_{ 31 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 4 }
+$$
+
+$$F_{ 432 }(Q;Z)=
+\big( s_{9} + s_{33} + s_{52} + s_{61} + s_{71} + s_{411} \big) \otimes e_{ 0 }  \hskip 5in \  $$ $$
++\big( s_{5} + s_{6} + s_{7} + s_{8} + s_{31} + s_{32} + s_{41} + s_{42} + 2 s_{51} + s_{61} + s_{311} \big) \otimes e_{ 1 } $$ $$
++\big( s_{2} + s_{3} + 2 s_{4} + s_{5} + s_{6} + s_{21} + s_{22} + s_{31} + s_{41} \big) \otimes e_{ 11 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} \big) \otimes e_{ 111 } $$ $$
++\big( s_{3} + s_{5} + s_{7} + s_{21} + s_{31} + s_{41} + s_{32} + s_{51} + s_{211} \big) \otimes e_{ 2 }
++\big( 2 s_{1} + 2 s_{2} + s_{3} + 2 s_{4} + s_{5} + 2 s_{11} + 2 s_{21} + s_{31} \big) \otimes e_{ 21 } $$ $$
++\big( s_{3} + s_{6} + s_{11} + s_{31} + s_{41} + s_{111} \big) \otimes e_{ 3 }
+$$
+
+$$F_{ 531 }(Q;Z)=
+\big( s_{9} + s_{42} + s_{52} + s_{61} + s_{71} + s_{221} + s_{411} \big) \otimes e_{ 0 }  \hskip 5in \  $$ $$
++\big( s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{21} + s_{22} + s_{31} + s_{32} + 2 s_{41} + s_{42} + 2 s_{51} + s_{61} + s_{211} + s_{311} \big) \otimes e_{ 1 } $$ $$
++\big( s_{1} + 2 s_{2} + 2 s_{3} + 2 s_{4} + s_{5} + s_{6} + 2 s_{11} + 2 s_{21} + 2 s_{31} + s_{41} + s_{111} \big) \otimes e_{ 11 }
++\big( \boldsymbol{1} + 2 s_{1} + s_{2} + s_{3} + s_{11} \big) \otimes e_{ 111 } $$ $$
++\big( s_{3} + s_{5} + s_{7} + s_{21} + s_{31} + s_{41} + s_{22} + s_{32} + s_{51} + s_{211} \big) \otimes e_{ 2 }
++\big( 2 s_{2} + s_{3} + 2 s_{4} + s_{5} + 2 s_{21} + s_{31} \big) \otimes e_{ 21 } $$ $$
++\big( s_{6} + s_{22} + s_{41} \big) \otimes e_{ 3 }
+$$
+
+\vfill\eject
+$$F_{ 63 }(Q;Z)=
+\big( s_{9} + s_{33} + s_{52} + s_{71} \big) \otimes e_{ 0 }
++\big( s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{31} + s_{32} + s_{41} + s_{42} + s_{51} + s_{61} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 3 s_{2} + 2 s_{3} + 2 s_{4} + s_{5} + s_{6} + s_{11} + 2 s_{21} + s_{22} + s_{31} + s_{41} \big) \otimes e_{ 11 } $$ $$
++\big( s_{3} + s_{5} + s_{7} + s_{31} + s_{32} + s_{51} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 72 }(Q;Z)=
+\big( s_{9} + s_{52} + s_{71} \big) \otimes e_{ 0 }
++\big( s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{21} + s_{22} + s_{31} + s_{32} + s_{41} + s_{42} + s_{51} + s_{61} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 2 s_{2} + 2 s_{3} + 2 s_{4} + s_{5} + s_{6} + s_{11} + s_{21} + s_{31} + s_{41} \big) \otimes e_{ 11 }
++\big( s_{5} + s_{7} + s_{51} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 81 }(Q;Z)=
+\big( s_{9} + s_{71} \big) \otimes e_{ 0 }
++\big( s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{11} + s_{21} + s_{31} + s_{41} + s_{51} + s_{61} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} \big) \otimes e_{ 11 }
++ s_{7} \otimes e_{ 2 }
+$$
+
+$$F_{ 9 }(Q;Z)=
+s_{9} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} \big) \otimes e_{ 1 }
+\hskip 5in \   $$
+
+$$F_{ 1111111111 }(Q;Z)=
+s_{10.} \otimes e_{ 0 }
++ s_{9} \otimes e_{ 1 }
++ s_{8} \otimes e_{ 2 }
++ s_{7} \otimes e_{ 3 }
++ s_{6} \otimes e_{ 4 }\hskip 5in \  $$ $$
++ s_{5} \otimes e_{ 5 }
++ s_{4} \otimes e_{ 6 }
++ s_{3} \otimes e_{ 7 }
++ s_{2} \otimes e_{ 8 }
++ s_{1} \otimes e_{ 9 }
++ \boldsymbol{1} \otimes e_{ 10. }
+$$
+
+$$F_{ 211111111 }(Q;Z)=
+\big( s_{10.} + s_{81} \big) \otimes e_{ 0 }
++\big( s_{8} + s_{9} + s_{71} \big) \otimes e_{ 1 }
++ s_{7} \otimes e_{ 11 }
++\big( s_{8} + s_{61} \big) \otimes e_{ 2 }
++ s_{6} \otimes e_{ 21 }
++\big( s_{7} + s_{51} \big) \otimes e_{ 3 } $$ $$
++ s_{5} \otimes e_{ 31 }
++\big( s_{6} + s_{41} \big) \otimes e_{ 4 }
++ s_{4} \otimes e_{ 41 } 
++\big( s_{5} + s_{31} \big) \otimes e_{ 5 }
++ s_{3} \otimes e_{ 51 } 
++\big( s_{4} + s_{21} \big) \otimes e_{ 6 } $$ $$
++ s_{2} \otimes e_{ 61 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 7 }
++ s_{1} \otimes e_{ 71 }
++ s_{2} \otimes e_{ 8 }
++ \boldsymbol{1} \otimes e_{ 81 }
++ s_{1} \otimes e_{ 9 }
+$$
+
+$$F_{ 22111111 }(Q;Z)=
+\big( s_{10.} + s_{62} + s_{81} \big) \otimes e_{ 0 }
++\big( s_{8} + s_{9} + s_{52} + s_{61} + s_{71} \big) \otimes e_{ 1 }
++\big( s_{7} + s_{51} \big) \otimes e_{ 11 } $$ $$
++\big( s_{6} + s_{8} + s_{42} + s_{61} \big) \otimes e_{ 2 }
++\big( s_{5} + s_{6} + s_{41} \big) \otimes e_{ 21 }
++ s_{4} \otimes e_{ 22 } $$ $$
++\big( s_{7} + s_{32} + s_{51} \big) \otimes e_{ 3 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 31 }
++ s_{3} \otimes e_{ 32 } $$ $$
++\big( s_{6} + s_{22} + s_{41} \big) \otimes e_{ 4 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 41 }
++ s_{2} \otimes e_{ 42 } $$ $$
++\big( s_{5} + s_{31} \big) \otimes e_{ 5 }
++\big( s_{3} + s_{11} \big) \otimes e_{ 51 }
++ s_{1} \otimes e_{ 52 } $$ $$
++\big( s_{4} - s_{11} + s_{21} \big) \otimes e_{ 6 }
++ s_{2} \otimes e_{ 61 }
++ \boldsymbol{1} \otimes e_{ 62 } $$ $$
++\big( s_{3} + s_{11} \big) \otimes e_{ 7 }
++ s_{1} \otimes e_{ 71 }
++ s_{2} \otimes e_{ 8 }
+$$
+
+\vfill\eject
+$$F_{ 2221111 }(Q;Z)=
+\big( s_{10.} + s_{43} + s_{62} + s_{81} \big) \otimes e_{ 0 }
++\big( s_{8} + s_{9} + s_{33} + s_{42} + s_{52} + s_{61} + s_{71} \big) \otimes e_{ 1 } $$ $$
++\big( s_{7} + s_{32} + s_{51} \big) \otimes e_{ 11 }
++\big( s_{6} + s_{8} + s_{41} + s_{42} + s_{61} \big) \otimes e_{ 2 }
++\big( s_{5} + s_{6} + s_{22} + s_{31} + s_{41} \big) \otimes e_{ 21 } $$ $$
++\big( s_{4} + s_{21} \big) \otimes e_{ 22 }
++\big( s_{4} + s_{7} - s_{22} + s_{32} + s_{51} \big) \otimes e_{ 3 }
++\big( s_{3} + s_{5} + s_{31} \big) \otimes e_{ 31 } $$ $$
++\big( s_{2} + s_{3} + s_{11} \big) \otimes e_{ 32 }
++ s_{1} \otimes e_{ 33 }
++\big( s_{6} - s_{21} + s_{22} + s_{41} \big) \otimes e_{ 4 } $$ $$
++\big( s_{4} - s_{11} + s_{21} \big) \otimes e_{ 41 }
++ s_{2} \otimes e_{ 42 }
++ \boldsymbol{1} \otimes e_{ 43 }
++\big( s_{5} + s_{31} \big) \otimes e_{ 5 } $$ $$
++\big( s_{3} + s_{11} \big) \otimes e_{ 51 }
++ s_{1} \otimes e_{ 52 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 6 } $$ $$
++ s_{2} \otimes e_{ 61 }
++ s_{3} \otimes e_{ 7 }
+$$
+
+$$F_{ 322111 }(Q;Z)=
+\big( s_{10.} + s_{43} + s_{52} + s_{62} + s_{71} + s_{81} + s_{321} + s_{511} \big) \otimes e_{ 0 }  \hskip 5in \  $$ $$
++\big( s_{7} + s_{8} + s_{9} + s_{32} + s_{33} + 2 s_{42} + 2 s_{51} + s_{52} + 2 s_{61} + s_{71} + s_{221} + s_{311} + s_{411} \big) \otimes e_{ 1 } $$ $$
++\big( s_{5} + s_{6} + s_{7} + s_{22} + s_{31} + s_{32} + 2 s_{41} + s_{51} + s_{211} \big) \otimes e_{ 11 } $$ $$
++\big( s_{4} + s_{21} \big) \otimes e_{ 111 }
++\big( s_{6} + s_{8} + s_{32} + s_{41} + s_{51} + s_{42} + s_{61} + s_{311} \big) \otimes e_{ 2 } $$ $$
++\big( s_{3} + 2 s_{5} + s_{6} + s_{22} + 3 s_{31} + s_{41} + s_{111} \big) \otimes e_{ 21 }
++\big( s_{2} + s_{3} + s_{11} \big) \otimes e_{ 211 } $$ $$
++\big( s_{4} + s_{21} \big) \otimes e_{ 22 }
++ s_{1} \otimes e_{ 221 }
++\big( s_{4} + s_{7} + s_{41} + s_{32} + s_{51} - s_{111} + s_{211} \big) \otimes e_{ 3 } $$ $$
++\big( s_{3} + s_{4} + s_{5} - s_{11} + 2 s_{21} + s_{31} \big) \otimes e_{ 31 }
++ s_{2} \otimes e_{ 311 }
++\big( s_{2} + s_{3} + s_{11} \big) \otimes e_{ 32 } $$ $$
++ \boldsymbol{1} \otimes e_{ 321 }
++ s_{1} \otimes e_{ 33 }
++\big( s_{6} + s_{11} - s_{21} + s_{31} + s_{22} + s_{41} + s_{111} \big) \otimes e_{ 4 } $$ $$
++\big( s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 41 }
++ s_{1} \otimes e_{ 411 }
++ s_{2} \otimes e_{ 42 } $$ $$
++\big( s_{5} - s_{11} + s_{21} + s_{31} \big) \otimes e_{ 5 }
++\big( s_{2} + s_{3} + s_{11} \big) \otimes e_{ 51 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 6 }
+$$
+
+$$F_{ 33211 }(Q;Z)=
+\big( s_{10.} + s_{43} + s_{52} + s_{62} + s_{71} + s_{81} + s_{321} + s_{511} \big) \otimes e_{ 0 }  \hskip 5in \   $$ $$
++\big( s_{7} + s_{8} + s_{9} + s_{32} + s_{33} + 2 s_{42} + 2 s_{51} + s_{52} + 2 s_{61} + s_{71} + s_{221} + s_{311} + s_{411} \big) \otimes e_{ 1 } $$ $$
++\big( s_{5} + s_{6} + s_{7} + s_{22} + s_{31} + s_{32} + 2 s_{41} + s_{51} + s_{211} \big) \otimes e_{ 11 }
++\big( s_{4} + s_{21} \big) \otimes e_{ 111 } $$ $$
++\big( s_{6} + s_{4} + s_{8} + s_{32} + s_{41} + s_{51} + s_{21} + s_{42} + s_{61} + s_{311} \big) \otimes e_{ 2 } $$ $$
++\big( s_{2} + 2 s_{3} + 2 s_{5} + s_{6} + s_{11} + s_{22} + 3 s_{31} + s_{41} + s_{111} \big) \otimes e_{ 21 } $$ $$
++\big( s_{1} + s_{2} + s_{3} + s_{11} \big) \otimes e_{ 211 }
++\big( s_{2} + s_{4} + s_{21} \big) \otimes e_{ 22 } $$ $$
++\big( \boldsymbol{1} + s_{1} \big) \otimes e_{ 221 }
++\big( s_{4} + s_{7} + s_{21} - s_{11} + s_{41} + s_{32} + s_{51} - s_{111} + s_{211} \big) \otimes e_{ 3 } $$ $$
++\big( s_{3} + s_{4} + s_{5} + 2 s_{21} + s_{31} \big) \otimes e_{ 31 }
++ s_{2} \otimes e_{ 311 }
++\big( s_{1} + s_{2} + s_{3} + s_{11} \big) \otimes e_{ 32 } $$ $$
++\big( s_{6} + s_{11} - s_{21} + s_{31} + s_{22} + s_{41} + s_{111} \big) \otimes e_{ 4 }
++\big( s_{3} + s_{4} + s_{21} \big) \otimes e_{ 41 } $$ $$
++\big( s_{5} + s_{31} \big) \otimes e_{ 5 }
+$$
+
+
+\vfill\eject
+$$F_{ 4321 }(Q;Z)=
+\big( s_{10.} + s_{42} + s_{43} + s_{61} + s_{62} + s_{71} + s_{81} + s_{311} + s_{411} + s_{511} + s_{1111} \big) \otimes e_{ 0 } $$ $$
++\big( s_{6} + s_{7} + s_{8} + s_{9} + s_{31} + s_{32} + s_{33} + 2 s_{41} + s_{42} + 2 s_{51} + s_{52} + 2 s_{61} + s_{71} + s_{111} + s_{211} + s_{311} + s_{411} \big) \otimes e_{ 1 } $$ $$
++\big( s_{3} + s_{4} + 2 s_{5} + s_{6} + s_{7} + s_{11} + s_{21} + 2 s_{31} + s_{32} + s_{41} + s_{51} \big) \otimes e_{ 11 } $$ $$
++\big( s_{1} + s_{2} + s_{3} + s_{4} \big) \otimes e_{ 111 }
++ \boldsymbol{1} \otimes e_{ 1111 } $$ $$
++\big( s_{4} + s_{6} + s_{8} + s_{21} + s_{31} + 2 s_{41} + s_{51} + s_{22} + s_{42} + s_{61} + s_{111} + s_{211} + s_{311} \big) \otimes e_{ 2 } $$ $$
++\big( 2 s_{2} + 2 s_{3} + s_{4} + 2 s_{5} + s_{6} + 2 s_{11} + 3 s_{21} + s_{22} + 2 s_{31} + s_{41} \big) \otimes e_{ 21 } $$ $$
++\big( 3 s_{1} + 2 s_{2} + s_{3} \big) \otimes e_{ 211 }
++\big( s_{2} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 22 } $$ $$
++\big( s_{4} + s_{7} + s_{21} + s_{31} + s_{41} + s_{32} + s_{51} + s_{111} + s_{211} \big) \otimes e_{ 3 }
++\big( 2 s_{3} + s_{4} + s_{5} + 2 s_{11} + s_{21} + s_{31} \big) \otimes e_{ 31 } $$ $$
++\big( s_{6} + s_{31} + s_{41} + s_{111} \big) \otimes e_{ 4 }
+$$
+
+$$F_{ 532 }(Q;Z)=
+\big( s_{10.} + s_{43} + s_{52} + s_{62} + s_{71} + s_{81} + s_{321} + s_{511} \big) \otimes e_{ 0 } \hskip 5in \  $$ $$
++\big( s_{5} + s_{6} + s_{7} + s_{8} + s_{9} + s_{21} + s_{22} + 2 s_{31} + s_{32} + s_{33} + s_{41} + 2 s_{42} + 2 s_{51} + s_{52} + 2 s_{61} + s_{71} + s_{211} + s_{221} + 2 s_{311} + s_{411} \big) \otimes e_{ 1 } $$ $$
++\big( s_{2} + 2 s_{3} + 2 s_{4} + 2 s_{5} + s_{6} + s_{7} + s_{11} + 2 s_{21} + s_{22} + 2 s_{31} + s_{32} + 2 s_{41} + s_{51} + s_{111} + s_{211} \big) \otimes e_{ 11 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 2 s_{2} + s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 111 } $$ $$
++\big( s_{4} + s_{6} + s_{8} + s_{32} + s_{41} + s_{51} + s_{42} + s_{61} \big) \otimes e_{ 2 } $$ $$
++\big( s_{1} + 2 s_{2} + 3 s_{3} + s_{4} + 2 s_{5} + s_{6} + s_{11} + 2 s_{21} + s_{22} + 3 s_{31} + s_{41} \big) \otimes e_{ 21 } $$ $$
++\big( s_{4} + s_{7} + s_{41} + s_{32} + s_{51} \big) \otimes e_{ 3 }
+$$
+
+$$F_{ 631 }(Q;Z)=
+\big( s_{10.} + s_{43} + s_{52} + s_{62} + s_{71} + s_{81} + s_{321} + s_{511} \big) \otimes e_{ 0 }\hskip 5in \  $$ $$
++\big( s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{9} + s_{21} + s_{22} + s_{31} + s_{32} + s_{33} + 2 s_{41}  $$ $$
+\ \hskip 1.5in + 2 s_{42} + 2 s_{51} + s_{52} + 2 s_{61} + s_{71} + s_{211} + s_{221} + s_{311} + s_{411} \big) \otimes e_{ 1 } $$ $$
++\big( s_{1} + 2 s_{2} + 3 s_{3} + 2 s_{4} + 2 s_{5} + s_{6} + s_{7} + 2 s_{11} + 3 s_{21} + s_{22} + 3 s_{31} + s_{32} + 2 s_{41} + s_{51} + s_{111} + s_{211} \big) \otimes e_{ 11 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 2 s_{2} + s_{3} + s_{4} + s_{11} + s_{21} \big) \otimes e_{ 111 } $$ $$
++\big( s_{4} + s_{6} + s_{8} + s_{31} + s_{32} + s_{41} + s_{51} + s_{42} + s_{61} + s_{311} \big) \otimes e_{ 2 } $$ $$
++\big( s_{2} + 2 s_{3} + s_{4} + 2 s_{5} + s_{6} + s_{21} + s_{22} + 2 s_{31} + s_{41} \big) \otimes e_{ 21 } $$ $$
++\big( s_{7} + s_{32} + s_{51} \big) \otimes e_{ 3 }
+$$
+
+$$F_{ 73 }(Q;Z)=
+\big( s_{10.} + s_{43} + s_{62} + s_{81} \big) \otimes e_{ 0 }  \hskip 5in \  $$ $$
++\big( s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{9} + s_{31} + s_{32} + s_{33} + s_{41} + s_{42} + s_{51} + s_{52} + s_{61} + s_{71} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 3 s_{2} + 3 s_{3} + 2 s_{4} + 2 s_{5} + s_{6} + s_{7} + s_{11} + 2 s_{21} + s_{22} + 2 s_{31} + s_{32} + s_{41} + s_{51} \big) \otimes e_{ 11 } $$ $$
++\big( s_{4} + s_{6} + s_{8} + s_{41} + s_{42} + s_{61} \big) \otimes e_{ 2 }
+$$
+
+\vfill\eject
+$$F_{ 82 }(Q;Z)=
+\big( s_{10.} + s_{62} + s_{81} \big) \otimes e_{ 0 }  \hskip 5in \  $$ $$
++\big( s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{9} + s_{21} + s_{22} + s_{31} + s_{32} + s_{41} + s_{42} + s_{51} + s_{52} + s_{61} + s_{71} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + 2 s_{1} + 2 s_{2} + 2 s_{3} + 2 s_{4} + 2 s_{5} + s_{6} + s_{7} + s_{11} + s_{21} + s_{31} + s_{41} + s_{51} \big) \otimes e_{ 11 } $$ $$
++\big( s_{6} + s_{8} + s_{61} \big) \otimes e_{ 2 }
+$$
+
+$$F_{ 91 }(Q;Z)=
+\big( s_{10.} + s_{81} \big) \otimes e_{ 0 } \hskip 5in \  $$ $$
++\big( s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{9} + s_{11} + s_{21} + s_{31} + s_{41} + s_{51} + s_{61} + s_{71} \big) \otimes e_{ 1 } $$ $$
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} \big) \otimes e_{ 11 }
++ s_{8} \otimes e_{ 2 }
+$$
+
+$$F_{ 10. }(Q;Z)=
+s_{10.} \otimes e_{ 0 }
++\big( \boldsymbol{1} + s_{1} + s_{2} + s_{3} + s_{4} + s_{5} + s_{6} + s_{7} + s_{8} + s_{9} \big) \otimes e_{ 1 }
+$$
+
+
+
+\end{document}
+
